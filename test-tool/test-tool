@@ -1,0 +1,85 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# test-tool dispatcher for rgit runs.
+#
+# Installed as `test-tool` in the rgit install directory, which test-lib.sh puts
+# in front of the reference build's t/helper on PATH (GIT_TEST_INSTALLED).
+# Subcommands with an rgit-backed substitute in sub/<name> run that script; all
+# others are handed to the reference test-tool unchanged.
+#
+# Environment:
+#   REF_TEST_TOOL                path of the reference test-tool; default: the
+#                                next `test-tool` on PATH that is not this file
+#   RGIT_TEST_TOOL_STRICT=1      a substitute must not forward unimplemented
+#                                actions to the reference binary
+#   RGIT_TEST_TOOL_FORWARD_LOG   file that receives one line per forwarded call
+#                                ("<subcommand> <action>")
+#   RGIT_TEST_TOOL_DISABLE       space separated substitutes to switch off
+
+self=$(cd "$(dirname "$0")" && pwd -P)/$(basename "$0")
+here=${self%/*}
+# The script may be installed as a symlink; substitutes live next to the target.
+if test -L "$0"
+then
+	target=$(readlink "$0")
+	case $target in
+	/*) ;;
+	*) target=$(dirname "$0")/$target ;;
+	esac
+	here=$(cd "$(dirname "$target")" && pwd -P)
+fi
+
+if test -z "$REF_TEST_TOOL"
+then
+	saved_ifs=$IFS
+	IFS=:
+	for d in $PATH
+	do
+		test -n "$d" || d=.
+		c=$d/test-tool
+		test -x "$c" && test ! -d "$c" || continue
+		cr=$(cd "$d" && pwd -P)/test-tool
+		test "$cr" = "$self" && continue
+		test "$(cd "$d" && pwd -P)" = "$here" && continue
+		REF_TEST_TOOL=$c
+		break
+	done
+	IFS=$saved_ifs
+fi
+if test -z "$REF_TEST_TOOL"
+then
+	echo "test-tool (rgit): reference test-tool not found; set REF_TEST_TOOL" >&2
+	exit 127
+fi
+export REF_TEST_TOOL
+
+# Leading -C <dir> is handled here so substitutes see the final directory.
+while test $# -gt 0
+do
+	case $1 in
+	-C)
+		test $# -ge 2 || exec "$REF_TEST_TOOL" "$@"
+		cd "$2" || exit 128
+		shift 2
+		;;
+	-C*)
+		cd "${1#-C}" || exit 128
+		shift
+		;;
+	*)
+		break
+		;;
+	esac
+done
+
+sub=$1
+case " $RGIT_TEST_TOOL_DISABLE " in
+*" $sub "*) exec "$REF_TEST_TOOL" "$@" ;;
+esac
+if test -n "$sub" && test -x "$here/sub/$sub"
+then
+	shift
+	exec "$here/sub/$sub" "$@"
+fi
+exec "$REF_TEST_TOOL" "$@"

@@ -19,6 +19,7 @@ against rgit to prove that rgit behaves exactly like git.
 | `t/` | Shell tests copied from `git/t/` (same names, e.g. `t1006-cat-file.sh`) plus `test-lib.sh`, `test-lib-functions.sh` and needed `lib-*.sh` |
 | `unit/` | Rust ports of git's C unit tests (`git/t/unit-tests/`) |
 | `run` | Test runner (planned, rgit issue #5) |
+| `test-tool/`, `TEST-TOOL.md` | `test-tool` dispatcher and rgit-backed substitutes, inventory of the subcommands the scripts use (rgit issue #6) |
 | `STATUS.md` | Generated: which upstream scripts are ported and how many cases pass against rgit |
 
 ## How it works

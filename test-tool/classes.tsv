@@ -1,0 +1,82 @@
+# key	class	owner	note
+# Class of each test-tool subcommand (or "subcommand action") seen in the
+# scanned scripts. The most specific key wins ("ref-store main" before
+# "ref-store"). A = neutral utility, B = reads/writes repository or wire data
+# and stays on the reference binary on purpose, C = exercises code under test
+# and needs an rgit-backed helper. Owner = rgit issue that implements the C helper.
+#
+# Class A: neutral utilities
+chmtime	A		file mtimes
+genrandom	A		deterministic pseudo-random bytes
+genzeros	A		zero bytes
+getcwd	A		prints the working directory
+truncate	A		truncates a file
+hexdump	A		hex dump of stdin
+env-helper	A		reads an environment variable as bool/ulong
+zlib	A		deflate/inflate stdin, used to craft loose objects
+sha1/sha256 (via $algo)	A		hash of stdin, used by lib-loose.sh/lib-pack.sh to craft objects
+path-utils file-size	A		file size
+path-utils readlink	A		symlink target
+path-utils real_path	A		expected path for comparisons
+path-utils absolute_path	A		expected path for comparisons
+path-utils normalize_path_copy	A		expected path for comparisons (t0007); t0060 itself would be C
+rot13-filter	A		clean/smudge filter process
+crontab	A		fake crontab
+proc-receive	A		fake proc-receive hook
+test-fake-ssh	A		fake ssh
+xml-encode	A		junit output only
+# Class B: data readers/writers, git's own reader checks what rgit wrote
+dump-cache-tree	B		reads the index cache-tree extension
+dump-split-index	B		reads split index
+dump-untracked-cache	B		reads the untracked-cache extension
+dump-fsmonitor	B		reads the fsmonitor extension
+scrap-cache-tree	B		rewrites the index without cache-tree; rgit must read the result
+read-midx	B		reads multi-pack-index
+read-graph	B		reads commit-graph
+dump-reftable	B		reads reftable files
+pack-mtimes	B		reads .mtimes
+find-pack	B		finds the pack that holds an object
+bitmap	B		reads bitmaps
+pack-deltas	B		writes a crafted pack (fixture) that rgit must read
+pkt-line pack	B		encodes request input; the git under test decodes it
+pkt-line pack-raw-stdin	B		encodes request input; the git under test decodes it
+pkt-line unpack	B		decodes the output of the git under test
+# Class C: exercise code under test
+date	C	#74	date parsing/formatting (t0006)
+parse-options	C	#73	option parser (t0040)
+parse-options-flags	C	#73	option parser flags (t0040)
+parse-subcommand	C	#73	subcommand parser (t0040)
+config	C	#28	config reader API (t1305, t1308, t1309)
+ref-store	C	#29	ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30
+ref-store for-each-reflog-ent	C	#30	reflog reader
+ref-store for-each-reflog-ent-reverse	C	#30	reflog reader
+ref-store for-each-reflog	C	#30	reflog reader
+ref-store reflog-exists	C	#30	reflog reader
+ref-store create-reflog	C	#30	reflog writer
+ref-store delete-reflog	C	#30	reflog writer
+sha1	C	#11	collision-detecting SHA-1 (t0013)
+sha1-is-sha1dc	C	#11	prerequisite: SHA-1 is collision detecting
+sha256	C	#12	SHA-256
+delta	C	#17	delta application (t5303)
+subprocess	C	#26	repository setup before running a command (t1501)
+wildmatch	C	#106	wildmatch (t3070)
+parse-pathspec-file	C	#106	--pathspec-from-file parsing (t0067)
+reach	C	#50	reachability queries (t6600)
+advise	C	#178	advice output (t0018)
+serve-v2	C	M5	protocol v2 server (t5701, t5702); server side is not part of M1/M2
+sigchain	C	#98	signal handler chain (t0005); library internals, likely excluded for rgit
+pkt-line	C	#60	sideband actions (send-split-sideband, receive-sideband, unpack-sideband)
+# Not used by M1/M2 scripts yet; class fixed in advance (rgit issue #6)
+read-cache	B		reads the index
+write-cache	B		writes an index for rgit to read
+trace2	C		trace2 API
+progress	C		progress display
+json-writer	C		JSON writer used by trace2
+run-command	C		child process handling
+path-walk	C		path-walk API
+bloom	C		changed-path Bloom filters
+userdiff	C		userdiff drivers
+submodule-config	C		.gitmodules parsing
+dir-iterator	C		directory iterator
+simple-ipc	C		IPC used by fsmonitor
+bundle-uri	C		bundle-uri parsing

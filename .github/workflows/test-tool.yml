@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: GPL-2.0-only
+name: test-tool
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  GIT_REF: v2.56.1
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch upstream git ${{ env.GIT_REF }}
+        run: git clone -q --depth 1 --branch "$GIT_REF" https://github.com/git/git.git "$RUNNER_TEMP/git"
+      - name: Inventory is complete and up to date
+        run: test-tool/inventory.py --check --upstream "$RUNNER_TEMP/git/t"
+
+  substitutes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch upstream git ${{ env.GIT_REF }}
+        run: git clone -q --depth 1 --branch "$GIT_REF" https://github.com/git/git.git "$RUNNER_TEMP/git"
+      - name: Build reference git and test-tool
+        run: make -C "$RUNNER_TEMP/git" -j"$(nproc)" NO_GETTEXT=1 git t/helper/test-tool
+      - name: date substitute equals reference test-tool
+        run: test-tool/check-date.sh "$RUNNER_TEMP/git/t/helper/test-tool" "$RUNNER_TEMP/git/git" "$RUNNER_TEMP/git/t"
