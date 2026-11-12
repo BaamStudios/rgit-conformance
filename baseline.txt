@@ -5,3 +5,9 @@ fallback t0000-basic.sh 1-92
 fallback t0001-init.sh 1-47,50-87,90-103
 fallback t1300-config.sh 1-126,128-212,215-216,218-383,385-469,472-473,475-518
 fallback t1303-wacky-config.sh 1-11
+fallback t3100-ls-tree-restrict.sh 1-14
+fallback t3101-ls-tree-dirname.sh 1-19
+fallback t3102-ls-tree-wildcards.sh 1-3
+fallback t3103-ls-tree-misc.sh 1-10
+fallback t3104-ls-tree-format.sh 1-19
+fallback t3105-ls-tree-output.sh 1-60
