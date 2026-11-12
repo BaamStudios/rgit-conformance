@@ -1,0 +1,697 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Conformance runner for rgit (rgit issue #5, ADR 0001).
+#
+# Runs the ported scripts in t/ against the reference git and against rgit,
+# records per-case results (TAP), writes STATUS.md and compares against the
+# baseline. See README.md for usage.
+set -euo pipefail
+
+ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+REF_VERSION=$(tr -d ' \n' <"$ROOT/REFERENCE_VERSION")
+
+usage() {
+	cat <<EOF
+usage: run [options] [script...]
+
+Scripts are names in t/ (t0000-basic.sh or t0000); default: all t/t[0-9]*.sh.
+
+Passes:
+  --mode MODE          rgit passes to run: fallback, strict, both or none
+                       (default: fallback if an rgit binary is found, else none)
+  --rgit PATH          rgit binary (default: \$RGIT, else 'rgit' in PATH)
+  --reference-only     same as --mode none
+  --implemented FILE   subcommands sent to rgit in fallback mode
+                       (default: implemented.txt)
+
+Results:
+  --out DIR            results directory (default: results/)
+  --status FILE        STATUS file to write (default: STATUS.md)
+  --no-status          do not write the STATUS file
+  --baseline FILE      baseline of passing cases (default: baseline.txt)
+  --check              exit 1 if a baseline case no longer passes
+  --check-status       exit 1 if the generated STATUS file differs from the
+                       committed one (implies --no-status, prints the diff)
+  --update-baseline    rewrite the baseline from the current results
+
+Variants (whole-suite switches):
+  --hash sha256        GIT_TEST_DEFAULT_HASH
+  --ref-format FORMAT  GIT_TEST_DEFAULT_REF_FORMAT (e.g. reftable)
+
+Other:
+  -j, --jobs N         scripts run in parallel (default: number of CPUs)
+  --build-only         only build the reference git, print its directory
+  --timeout SECONDS    per script and pass (default: 1800)
+  -h, --help
+
+Environment:
+  RGIT_CONFORMANCE_CACHE   cache directory (default: ~/.cache/rgit-conformance)
+  RGIT_REFERENCE_SOURCE    where to clone git from
+                           (default: https://github.com/git/git.git)
+  RGIT_REFERENCE_BUILD     use this already-built git tree instead
+EOF
+}
+
+die() { echo "run: $*" >&2; exit 2; }
+note() { echo "run: $*" >&2; }
+
+# ---------------------------------------------------------------- options
+MODE=
+RGIT_BIN=${RGIT:-}
+IMPLEMENTED=$ROOT/implemented.txt
+OUT=$ROOT/results
+STATUS_FILE=
+WRITE_STATUS=1
+BASELINE=
+CHECK=
+CHECK_STATUS=
+UPDATE_BASELINE=
+HASH=
+REF_FORMAT=
+JOBS=$(nproc 2>/dev/null || echo 4)
+BUILD_ONLY=
+TIMEOUT=1800
+SCRIPTS=()
+
+while test $# -gt 0
+do
+	case "$1" in
+	--mode) MODE=$2; shift ;;
+	--mode=*) MODE=${1#*=} ;;
+	--rgit) RGIT_BIN=$2; shift ;;
+	--rgit=*) RGIT_BIN=${1#*=} ;;
+	--reference-only) MODE=none ;;
+	--implemented) IMPLEMENTED=$2; shift ;;
+	--out) OUT=$2; shift ;;
+	--status) STATUS_FILE=$2; shift ;;
+	--no-status) WRITE_STATUS= ;;
+	--baseline) BASELINE=$2; shift ;;
+	--check) CHECK=1 ;;
+	--check-status) CHECK_STATUS=1; WRITE_STATUS= ;;
+	--update-baseline) UPDATE_BASELINE=1 ;;
+	--hash) HASH=$2; shift ;;
+	--ref-format) REF_FORMAT=$2; shift ;;
+	-j|--jobs) JOBS=$2; shift ;;
+	-j*) JOBS=${1#-j} ;;
+	--build-only) BUILD_ONLY=1 ;;
+	--timeout) TIMEOUT=$2; shift ;;
+	-h|--help) usage; exit 0 ;;
+	-*) die "unknown option $1" ;;
+	*) SCRIPTS+=("$1") ;;
+	esac
+	shift
+done
+
+# A variant name keeps results of whole-suite switches apart.
+VARIANT=$(printf '%s\n' $HASH $REF_FORMAT | paste -sd- -)
+if test -z "$VARIANT"
+then
+	VARIANT=default
+	suffix=
+else
+	suffix=.$VARIANT
+fi
+: "${STATUS_FILE:=$ROOT/STATUS$suffix.md}"
+: "${BASELINE:=$ROOT/baseline$suffix.txt}"
+CACHE=${RGIT_CONFORMANCE_CACHE:-${XDG_CACHE_HOME:-$HOME/.cache}/rgit-conformance}
+REF_BUILD=${RGIT_REFERENCE_BUILD:-$CACHE/git-$REF_VERSION}
+RES=$OUT/$VARIANT
+
+# ---------------------------------------------------------------- reference build
+# Builds git $REF_VERSION including t/helper/test-tool with plain `make`.
+# The runner never looks at git's sources, it only runs the build.
+build_reference() {
+	if test -f "$REF_BUILD/.rgit-conformance-built"
+	then
+		return 0
+	fi
+	if test -n "${RGIT_REFERENCE_BUILD:-}"
+	then
+		die "RGIT_REFERENCE_BUILD=$REF_BUILD is not a finished build"
+	fi
+	local src=${RGIT_REFERENCE_SOURCE:-https://github.com/git/git.git}
+	case "$src" in
+	/*) src=file://$src ;;
+	esac
+	note "building reference git $REF_VERSION in $REF_BUILD (log: $REF_BUILD.log)"
+	rm -rf "$REF_BUILD"
+	mkdir -p "$(dirname "$REF_BUILD")"
+	git -c advice.detachedHead=false clone --quiet --depth 1 --branch "$REF_VERSION" "$src" "$REF_BUILD" ||
+		die "cannot clone $REF_VERSION from $src"
+	# The tag must be what we asked for, not a branch of the same name.
+	test "$(git -C "$REF_BUILD" rev-parse HEAD)" = \
+	     "$(git -C "$REF_BUILD" rev-parse "refs/tags/$REF_VERSION^{commit}")" ||
+		die "$src: $REF_VERSION is not a tag"
+	if ! make -C "$REF_BUILD" -j"$JOBS" NO_TCLTK=YesPlease all \
+		>"$REF_BUILD.log" 2>&1
+	then
+		tail -n 30 "$REF_BUILD.log" >&2
+		die "building reference git failed"
+	fi
+	test -x "$REF_BUILD/t/helper/test-tool" ||
+		die "build finished without t/helper/test-tool"
+	"$REF_BUILD/git" version >"$REF_BUILD/.rgit-conformance-built"
+	note "built $(cat "$REF_BUILD/.rgit-conformance-built")"
+}
+
+# ---------------------------------------------------------------- install dirs
+# Directory used as GIT_TEST_INSTALLED for the rgit passes.
+#
+# fallback: `git` and the dashed programs are a wrapper. Subcommands listed in
+#   implemented.txt go to rgit, everything else to the reference git. Every
+#   forwarded call is appended to the TAP file of the running script as
+#   "# rgit-forwarded: <subcommand>", so the parser can attribute it to the
+#   test case that follows.
+# strict: `git` is rgit. Until rgit answers `--exec-path` (rgit #73) a small
+#   shim answers it with the install directory and execs rgit for the rest.
+DASHED="git-upload-pack git-receive-pack git-upload-archive"
+
+make_fallback_install() {
+	local dir=$1
+	rm -rf "$dir"
+	mkdir -p "$dir"
+	{
+		echo '#!/usr/bin/env bash'
+		echo '# Generated by rgit-conformance/run: fallback-mode git wrapper.'
+		printf 'RGIT=%q\nREF=%q\nIMPLEMENTED=%q\n' "$RGIT_BIN" "$REF_BUILD" "$IMPLEMENTED"
+		cat <<-'EOF'
+		name=${0##*/}
+		sub=
+		case "$name" in
+		git-*) sub=${name#git-} ;;
+		*)
+			info=
+			skip=
+			for a in "$@"
+			do
+				if test -n "$skip"; then skip=; continue; fi
+				case "$a" in
+				-C|-c|--git-dir|--work-tree|--namespace|--config-env|--attr-source|--super-prefix|--list-cmds)
+					skip=1 ;;
+				--version|-v) info=${info:---version} ;;
+				--help|-h) info=${info:---help} ;;
+				--exec-path|--html-path|--man-path|--info-path) info=${info:-$a} ;;
+				-*) ;;
+				*) sub=$a; break ;;
+				esac
+			done
+			test -n "$sub" || sub=${info:---help}
+			;;
+		esac
+		implemented=
+		if test -r "$IMPLEMENTED"
+		then
+			while read -r line
+			do
+				line=${line%%#*}
+				line=${line//[[:space:]]/}
+				if test "$line" = "$sub"; then implemented=1; break; fi
+			done <"$IMPLEMENTED"
+		fi
+		if test -n "$implemented"
+		then
+			exec -a "$name" "$RGIT" "$@"
+		fi
+		if test -n "${RGIT_CONFORMANCE_TAP:-}"
+		then
+			printf '# rgit-forwarded: %s\n' "$sub" >>"$RGIT_CONFORMANCE_TAP"
+		fi
+		: "${GIT_EXEC_PATH:=$REF}"
+		export GIT_EXEC_PATH
+		exec "$REF/$name" "$@"
+		EOF
+	} >"$dir/git"
+	chmod +x "$dir/git"
+	for d in $DASHED
+	do
+		ln -s git "$dir/$d"
+	done
+}
+
+make_strict_install() {
+	local dir=$1
+	rm -rf "$dir"
+	mkdir -p "$dir"
+	if "$RGIT_BIN" --exec-path >/dev/null 2>&1
+	then
+		ln -s "$RGIT_BIN" "$dir/git"
+	else
+		# rgit: stub until rgit implements --exec-path (rgit #73).
+		{
+			echo '#!/usr/bin/env bash'
+			echo '# Generated by rgit-conformance/run: strict-mode shim, only'
+			echo '# answers --exec-path until rgit implements it (rgit #73).'
+			printf 'RGIT=%q\nDIR=%q\n' "$RGIT_BIN" "$dir"
+			cat <<-'EOF'
+			if test "$#" = 1 && test "$1" = --exec-path
+			then
+				echo "$DIR"
+				exit 0
+			fi
+			exec -a "${0##*/}" "$RGIT" "$@"
+			EOF
+		} >"$dir/git"
+		chmod +x "$dir/git"
+		echo "exec-path stubbed" >"$dir/.stubbed"
+	fi
+	for d in $DASHED
+	do
+		ln -s git "$dir/$d"
+	done
+}
+
+# ---------------------------------------------------------------- TAP parsing
+# Turns raw TAP (plus "# rgit-forwarded:" lines) into
+#   <num> TAB <status> TAB <forwarded,commands|-> TAB <description>
+# status: pass, fail, skip, todo (known breakage), fixed (known breakage vanished)
+# and a meta file with the script state.
+parse_tap() {
+	local tap=$1 tsv=$2 meta=$3 rc=$4
+	awk -v tsv="$tsv" -v meta="$meta" -v rc="$rc" '
+	function flush_fw(   k, s, n, i, arr) {
+		n = 0
+		for (k in fw) arr[++n] = k
+		# insertion sort, awk has no portable sort
+		for (i = 2; i <= n; i++) {
+			s = arr[i]; j = i - 1
+			while (j > 0 && arr[j] > s) { arr[j + 1] = arr[j]; j-- }
+			arr[j + 1] = s
+		}
+		s = ""
+		for (i = 1; i <= n; i++) s = s (i > 1 ? "," : "") arr[i]
+		delete fw
+		return s == "" ? "-" : s
+	}
+	/^# rgit-forwarded: / { fw[$3] = 1; next }
+	/^(not )?ok [0-9]+/ {
+		line = $0
+		notok = (line ~ /^not /)
+		sub(/^(not )?ok /, "", line)
+		num = line; sub(/[^0-9].*$/, "", num)
+		rest = substr(line, length(num) + 1)
+		status = notok ? "fail" : "pass"
+		if (rest ~ /^ # skip /) {
+			status = "skip"; sub(/^ # skip /, "", rest)
+		} else {
+			sub(/^ - /, "", rest)
+			if (rest ~ / # TODO known breakage vanished$/) {
+				status = "fixed"; sub(/ # TODO known breakage vanished$/, "", rest)
+			} else if (rest ~ / # TODO known breakage$/) {
+				status = "todo"; sub(/ # TODO known breakage$/, "", rest)
+			}
+		}
+		gsub(/\t/, " ", rest)
+		printf "%s\t%s\t%s\t%s\n", num, status, flush_fw(), rest > tsv
+		count++
+		next
+	}
+	/^1\.\.[0-9]+/ { plan = $0; sub(/^1\.\./, "", plan); sub(/[^0-9].*$/, "", plan)
+		if ($0 ~ /# SKIP/) skipall = 1; next }
+	/^Bail out!/ { bail = 1; next }
+	END {
+		if (count == 0) printf "" > tsv
+		if (bail) state = "bail"
+		else if (skipall) state = "skip_all"
+		else if (plan == "" || plan != count) state = "error"
+		else if (rc != 0) state = "complete_failed"
+		else state = "complete"
+		printf "state=%s\nexit=%s\ncases=%d\nplan=%s\n", state, rc, count, plan > meta
+	}' "$tap"
+}
+
+# ---------------------------------------------------------------- one script, one pass
+# run_one <script> <pass>; pass is reference, fallback or strict.
+run_one() {
+	local script=$1 pass=$2
+	local dir=$RES/$pass
+	local tap=$dir/$script.tap
+	mkdir -p "$dir/output"
+	: >"$tap"
+	local -a env=(
+		GIT_BUILD_DIR="$REF_BUILD"
+		TEST_OUTPUT_DIRECTORY="$dir/output"
+		RGIT_CONFORMANCE_TAP="$tap"
+	)
+	test -n "$HASH" && env+=(GIT_TEST_DEFAULT_HASH="$HASH")
+	test -n "$REF_FORMAT" && env+=(GIT_TEST_DEFAULT_REF_FORMAT="$REF_FORMAT")
+	local skip
+	skip=$(excluded_cases "$script")
+	test -n "$skip" && env+=(GIT_SKIP_TESTS="$skip")
+	case "$pass" in
+	reference) env+=(GIT_TEST_INSTALLED=) ;;
+	*) env+=(GIT_TEST_INSTALLED="$RES/install-$pass") ;;
+	esac
+	local rc=0
+	(
+		cd "$ROOT/t" &&
+		env "${env[@]}" \
+			timeout "$TIMEOUT" "${TEST_SHELL:-/bin/sh}" "./$script" </dev/null >>"$tap" 2>"$dir/$script.stderr"
+	) || rc=$?
+	parse_tap "$tap" "$dir/$script.tsv" "$dir/$script.meta" "$rc"
+	local state
+	state=$(sed -n 's/^state=//p' "$dir/$script.meta")
+	printf '%-10s %-40s %s\n' "$pass" "$script" "$state" >&2
+}
+
+# GIT_SKIP_TESTS entries from exclude.txt ("t0000-basic.sh 12  # reason").
+excluded_cases() {
+	local script=$1 prefix=${1%%-*}
+	test -f "$ROOT/exclude.txt" || return 0
+	sed -e 's/#.*//' "$ROOT/exclude.txt" |
+	awk -v s="$script" -v p="$prefix" '$1 == s { for (i = 2; i <= NF; i++) out = out (out ? " " : "") p "." $i } END { print out }'
+}
+
+# ---------------------------------------------------------------- STATUS.md
+all_scripts() {
+	(cd "$ROOT/t" && ls t[0-9][0-9][0-9][0-9]-*.sh 2>/dev/null) | LC_ALL=C sort
+}
+
+meta_get() {
+	sed -n "s/^$3=//p" "$RES/$1/$2.meta" 2>/dev/null
+}
+
+# Combined per-case table for one script:
+#   num ref fallback strict forwarded description
+# rgit columns: pass/fail/skip/todo/fixed, "excluded" when the case is not a
+# valid check (reference did not pass), "missing" when the case did not run,
+# "-" when the pass was not run.
+combine() {
+	local script=$1
+	local ref=$RES/reference/$script.tsv
+	test -f "$ref" || return 0
+	local refstate fbs sts
+	refstate=$(meta_get reference "$script" state)
+	fbs=$(test -f "$RES/fallback/$script.tsv" && echo run || echo -)
+	sts=$(test -f "$RES/strict/$script.tsv" && echo run || echo -)
+	awk -F'\t' -v OFS='\t' -v refstate="$refstate" -v fbs="$fbs" -v sts="$sts" \
+		-v fb="$RES/fallback/$script.tsv" -v st="$RES/strict/$script.tsv" '
+	BEGIN {
+		if (fbs == "run") while ((getline l < fb) > 0) { split(l, a, "\t"); fbst[a[1]] = a[2]; fbfw[a[1]] = a[3] }
+		if (sts == "run") while ((getline l < st) > 0) { split(l, a, "\t"); stst[a[1]] = a[2] }
+	}
+	{
+		valid = ($2 == "pass" && (refstate == "complete" || refstate == "complete_failed"))
+		f = (fbs != "run") ? "-" : (!valid ? "excluded" : (($1 in fbst) ? fbst[$1] : "missing"))
+		s = (sts != "run") ? "-" : (!valid ? "excluded" : (($1 in stst) ? stst[$1] : "missing"))
+		fw = (fbs == "run" && ($1 in fbfw)) ? fbfw[$1] : "-"
+		print $1, $2, f, s, fw, $4
+	}' "$ref"
+}
+
+write_status() {
+	local file=$1 tmp
+	tmp=$(mktemp)
+	{
+		echo "# Conformance status"
+		echo
+		echo "Generated by \`./run\` — do not edit by hand. Reference git: $REF_VERSION."
+		test "$VARIANT" = default || echo "Variant: \`$VARIANT\`."
+		echo
+		echo "- **reference**: the script run against the reference git. A case that does not"
+		echo "  pass there is not a valid check and is excluded from the rgit columns."
+		echo "- **fallback**: rgit as \`git\`; subcommands not listed in \`implemented.txt\` are"
+		echo "  forwarded to the reference git (listed per case below)."
+		echo "- **strict**: everything runs through rgit."
+		echo
+		echo "## Summary"
+		echo
+		echo "| Script | Cases | Valid | Invalid (ref. fails) | Skipped/TODO | fallback pass | strict pass |"
+		echo "|---|---:|---:|---:|---:|---:|---:|"
+		local script tc=0 tv=0 ti=0 ts=0 tf=0 tsp=0 fbrun=0 strun=0
+		local rows=() details=()
+		while read -r script
+		do
+			if ! test -f "$RES/reference/$script.tsv"
+			then
+				echo "| $script | not run | | | | | |"
+				continue
+			fi
+			local refstate
+			refstate=$(meta_get reference "$script" state)
+			local c
+			c=$(combine "$script")
+			local cases valid invalid skipped fpass spass
+			cases=$(printf '%s' "$c" | grep -c . || true)
+			valid=$(printf '%s\n' "$c" | awk -F'\t' '$3 != "excluded" && $4 != "excluded" && $2 == "pass"' | grep -c . || true)
+			case "$refstate" in complete|complete_failed) ;; *) valid=0 ;; esac
+			invalid=$(printf '%s\n' "$c" | awk -F'\t' '$2 == "fail"' | grep -c . || true)
+			skipped=$(printf '%s\n' "$c" | awk -F'\t' '$2 == "skip" || $2 == "todo" || $2 == "fixed"' | grep -c . || true)
+			fpass=$(printf '%s\n' "$c" | awk -F'\t' '$3 == "pass"' | grep -c . || true)
+			spass=$(printf '%s\n' "$c" | awk -F'\t' '$4 == "pass"' | grep -c . || true)
+			local fcol scol name=$script
+			case "$refstate" in
+			complete|complete_failed) ;;
+			*) name="$script (invalid: reference $refstate)" ;;
+			esac
+			if test -f "$RES/fallback/$script.tsv"
+			then
+				fcol="$fpass/$valid"; fbrun=1
+				case "$(meta_get fallback "$script" state)" in
+				complete|complete_failed) ;;
+				*) fcol="$fcol ($(meta_get fallback "$script" state))" ;;
+				esac
+			else
+				fcol="not run"
+			fi
+			if test -f "$RES/strict/$script.tsv"
+			then
+				scol="$spass/$valid"; strun=1
+				case "$(meta_get strict "$script" state)" in
+				complete|complete_failed) ;;
+				*) scol="$scol ($(meta_get strict "$script" state))" ;;
+				esac
+			else
+				scol="not run"
+			fi
+			echo "| $name | $cases | $valid | $invalid | $skipped | $fcol | $scol |"
+			tc=$((tc + cases)); tv=$((tv + valid)); ti=$((ti + invalid))
+			ts=$((ts + skipped)); tf=$((tf + fpass)); tsp=$((tsp + spass))
+		done < <(all_scripts)
+		echo "| **Total** | $tc | $tv | $ti | $ts | $tf/$tv | $tsp/$tv |"
+		echo
+		echo "## Forwarded subcommands (fallback)"
+		echo
+		echo "| Script | Subcommands forwarded to the reference git |"
+		echo "|---|---|"
+		while read -r script
+		do
+			test -f "$RES/fallback/$script.tsv" || continue
+			local fw
+			fw=$(cut -f3 "$RES/fallback/$script.tsv" | tr ',' '\n' | { grep -v '^-$' || :; } | LC_ALL=C sort -u | paste -sd, - | sed 's/,/, /g')
+			echo "| $script | ${fw:-none} |"
+		done < <(all_scripts)
+		echo
+		echo "## Per-case results"
+		echo
+		echo "Statuses: pass, fail, skip, todo (known breakage), fixed (known breakage"
+		echo "vanished), excluded (not a valid check), missing (case did not run), - (pass not run)."
+		while read -r script
+		do
+			test -f "$RES/reference/$script.tsv" || continue
+			echo
+			echo "<details><summary>$script</summary>"
+			echo
+			echo "| # | Test | reference | fallback | strict | forwarded |"
+			echo "|---:|---|---|---|---|---|"
+			combine "$script" | awk -F'\t' '{
+				d = $6; gsub(/\|/, "\\|", d); gsub(/</, "\\&lt;", d)
+				fw = $5; gsub(/,/, ", ", fw)
+				printf "| %s | %s | %s | %s | %s | %s |\n", $1, d, $2, $3, $4, fw
+			}'
+			echo
+			echo "</details>"
+		done < <(all_scripts)
+	} >"$tmp"
+	mv "$tmp" "$file"
+}
+
+# ---------------------------------------------------------------- baseline
+# Format: "<mode> <script> <ranges>", e.g. "fallback t0000-basic.sh 1-12,14".
+compress_ranges() {
+	awk 'NR == 1 { s = e = $1; next }
+	     $1 == e + 1 { e = $1; next }
+	     { out = out (out ? "," : "") (s == e ? s : s "-" e); s = e = $1 }
+	     END { if (NR) out = out (out ? "," : "") (s == e ? s : s "-" e); print out }'
+}
+
+expand_ranges() {
+	tr ',' '\n' | awk -F- 'NF == 1 { print $1 } NF == 2 { for (i = $1; i <= $2; i++) print i }'
+}
+
+passing_cases() {
+	local mode=$1 script=$2 col
+	case "$mode" in fallback) col=3 ;; strict) col=4 ;; esac
+	combine "$script" | awk -F'\t' -v c="$col" '$c == "pass" { print $1 }'
+}
+
+update_baseline() {
+	local tmp mode script
+	tmp=$(mktemp)
+	{
+		echo "# Cases that pass against rgit, generated by ./run --update-baseline."
+		echo "# A case listed here that no longer passes is a regression (./run --check)."
+		echo "# <mode> <script> <case numbers>"
+		for mode in fallback strict
+		do
+			while read -r script
+			do
+				local r=
+				if test -f "$RES/$mode/$script.tsv"
+				then
+					r=$(passing_cases "$mode" "$script" | compress_ranges)
+				elif test -f "$BASELINE"
+				then
+					# pass not run this time: keep the previous entry
+					r=$(awk -v m="$mode" -v s="$script" '$1 == m && $2 == s { print $3 }' "$BASELINE")
+				fi
+				test -n "$r" && echo "$mode $script $r"
+			done < <(all_scripts)
+		done
+	} >"$tmp"
+	mv "$tmp" "$BASELINE"
+	note "baseline written to $BASELINE"
+}
+
+check_baseline() {
+	test -f "$BASELINE" || { note "no baseline at $BASELINE"; return 0; }
+	local bad=0 mode script ranges n st
+	while read -r mode script ranges
+	do
+		case "$mode" in ''|'#'*) continue ;; esac
+		test -f "$RES/$mode/$script.tsv" || continue
+		local c
+		c=$(combine "$script")
+		local col
+		case "$mode" in fallback) col=3 ;; strict) col=4 ;; *) continue ;; esac
+		for n in $(echo "$ranges" | expand_ranges)
+		do
+			st=$(printf '%s\n' "$c" | awk -F'\t' -v n="$n" -v c="$col" '$1 == n { print $c }')
+			if test "$st" != pass
+			then
+				echo "REGRESSION: $mode $script case $n: ${st:-missing} (was pass)" >&2
+				bad=1
+			fi
+		done
+	done <"$BASELINE"
+	# new passes are informational
+	for mode in fallback strict
+	do
+		while read -r script
+		do
+			test -f "$RES/$mode/$script.tsv" || continue
+			local base
+			base=$(awk -v m="$mode" -v s="$script" '$1 == m && $2 == s { print $3 }' "$BASELINE" | expand_ranges)
+			local new
+			new=$(passing_cases "$mode" "$script" |
+				awk -v b="$base" 'BEGIN { n = split(b, a, "\n"); for (i = 1; i <= n; i++) seen[a[i]] = 1 } !($1 in seen)' |
+				compress_ranges)
+			test -z "$new" ||
+				echo "new passes (run --update-baseline): $mode $script $new" >&2
+		done < <(all_scripts)
+	done
+	return $bad
+}
+
+# ---------------------------------------------------------------- main
+build_reference
+if test -n "$BUILD_ONLY"
+then
+	echo "$REF_BUILD"
+	exit 0
+fi
+
+if test -z "$MODE"
+then
+	if test -n "$RGIT_BIN" || command -v rgit >/dev/null 2>&1
+	then
+		MODE=fallback
+	else
+		MODE=none
+		note "no rgit binary found (--rgit or \$RGIT), running the reference pass only"
+	fi
+fi
+case "$MODE" in
+none) PASSES=() ;;
+fallback|strict) PASSES=("$MODE") ;;
+both) PASSES=(fallback strict) ;;
+*) die "unknown mode $MODE" ;;
+esac
+if test ${#PASSES[@]} -gt 0
+then
+	test -n "$RGIT_BIN" || RGIT_BIN=$(command -v rgit) || die "no rgit binary"
+	RGIT_BIN=$(cd "$(dirname "$RGIT_BIN")" && pwd)/$(basename "$RGIT_BIN")
+	test -x "$RGIT_BIN" || die "$RGIT_BIN is not executable"
+	IMPLEMENTED=$(cd "$(dirname "$IMPLEMENTED")" && pwd)/$(basename "$IMPLEMENTED")
+fi
+
+# Resolve script names (t0000 -> t0000-basic.sh).
+SEL=()
+if test ${#SCRIPTS[@]} -eq 0
+then
+	mapfile -t SEL < <(all_scripts)
+else
+	for s in "${SCRIPTS[@]}"
+	do
+		s=${s##*/}
+		case "$s" in
+		*.sh) test -f "$ROOT/t/$s" || die "no such script t/$s" ;;
+		*) m=$(cd "$ROOT/t" && ls "$s"-*.sh 2>/dev/null | head -n1) ||: ;
+		   test -n "$m" || die "no script matches $s"; s=$m ;;
+		esac
+		SEL+=("$s")
+	done
+fi
+
+mkdir -p "$RES"
+for p in "${PASSES[@]}"
+do
+	"make_${p}_install" "$RES/install-$p"
+done
+test -f "$RES/install-strict/.stubbed" &&
+	note "strict: rgit does not answer --exec-path yet, using a shim (rgit #73)"
+
+for p in reference "${PASSES[@]}"
+do
+	running=0
+	for s in "${SEL[@]}"
+	do
+		# Clear previous results of this pass for the selected scripts only.
+		rm -rf "$RES/$p/$s".* "$RES/$p/output/trash directory.${s%.sh}"
+		if test "$running" -ge "$JOBS"
+		then
+			wait -n || :
+			running=$((running - 1))
+		fi
+		run_one "$s" "$p" &
+		running=$((running + 1))
+	done
+	wait
+done
+
+rc=0
+if test -n "$WRITE_STATUS"
+then
+	write_status "$STATUS_FILE"
+	note "wrote $STATUS_FILE"
+fi
+if test -n "$CHECK_STATUS"
+then
+	gen=$(mktemp)
+	write_status "$gen"
+	if ! diff -u "$STATUS_FILE" "$gen" >&2
+	then
+		note "STATUS file differs from the generated one (run ./run and commit $STATUS_FILE)"
+		rc=1
+	fi
+	rm -f "$gen"
+fi
+if test -n "$UPDATE_BASELINE"
+then
+	update_baseline
+fi
+if test -n "$CHECK"
+then
+	check_baseline || { note "regressions against $BASELINE"; rc=1; }
+fi
+exit $rc
