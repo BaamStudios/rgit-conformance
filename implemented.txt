@@ -27,3 +27,7 @@ symbolic-ref !(-*)
 symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
 # rgit-ident (rgit #122): git var.
 var
+# rgit-revwalk (rgit #78): rev-list and log with the walk, ordering and
+# built-in format options; no paths, no "A...B", no reflogs, no ":".
+rev-list @(--all|--branches|--tags|--remotes|--not|--topo-order|--date-order|--reverse|--first-parent|--parents|--count|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|!(-*|*...*|*:*|*@{*))...
+log @(--all|--branches|--tags|--remotes|--not|--topo-order|--date-order|--reverse|--first-parent|--parents|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|--pretty|--pretty=@(oneline|short|medium|full|fuller|raw)|--format=@(oneline|short|medium|full|fuller|raw)|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--no-decorate|--mailmap|--no-mailmap|--use-mailmap|--no-use-mailmap|!(-*|*...*|*:*|*@{*))...
