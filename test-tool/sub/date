@@ -163,6 +163,10 @@ relative|human|show:*|is64bit|time_t-is64bit)
 	test -n "$tool" || tool=$(command -v rgit-test-tool)
 	if test -n "$tool" && test -x "$tool"
 	then
+		if test -n "${RGIT_CONFORMANCE_TAP:-}"
+		then
+			printf '# rgit-routed: test-tool %s\n' "date ${action%%:*}" >>"$RGIT_CONFORMANCE_TAP"
+		fi
 		exec "$tool" date "$@"
 	fi
 	forward "$@"

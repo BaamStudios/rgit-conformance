@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: GPL-2.0-only
 #
 # Copies files from git's t/ directory into t/, unchanged except for a header
-# naming the upstream path and version.
+# naming the upstream path and version (binary files: byte-identical, listed
+# in t/BINARY-FILES).
 #
 # usage: import <git checkout> <path relative to t/>...
 #   e.g. ./import ~/src/git t1006-cat-file.sh lib-loose.sh
@@ -10,7 +11,7 @@
 set -euo pipefail
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 version=$(tr -d ' \n' <"$ROOT/REFERENCE_VERSION")
-test $# -ge 2 || { sed -n '4,9p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
+test $# -ge 2 || { sed -n '4,10p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
 src=$1; shift
 have=$(git -C "$src" describe --tags --exact-match 2>/dev/null || echo unknown)
 test "$have" = "$version" || { echo "import: $src is at $have, expected $version" >&2; exit 1; }
@@ -22,7 +23,20 @@ do
 	mkdir -p "$(dirname "$out")"
 	header="# rgit-conformance: copied unchanged from git $version, path t/$f
 # (https://github.com/git/git/blob/$version/t/$f). GPL-2.0, see LICENSE."
-	if head -n1 "$in" | grep -q '^#!'
+	if ! grep -qI . "$in"
+	then
+		# Binary data (e.g. t0013/shattered-1.pdf) must stay byte-identical;
+		# its origin is recorded in t/BINARY-FILES instead of a header.
+		cp "$in" "$out"
+		list=$ROOT/t/BINARY-FILES
+		test -f "$list" || printf '%s\n' \
+			'# Binary files in t/, copied byte-identical from git (GPL-2.0, see LICENSE).' \
+			'# <path relative to t/> <git version>' >"$list"
+		grep -v "^$f " "$list" >"$list.tmp" || :
+		echo "$f $version" >>"$list.tmp"
+		{ grep '^#' "$list.tmp"; grep -v '^#' "$list.tmp" | LC_ALL=C sort; } >"$list"
+		rm -f "$list.tmp"
+	elif head -n1 "$in" | grep -q '^#!'
 	then
 		{ head -n1 "$in"; echo "$header"; tail -n +2 "$in"; } >"$out"
 	else

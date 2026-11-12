@@ -36,6 +36,10 @@ find_rgit_test_tool () {
 tool=$(find_rgit_test_tool)
 if test -n "$tool" && test -x "$tool"
 then
+	if test -n "${RGIT_CONFORMANCE_TAP:-}"
+	then
+		printf '# rgit-routed: test-tool %s\n' "$sub" >>"$RGIT_CONFORMANCE_TAP"
+	fi
 	exec "$tool" "$sub" "$@"
 fi
 
