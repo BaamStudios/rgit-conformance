@@ -12,7 +12,7 @@
 # REF_BUILD is a built git tree (git and t/helper/test-tool), for example
 # ~/.cache/rgit-conformance/git-v2.56.1 from ./run. Default scripts: the M1
 # scripts that call sha1, sha1-is-sha1dc, parse-options*, parse-subcommand,
-# config and date show/relative/human. In t0006 the date parse actions go
+# config, date show/relative/human, wildmatch and ref-store. In t0006 the date parse actions go
 # through sub/date to the reference git, so that script checks the
 # formatting side only.
 set -u
@@ -26,7 +26,8 @@ case $tool in
 esac
 test -x "$tool" || { echo "not executable: $tool" >&2; exit 2; }
 test $# -gt 0 || set -- t0006-date.sh t0013-sha1dc.sh t0040-parse-options.sh \
-	t1305-config-include.sh t1308-config-set.sh t1309-early-config.sh
+	t1305-config-include.sh t1308-config-set.sh t1309-early-config.sh \
+	t3070-wildmatch.sh t1405-main-ref-store.sh t0600-reffiles-backend.sh
 
 work=$(mktemp -d "${TMPDIR:-/tmp}/check-rgit-test-tool.XXXXXX")
 trap 'rm -rf "$work"' EXIT

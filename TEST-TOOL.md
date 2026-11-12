@@ -58,8 +58,9 @@ substitute exists and otherwise execs the reference binary (the next
 
 | Subcommand | Actions done | Through | Forwarded | Checked by |
 |---|---|---|---|---|
-| `date` | `parse`, `approxidate`, `timestamp`; `show:<format>`, `relative`, `human`, `is64bit`, `time_t-is64bit` | `GIT_AUTHOR_DATE=<d> git var GIT_AUTHOR_IDENT`; `git rev-parse --since=<d>` in a scratch repository; the formatting actions through `rgit-test-tool date` (rgit #192) | `getnanos`; the formatting actions when no `rgit-test-tool` is found | `test-tool/check-date.sh`, `test-tool/check-rgit-test-tool.sh` |
-| `sha1`, `sha256`, `sha1-is-sha1dc`, `parse-options`, `parse-options-flags`, `parse-subcommand`, `config` | all | `rgit-test-tool <subcommand>` (rgit `crates/rgit-test-tool`, rgit #192), via `sub/rgit-test-tool.sh` | everything when no `rgit-test-tool` is found | `test-tool/check-rgit-test-tool.sh` |
+| `date` | `parse`, `approxidate`, `timestamp`; `show:<format>`, `relative`, `human`, `is64bit`, `time_t-is64bit`, `getnanos` | `GIT_AUTHOR_DATE=<d> git var GIT_AUTHOR_IDENT`; `git rev-parse --since=<d>` in a scratch repository; the formatting actions and `getnanos` through `rgit-test-tool date` (rgit #192) | the `rgit-test-tool` actions when no `rgit-test-tool` is found | `test-tool/check-date.sh`, `test-tool/check-rgit-test-tool.sh` |
+| `ref-store` | `create-symref`, `delete-refs`, `rename-ref`, `for-each-ref`, `resolve-ref`, `verify-ref`, `for-each-reflog`, `for-each-reflog-ent`, `for-each-reflog-ent-reverse`, `reflog-exists`, `create-reflog`, `delete-reflog`, `update-ref`, `delete-ref` on the stores `main`, `worktree:main`, `worktree:<id>` | `rgit-test-tool ref-store` (rgit #192 on rgit-refs #29 and its reflogs #30), via `sub/ref-store` | the other functions; everything when no `rgit-test-tool` is found | `test-tool/check-rgit-test-tool.sh` |
+| `sha1`, `sha256`, `sha1-is-sha1dc`, `parse-options`, `parse-options-flags`, `parse-subcommand`, `config`, `wildmatch` | all | `rgit-test-tool <subcommand>` (rgit `crates/rgit-test-tool`, rgit #192), via `sub/rgit-test-tool.sh` | everything when no `rgit-test-tool` is found | `test-tool/check-rgit-test-tool.sh` |
 
 `check-date.sh REF_TEST_TOOL GIT` runs every `parse`, `approxidate` and
 `timestamp` case of `t0006-date.sh` (with its `TZ` and `GIT_TEST_DATE_NOW`
@@ -82,10 +83,16 @@ with the reference `test-tool` call by call.
 
 `check-rgit-test-tool.sh REF_BUILD RGIT_TEST_TOOL [SCRIPT...]` runs
 `t0006-date.sh`, `t0013-sha1dc.sh`, `t0040-parse-options.sh`,
-`t1305-config-include.sh`, `t1308-config-set.sh` and `t1309-early-config.sh`
-from the reference build with the reference git but the dispatcher as
-`test-tool`, with `RGIT_TEST_TOOL_STRICT=1`. All six pass as with the
-reference test-tool (t1309 keeps its two known breakages).
+`t1305-config-include.sh`, `t1308-config-set.sh`, `t1309-early-config.sh`,
+`t3070-wildmatch.sh`, `t1405-main-ref-store.sh` and
+`t0600-reffiles-backend.sh` from the reference build with the reference git
+but the dispatcher as `test-tool`, with `RGIT_TEST_TOOL_STRICT=1`. All nine
+pass as with the reference test-tool (t1309 keeps its two known breakages).
+
+`sub/ref-store` sends the functions listed above to `rgit-test-tool
+ref-store` and forwards the rest, so scripts that use `ref-store` only as a
+fixture tool (t1400, t1430, t3800) keep working with functions rgit-test-tool
+does not have.
 
 ## Plan for the class C subcommands of M1
 
