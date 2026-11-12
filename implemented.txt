@@ -17,9 +17,8 @@
 --version
 # `version` is not listed: test-lib reads `version --build-options` for
 # prerequisites (RUST), which rgit answers differently by design.
-# rgit-config (rgit #99): everything but --blob, which needs the object
-# database (rgit #14, #32).
-config !(--blob|--blob=*)...
+# rgit-config (rgit #28, #99), including --blob (rgit #252).
+config
 # rgit-repo (rgit #26, #33): discovery queries only.
 rev-parse @(--git-dir|--absolute-git-dir|--show-toplevel|--show-prefix|--show-cdup|--is-bare-repository|--is-inside-work-tree|--is-inside-git-dir)...
 # Read-only symbolic-ref: one ref name, no -d, no target.
