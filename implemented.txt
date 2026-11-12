@@ -17,9 +17,8 @@
 --version
 # `version` is not listed: test-lib reads `version --build-options` for
 # prerequisites (RUST), which rgit answers differently by design.
-# rgit-config (rgit #99): everything but --blob, which needs the object
-# database (rgit #14, #32).
-config !(--blob|--blob=*)...
+# rgit-config (rgit #28, #99), including --blob (rgit #252).
+config
 # rgit-repo (rgit #26, #33) and revisions (rgit #32): everything except the
 # options rgit does not implement yet.
 rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-common-dir|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--is-shallow-repository|--show-superproject-working-tree|--shared-index-path|--bisect|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
@@ -28,6 +27,15 @@ symbolic-ref !(-*)
 symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
 # rgit-ident (rgit #122): git var.
 var
+index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...
+# rgit-repo init (rgit #27): every call.
+init
+# rgit-refs (rgit #29, #102, #103): update-ref without --batch-updates,
+# show-ref, pack-refs, and for-each-ref with the implemented atoms and options.
+update-ref !(--batch-updates|-0)...
+show-ref
+pack-refs
+for-each-ref @(--format=*([^%]|%%|%\(?(\*)@(refname|objectname|objecttype|objectsize|HEAD|symref)?(:*([^\)]))\))|--sort=?(-)@(refname|objectname|objecttype|objectsize)|--count=+([0-9])|--shell|--perl|--python|--tcl|--include-root-refs|--exclude=*|--points-at=*|--ignore-case|--omit-empty|!(-*))...
 # rgit #15: plumbing on rgit-object/rgit-odb. cat-file without the options
 # rgit does not implement yet (--textconv, --filters, --path: rgit #112, #147;
 # --use-mailmap: rgit #127; --filter: rgit #24).
@@ -36,9 +44,6 @@ cat-file !(--filter|--filter=*|--no-filter|--textconv|--filters|--path|--path=*|
 hash-object
 mktag
 mktree
-index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...
-# rgit-repo init (rgit #27): every call.
-init
 # rgit-revwalk (rgit #78): rev-list and log with the walk, ordering and
 # built-in format options; no paths, no "A...B", no reflogs, no ":".
 rev-list @(--all|--branches|--tags|--remotes|--not|--topo-order|--date-order|--reverse|--first-parent|--parents|--count|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|!(-*|*...*|*:*|*@{*))...
