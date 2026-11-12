@@ -1,3 +1,4 @@
 # Binary files in t/, copied byte-identical from git (GPL-2.0, see LICENSE).
 # <path relative to t/> <git version>
+lib-gpg/gpgsm_cert.p12 v2.56.1
 t0013/shattered-1.pdf v2.56.1
