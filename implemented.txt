@@ -25,3 +25,5 @@ rev-parse @(--git-dir|--absolute-git-dir|--show-toplevel|--show-prefix|--show-cd
 # Read-only symbolic-ref: one ref name, no -d, no target.
 symbolic-ref !(-*)
 symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
+# rgit-ident (rgit #122): git var.
+var
