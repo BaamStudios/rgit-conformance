@@ -48,3 +48,11 @@ ls-tree
 # rgit ls-files and update-index (rgit #39): every call.
 ls-files
 update-index
+# rgit-config (rgit #28, #99), including --blob (rgit #252).
+config
+# rgit-refs (rgit #29, #102, #103): update-ref without --batch-updates,
+# show-ref, pack-refs, and for-each-ref with the implemented atoms and options.
+update-ref !(--batch-updates|-0)...
+show-ref
+pack-refs
+for-each-ref @(--format=*([^%]|%%|%\(?(\*)@(refname|objectname|objecttype|objectsize|HEAD|symref)?(:*([^\)]))\))|--sort=?(-)@(refname|objectname|objecttype|objectsize)|--count=+([0-9])|--shell|--perl|--python|--tcl|--include-root-refs|--exclude=*|--points-at=*|--ignore-case|--omit-empty|!(-*))...
