@@ -35,3 +35,4 @@ cat-file !(--filter|--filter=*|--no-filter|--textconv|--filters|--path|--path=*|
 hash-object
 mktag
 mktree
+index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...

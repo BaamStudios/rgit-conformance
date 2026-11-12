@@ -19,3 +19,8 @@ rust-version = "1.85"
 [dev-dependencies]
 # rgit main, unpinned on purpose: these tests track rgit's main branch.
 rgit-hash = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
+rgit-odb = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
+rgit-pathspec = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
+rgit-config = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
+tempfile = "3"
+rgit-remote = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
