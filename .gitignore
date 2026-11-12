@@ -1,1 +1,4 @@
 results/
+unit/target/
+# unit/ tracks rgit main, so its lock file is not committed
+unit/Cargo.lock

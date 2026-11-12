@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Rust ports of git's C unit tests (git/t/unit-tests/), run against rgit's
+# crates. GPL-2.0 like the tests they are derived from; never part of rgit.
+[package]
+name = "rgit-unit-conformance"
+description = "Ports of git's t/unit-tests run against rgit's crates"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-2.0-only"
+publish = false
+rust-version = "1.85"
+
+# Standalone: not a member of any workspace.
+[workspace]
+
+[dependencies]
+
+[dev-dependencies]
+# rgit main, unpinned on purpose: these tests track rgit's main branch.
+rgit-hash = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
