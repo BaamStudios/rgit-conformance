@@ -28,6 +28,14 @@ symbolic-ref !(-*)
 symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
 # rgit-ident (rgit #122): git var.
 var
+# rgit #15: plumbing on rgit-object/rgit-odb. cat-file without the options
+# rgit does not implement yet (--textconv, --filters, --path: rgit #112, #147;
+# --use-mailmap: rgit #127; --filter: rgit #24).
+cat-file !(--filter|--filter=*|--no-filter|--textconv|--filters|--path|--path=*|--no-path|--use-mailmap|--mailmap|--no-use-mailmap|--no-mailmap)...
+# hash-object hashes without content filters (rgit #111, #112).
+hash-object
+mktag
+mktree
 index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...
 # rgit-repo init (rgit #27): every call.
 init

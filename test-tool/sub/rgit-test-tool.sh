@@ -4,7 +4,8 @@
 # Substitute for the test-tool subcommands that rgit's own helper binary
 # `rgit-test-tool` answers (rgit issue #192, crate crates/rgit-test-tool).
 # The files sub/<subcommand> are symbolic links to this script; the
-# subcommand is the name it was called by.
+# subcommand is the name it was called by (or $RGIT_TEST_TOOL_SUB, set by
+# substitutes that route only some actions here, like sub/ref-store).
 #
 # rgit-test-tool is found as
 #   1. $RGIT_TEST_TOOL,
@@ -13,7 +14,7 @@
 # Without one the call goes to the reference test-tool (or fails with 127
 # under RGIT_TEST_TOOL_STRICT=1), like the other substitutes.
 
-sub=${0##*/}
+sub=${RGIT_TEST_TOOL_SUB:-${0##*/}}
 
 find_rgit_test_tool () {
 	if test -n "$RGIT_TEST_TOOL"
