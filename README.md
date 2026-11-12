@@ -50,9 +50,12 @@ rgit pins the expected version of this suite in its `conformance.lock` file.
 ```
 
 The first run clones git `REFERENCE_VERSION` into
-`~/.cache/rgit-conformance/git-v2.56.1` (`RGIT_CONFORMANCE_CACHE` changes the
-cache directory, `RGIT_REFERENCE_SOURCE` the clone source, e.g. a local
-checkout) and builds it with `make`, including `t/helper/test-tool`. The runner
+`~/.cache/rgit-conformance/git-v2.56.1-norust` (`RGIT_CONFORMANCE_CACHE` changes
+the cache directory, `RGIT_REFERENCE_SOURCE` the clone source, e.g. a local
+checkout) and builds it with `make NO_RUST=YesPlease`, including
+`t/helper/test-tool`. Without Rust the `RUST` test prerequisite is unset, so
+scripts do not switch to `extensions.compatObjectFormat`, which rgit does not
+support yet (rgit #12). The runner
 only runs the build; nobody needs to read git's sources.
 
 Per script and pass, `run`

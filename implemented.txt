@@ -20,9 +20,23 @@
 # rgit-config (rgit #99): everything but --blob, which needs the object
 # database (rgit #14, #32).
 config !(--blob|--blob=*)...
-# rgit-repo (rgit #26, #33): discovery queries only.
-rev-parse @(--git-dir|--absolute-git-dir|--show-toplevel|--show-prefix|--show-cdup|--is-bare-repository|--is-inside-work-tree|--is-inside-git-dir)...
+# rgit-repo (rgit #26, #33) and revisions (rgit #32): everything except the
+# options rgit does not implement yet.
+rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-common-dir|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--is-shallow-repository|--show-superproject-working-tree|--shared-index-path|--bisect|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
 # Read-only symbolic-ref: one ref name, no -d, no target.
 symbolic-ref !(-*)
 symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
+# rgit-ident (rgit #122): git var.
+var
+# rgit #15: plumbing on rgit-object/rgit-odb. cat-file without the options
+# rgit does not implement yet (--textconv, --filters, --path: rgit #112, #147;
+# --use-mailmap: rgit #127; --filter: rgit #24).
+cat-file !(--filter|--filter=*|--no-filter|--textconv|--filters|--path|--path=*|--no-path|--use-mailmap|--mailmap|--no-use-mailmap|--no-mailmap)...
+# hash-object hashes without content filters (rgit #111, #112).
+hash-object
+mktag
+mktree
+index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...
+# rgit-repo init (rgit #27): every call.
+init
 ls-tree
