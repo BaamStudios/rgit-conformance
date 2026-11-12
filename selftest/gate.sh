@@ -15,13 +15,14 @@ echo "fake-rgit: not implemented" >&2
 exit 1
 EOS
 chmod +x "$tmp/fake-rgit"
+printf -- '--version\n' >"$tmp/implemented-ok.txt"
 printf -- '--version\ninit\n' >"$tmp/implemented-broken.txt"
 
 script=${1:-t0000-basic.sh}
 
 echo "gate self-test 1: unchanged setup must pass"
 "$ROOT/run" --mode fallback --rgit "$ROOT/selftest/version-only-rgit" \
-	--out "$tmp/ok" --no-status --check "$script"
+	--implemented "$tmp/implemented-ok.txt" --out "$tmp/ok" --no-status --check "$script"
 
 echo "gate self-test 2: breaking 'init' must fail the gate"
 if "$ROOT/run" --mode fallback --rgit "$tmp/fake-rgit" \
