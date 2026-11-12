@@ -26,3 +26,19 @@ jobs:
       - run: cargo fmt --check
       - run: cargo clippy --all-targets -- -D warnings
       - run: cargo test
+      - name: Check out rgit main
+        uses: actions/checkout@v4
+        with:
+          repository: BaamStudios/rgit
+          ref: main
+          path: rgit-main
+      - name: The test crate is not in rgit's dependency graph
+        run: |
+          # The GPL test crate must never reach the rgit binary (ADR 0001).
+          cargo tree --locked --manifest-path ../rgit-main/Cargo.toml \
+            --workspace -e all --prefix none >../rgit-tree.txt
+          test -s ../rgit-tree.txt
+          if grep -q '^rgit-unit-conformance ' ../rgit-tree.txt; then
+            echo "rgit-unit-conformance is in rgit's dependency graph" >&2
+            exit 1
+          fi

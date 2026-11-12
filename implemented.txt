@@ -20,13 +20,17 @@
 # rgit-config (rgit #99): everything but --blob, which needs the object
 # database (rgit #14, #32).
 config !(--blob|--blob=*)...
-# rgit-repo (rgit #26, #33): discovery queries only.
-rev-parse @(--git-dir|--absolute-git-dir|--show-toplevel|--show-prefix|--show-cdup|--is-bare-repository|--is-inside-work-tree|--is-inside-git-dir)...
+# rgit-repo (rgit #26, #33) and revisions (rgit #32): everything except the
+# options rgit does not implement yet.
+rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-common-dir|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--is-shallow-repository|--show-superproject-working-tree|--shared-index-path|--bisect|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
 # Read-only symbolic-ref: one ref name, no -d, no target.
 symbolic-ref !(-*)
 symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
 # rgit-ident (rgit #122): git var.
 var
+index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...
+# rgit-repo init (rgit #27): every call.
+init
 # rgit-revwalk (rgit #78): rev-list and log with the walk, ordering and
 # built-in format options; no paths, no "A...B", no reflogs, no ":".
 rev-list @(--all|--branches|--tags|--remotes|--not|--topo-order|--date-order|--reverse|--first-parent|--parents|--count|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|!(-*|*...*|*:*|*@{*))...
