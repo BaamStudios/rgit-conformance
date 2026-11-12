@@ -31,3 +31,9 @@ var
 index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...
 # rgit-repo init (rgit #27): every call.
 init
+# rgit-refs (rgit #29, #102, #103): update-ref without --batch-updates,
+# show-ref, pack-refs, and for-each-ref with the implemented atoms and options.
+update-ref !(--batch-updates|-0)...
+show-ref
+pack-refs
+for-each-ref @(--format=*([^%]|%%|%\(?(\*)@(refname|objectname|objecttype|objectsize|HEAD|symref)?(:*([^\)]))\))|--sort=?(-)@(refname|objectname|objecttype|objectsize)|--count=+([0-9])|--shell|--perl|--python|--tcl|--include-root-refs|--exclude=*|--points-at=*|--ignore-case|--omit-empty|!(-*))...
