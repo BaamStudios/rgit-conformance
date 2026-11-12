@@ -25,6 +25,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch upstream git ${{ env.GIT_REF }}
         run: git clone -q --depth 1 --branch "$GIT_REF" https://github.com/git/git.git "$RUNNER_TEMP/git"
+      - name: Install build dependencies
+        run: sudo apt-get update -q && sudo apt-get install -y -q libcurl4-openssl-dev libexpat1-dev zlib1g-dev
       - name: Build reference git and test-tool
         run: make -C "$RUNNER_TEMP/git" -j"$(nproc)" NO_GETTEXT=1 git t/helper/test-tool
       - name: date substitute equals reference test-tool
