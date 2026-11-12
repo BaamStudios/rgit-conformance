@@ -58,7 +58,7 @@ substitute exists and otherwise execs the reference binary (the next
 
 | Subcommand | Actions done | Through | Forwarded | Checked by |
 |---|---|---|---|---|
-| `date` | `parse`, `approxidate`, `timestamp` | `GIT_AUTHOR_DATE=<d> git var GIT_AUTHOR_IDENT`; `git rev-parse --since=<d>` in a scratch repository | `show:<format>`, `relative`, `human`, `getnanos`, `is64bit`, `time_t-is64bit` | `test-tool/check-date.sh` |
+| `date` | `parse`, `approxidate`, `timestamp`; `show:<format>`, `relative`, `human`, `is64bit`, `time_t-is64bit` | `GIT_AUTHOR_DATE=<d> git var GIT_AUTHOR_IDENT`; `git rev-parse --since=<d>` in a scratch repository; the formatting actions through `rgit-test-tool date` (rgit #192) | `getnanos`; the formatting actions when no `rgit-test-tool` is found | `test-tool/check-date.sh`, `test-tool/check-rgit-test-tool.sh` |
 | `sha1`, `sha256`, `sha1-is-sha1dc`, `parse-options`, `parse-options-flags`, `parse-subcommand`, `config` | all | `rgit-test-tool <subcommand>` (rgit `crates/rgit-test-tool`, rgit #192), via `sub/rgit-test-tool.sh` | everything when no `rgit-test-tool` is found | `test-tool/check-rgit-test-tool.sh` |
 
 `check-date.sh REF_TEST_TOOL GIT` runs every `parse`, `approxidate` and
@@ -81,11 +81,11 @@ reference binary's `-h` output and its answers, and its own tests compare it
 with the reference `test-tool` call by call.
 
 `check-rgit-test-tool.sh REF_BUILD RGIT_TEST_TOOL [SCRIPT...]` runs
-`t0013-sha1dc.sh`, `t0040-parse-options.sh`, `t1305-config-include.sh`,
-`t1308-config-set.sh` and `t1309-early-config.sh` from the reference build
-with the reference git but the dispatcher as `test-tool`, with
-`RGIT_TEST_TOOL_STRICT=1`. All five pass as with the reference test-tool
-(t1309 keeps its two known breakages).
+`t0006-date.sh`, `t0013-sha1dc.sh`, `t0040-parse-options.sh`,
+`t1305-config-include.sh`, `t1308-config-set.sh` and `t1309-early-config.sh`
+from the reference build with the reference git but the dispatcher as
+`test-tool`, with `RGIT_TEST_TOOL_STRICT=1`. All six pass as with the
+reference test-tool (t1309 keeps its two known breakages).
 
 ## Plan for the class C subcommands of M1
 
