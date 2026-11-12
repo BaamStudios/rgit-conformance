@@ -3,3 +3,5 @@
 # <mode> <script> <case numbers>
 fallback t0000-basic.sh 1-92
 fallback t0001-init.sh 1-47,50-87,90-103
+fallback t1300-config.sh 1-126,128-212,215-216,218-383,385-469,472-473,475-518
+fallback t1303-wacky-config.sh 1-11

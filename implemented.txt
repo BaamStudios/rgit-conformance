@@ -3,3 +3,4 @@
 # without "git-" ("upload-pack"), or an option-only call ("--version",
 # "--exec-path").
 --version
+config
