@@ -1,0 +1,5 @@
+# Subcommands that fallback mode sends to rgit; everything else goes to the
+# reference git. One per line: a subcommand ("init"), a dashed program name
+# without "git-" ("upload-pack"), or an option-only call ("--version",
+# "--exec-path").
+--version

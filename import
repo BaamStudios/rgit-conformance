@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Copies files from git's t/ directory into t/, unchanged except for a header
+# naming the upstream path and version.
+#
+# usage: import <git checkout> <path relative to t/>...
+#   e.g. ./import ~/src/git t1006-cat-file.sh lib-loose.sh
+# The checkout must be at the version in REFERENCE_VERSION.
+set -euo pipefail
+ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+version=$(tr -d ' \n' <"$ROOT/REFERENCE_VERSION")
+test $# -ge 2 || { sed -n '4,9p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
+src=$1; shift
+have=$(git -C "$src" describe --tags --exact-match 2>/dev/null || echo unknown)
+test "$have" = "$version" || { echo "import: $src is at $have, expected $version" >&2; exit 1; }
+for f in "$@"
+do
+	in=$src/t/$f
+	out=$ROOT/t/$f
+	test -f "$in" || { echo "import: no such file $in" >&2; exit 1; }
+	mkdir -p "$(dirname "$out")"
+	header="# rgit-conformance: copied unchanged from git $version, path t/$f
+# (https://github.com/git/git/blob/$version/t/$f). GPL-2.0, see LICENSE."
+	if head -n1 "$in" | grep -q '^#!'
+	then
+		{ head -n1 "$in"; echo "$header"; tail -n +2 "$in"; } >"$out"
+	else
+		{ echo "$header"; cat "$in"; } >"$out"
+	fi
+	test -x "$in" && chmod +x "$out"
+	echo "imported t/$f"
+done
