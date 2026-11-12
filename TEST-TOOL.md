@@ -52,12 +52,14 @@ substitute exists and otherwise execs the reference binary (the next
 | `RGIT_TEST_TOOL_STRICT=1` | a substitute fails (exit 127) instead of forwarding an action it does not implement |
 | `RGIT_TEST_TOOL_FORWARD_LOG` | file that receives `<subcommand> <action>` for every forwarded call |
 | `RGIT_TEST_TOOL_DISABLE` | space separated substitutes to switch off |
+| `RGIT_TEST_TOOL` | the `rgit-test-tool` binary; default: `rgit-test-tool` next to `$RGIT`, then on `PATH` |
 
 ## Substitutes
 
 | Subcommand | Actions done | Through | Forwarded | Checked by |
 |---|---|---|---|---|
 | `date` | `parse`, `approxidate`, `timestamp` | `GIT_AUTHOR_DATE=<d> git var GIT_AUTHOR_IDENT`; `git rev-parse --since=<d>` in a scratch repository | `show:<format>`, `relative`, `human`, `getnanos`, `is64bit`, `time_t-is64bit` | `test-tool/check-date.sh` |
+| `sha1`, `sha256`, `sha1-is-sha1dc`, `parse-options`, `parse-options-flags`, `parse-subcommand`, `config` | all | `rgit-test-tool <subcommand>` (rgit `crates/rgit-test-tool`, rgit #192), via `sub/rgit-test-tool.sh` | everything when no `rgit-test-tool` is found | `test-tool/check-rgit-test-tool.sh` |
 
 `check-date.sh REF_TEST_TOOL GIT` runs every `parse`, `approxidate` and
 `timestamp` case of `t0006-date.sh` (with its `TZ` and `GIT_TEST_DATE_NOW`
@@ -70,6 +72,20 @@ and `t1300-config.sh` pass unchanged with the dispatcher installed.
 The substitute only uses commands that are in M1 anyway: `var` (#122 for the
 command, #74 for the parser), `rev-parse --since` (#32) and repository
 discovery with `--git-dir` (#26).
+
+`sub/sha1`, `sub/parse-options`, ... are symbolic links to
+`sub/rgit-test-tool.sh`, which execs `rgit-test-tool <subcommand> "$@"`.
+`rgit-test-tool` is rgit's MIT helper binary built from rgit's crates
+(`cargo build -p rgit-test-tool`); its behaviour comes only from the
+reference binary's `-h` output and its answers, and its own tests compare it
+with the reference `test-tool` call by call.
+
+`check-rgit-test-tool.sh REF_BUILD RGIT_TEST_TOOL [SCRIPT...]` runs
+`t0013-sha1dc.sh`, `t0040-parse-options.sh`, `t1305-config-include.sh`,
+`t1308-config-set.sh` and `t1309-early-config.sh` from the reference build
+with the reference git but the dispatcher as `test-tool`, with
+`RGIT_TEST_TOOL_STRICT=1`. All five pass as with the reference test-tool
+(t1309 keeps its two known breakages).
 
 ## Plan for the class C subcommands of M1
 
