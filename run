@@ -116,11 +116,15 @@ fi
 : "${STATUS_FILE:=$ROOT/STATUS$suffix.md}"
 : "${BASELINE:=$ROOT/baseline$suffix.txt}"
 CACHE=${RGIT_CONFORMANCE_CACHE:-${XDG_CACHE_HOME:-$HOME/.cache}/rgit-conformance}
-REF_BUILD=${RGIT_REFERENCE_BUILD:-$CACHE/git-$REF_VERSION}
+# The reference is built without Rust (NO_RUST) until rgit supports
+# extensions.compatObjectFormat (rgit #12): with Rust, test-lib sets the RUST
+# prerequisite and scripts like t1006 switch their repositories to a compat
+# object format that rgit refuses. The suffix keeps old Rust builds out.
+REF_BUILD=${RGIT_REFERENCE_BUILD:-$CACHE/git-$REF_VERSION-norust}
 RES=$OUT/$VARIANT
 
 # ---------------------------------------------------------------- reference build
-# Builds git $REF_VERSION including t/helper/test-tool with plain `make`.
+# Builds git $REF_VERSION including t/helper/test-tool with `make` (NO_RUST).
 # The runner never looks at git's sources, it only runs the build.
 build_reference() {
 	if test -f "$REF_BUILD/.rgit-conformance-built"
@@ -144,7 +148,7 @@ build_reference() {
 	test "$(git -C "$REF_BUILD" rev-parse HEAD)" = \
 	     "$(git -C "$REF_BUILD" rev-parse "refs/tags/$REF_VERSION^{commit}")" ||
 		die "$src: $REF_VERSION is not a tag"
-	if ! make -C "$REF_BUILD" -j"$JOBS" NO_TCLTK=YesPlease all \
+	if ! make -C "$REF_BUILD" -j"$JOBS" NO_TCLTK=YesPlease NO_RUST=YesPlease all \
 		>"$REF_BUILD.log" 2>&1
 	then
 		tail -n 30 "$REF_BUILD.log" >&2

@@ -35,13 +35,13 @@ jobs:
           echo "version=$version" >>"$GITHUB_OUTPUT"
           # Same key scheme as rgit's conformance workflow: per version and
           # runner image (ImageOS/ImageVersion are runner env vars).
-          echo "cache-key=reference-git-$version-$ImageOS-$ImageVersion" >>"$GITHUB_OUTPUT"
+          echo "cache-key=reference-git-$version-norust-$ImageOS-$ImageVersion" >>"$GITHUB_OUTPUT"
 
       - name: Restore reference build
         id: cache
         uses: actions/cache@v4
         with:
-          path: ~/.cache/rgit-conformance/git-${{ steps.pin.outputs.version }}
+          path: ~/.cache/rgit-conformance/git-${{ steps.pin.outputs.version }}-norust
           key: ${{ steps.pin.outputs.cache-key }}
 
       - name: Build reference git (only if this runner image missed the cache)
