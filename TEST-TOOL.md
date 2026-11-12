@@ -332,9 +332,11 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t1503-rev-parse-verify.sh | M1 #32 | - |
 | t1504-ceiling-dirs.sh | M1 #26 | - |
 | t1506-rev-parse-diagnosis.sh | M1 #32 | - |
+| t1507-rev-parse-upstream.sh | imported | - |
 | t1509-root-work-tree.sh | M1 #26 | - |
 | t1510-repo-setup.sh | M1 #26, M1 #177 | - |
 | t1511-rev-parse-caret.sh | M1 #32 | - |
+| t1512-rev-parse-disambiguation.sh | imported | - |
 | t1513-rev-parse-prefix.sh | M1 #32 | - |
 | t1515-rev-parse-outside-repo.sh | M1 #26 | - |
 | t1517-outside-repo.sh | M1 #26 | - |
@@ -522,7 +524,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 |---|---:|---|
 | lib-git-daemon.sh | 2 | `env-helper` 1 |
 | lib-httpd.sh | 11 | `env-helper` 1 |
-| lib-loose.sh | 1 | `sha1/sha256 (via $algo)` 1, `zlib` 1 |
+| lib-loose.sh | 2 | `sha1/sha256 (via $algo)` 1, `zlib` 1 |
 | lib-pack.sh | 2 | `sha1/sha256 (via $algo)` 1 |
 
 ### Framework
