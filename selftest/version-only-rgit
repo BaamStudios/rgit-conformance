@@ -1,0 +1,9 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-only
+# Stand-in for an rgit binary that only answers --version; used by gate.sh so
+# the self-test does not need an rgit build.
+case "$1" in
+--version) echo "rgit version 0.0.0-selftest"; exit 0 ;;
+esac
+echo "version-only-rgit: not implemented" >&2
+exit 1
