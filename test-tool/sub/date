@@ -13,13 +13,12 @@
 #                          -> "<date> -> YYYY-MM-DD HH:MM:SS +0000"
 #   timestamp <date>...    same parser -> "<date> -> <seconds>"
 #
-#   relative, human, show:<format>, is64bit, time_t-is64bit
+#   relative, human, show:<format>, is64bit, time_t-is64bit, getnanos
 #                          rgit-test-tool date ... (rgit #192), found like in
 #                          sub/rgit-test-tool.sh
 #
-# getnanos has no rgit entry point and goes to the reference binary (or fails
-# under RGIT_TEST_TOOL_STRICT=1), as do the actions above when no
-# rgit-test-tool is found.
+# The actions above go to the reference binary (or fail under
+# RGIT_TEST_TOOL_STRICT=1) when no rgit-test-tool is found.
 
 RGIT=${RGIT:-git}
 
@@ -152,7 +151,7 @@ approxidate|timestamp)
 		done
 	}
 	;;
-relative|human|show:*|is64bit|time_t-is64bit)
+relative|human|show:*|is64bit|time_t-is64bit|getnanos)
 	tool=$RGIT_TEST_TOOL
 	if test -z "$tool"
 	then
