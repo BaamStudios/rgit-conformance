@@ -4,3 +4,4 @@ t0001-init.sh 73 74 75 76 78 79 80 85 86  # creates reftable repositories; rgit 
 t1500-rev-parse.sh 72  # creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
 t5300-pack-object.sh 50 60 61  # create SHA-256 repositories with git init; rgit init refuses them until rgit #12
 t1060-object-corruption.sh 16  # "internal tree objects are not missing" runs rev-list --objects (rgit #46) and needs the empty tree (rgit #261)
+t1007-hash-object.sh 14  # "set up crlf tests": core.autocrlf/crlf attribute conversion in hash-object needs rgit #111
