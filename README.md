@@ -17,7 +17,7 @@ against rgit to prove that rgit behaves exactly like git.
 | Path | Contents |
 |---|---|
 | `t/` | Shell tests copied from `git/t/` (same names, e.g. `t1006-cat-file.sh`) plus `test-lib.sh`, `test-lib-functions.sh` and needed `lib-*.sh` |
-| `unit/` | Rust ports of git's C unit tests (`git/t/unit-tests/`) |
+| `unit/` | Rust ports of git's C unit tests (`git/t/unit-tests/`), run against rgit's crates; see [unit/README.md](unit/README.md) |
 | `run` | Test runner: builds the reference git, runs the scripts, writes `STATUS.md`, checks the baseline |
 | `import` | Copies files from git's `t/` into `t/` with the required header |
 | `REFERENCE_VERSION` | The git version the scripts were copied from and that is built as reference (`v2.56.1`) |
@@ -102,7 +102,16 @@ from the current results. `./run --check` exits 1 if a case listed there no
 longer passes and prints `REGRESSION:` lines; new passes are only reported.
 `./run --check-status` exits 1 if the committed `STATUS.md` differs from the one
 the current results produce. `selftest/gate.sh` shows the gate turning red when
-a subcommand routed to a broken rgit makes passing cases fail.
+a subcommand routed to a broken rgit makes passing cases fail. With both
+`--check` and `--update-baseline` the check runs against the previous baseline
+before it is rewritten.
+
+rgit's CI fails only on regressions; it does not touch `STATUS.md` or
+`baseline.txt`. The nightly `refresh` workflow in this repository builds rgit
+`main`, runs `./run --mode both --check --update-baseline` and opens (or
+updates) the pull request "Refresh STATUS/baseline" when either file changed.
+Regressions it finds are listed in that pull request; the baseline is only
+lowered when the pull request is merged.
 
 ### Variants
 
