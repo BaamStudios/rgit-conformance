@@ -1,0 +1,154 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# rgit-backed substitute for `test-tool date` (used by t0006-date.sh, t1300).
+#
+# Written from observed behaviour only: the usage text of the reference
+# `test-tool date` and how the test scripts call it. The answer comes from the
+# git under test (`git` on PATH, override with $RGIT):
+#
+#   parse <date>...        GIT_AUTHOR_DATE=<date> git var GIT_AUTHOR_IDENT
+#                          -> "<date> -> YYYY-MM-DD HH:MM:SS +zzzz" or "bad"
+#   approxidate <date>...  git rev-parse --since=<date> in a scratch repository
+#                          -> "<date> -> YYYY-MM-DD HH:MM:SS +0000"
+#   timestamp <date>...    same parser -> "<date> -> <seconds>"
+#
+# Other actions (relative, human, show:<format>, getnanos, is64bit,
+# time_t-is64bit) have no rgit entry point yet and go to the reference binary
+# (or fail under RGIT_TEST_TOOL_STRICT=1).
+
+RGIT=${RGIT:-git}
+
+forward () {
+	if test "$RGIT_TEST_TOOL_STRICT" = 1
+	then
+		echo "test-tool (rgit): date $1 has no rgit substitute" >&2
+		exit 127
+	fi
+	if test -n "$RGIT_TEST_TOOL_FORWARD_LOG"
+	then
+		echo "date ${1%%:*}" >>"$RGIT_TEST_TOOL_FORWARD_LOG"
+	fi
+	exec "${REF_TEST_TOOL:?REF_TEST_TOOL not set}" date "$@"
+}
+
+# Seconds since the epoch plus a "+hhmm"/"-hhmm" zone, printed as
+# "YYYY-MM-DD HH:MM:SS +hhmm" in that zone. Plain proleptic Gregorian
+# arithmetic, independent of the local date(1).
+format_time () {
+	awk -v t="$1" -v z="$2" 'BEGIN {
+		sign = substr(z, 1, 1) == "-" ? -1 : 1
+		off = sign * (substr(z, 2, 2) * 3600 + substr(z, 4, 2) * 60)
+		s = t + off
+		days = int(s / 86400); sod = s - days * 86400
+		if (sod < 0) { sod += 86400; days -= 1 }
+		# days since 1970-01-01 -> civil date
+		d = days + 719468
+		era = int((d >= 0 ? d : d - 146096) / 146097)
+		doe = d - era * 146097
+		yoe = int((doe - int(doe / 1460) + int(doe / 36524) - int(doe / 146096)) / 365)
+		y = yoe + era * 400
+		doy = doe - (365 * yoe + int(yoe / 4) - int(yoe / 100))
+		mp = int((5 * doy + 2) / 153)
+		dd = doy - int((153 * mp + 2) / 5) + 1
+		mm = mp < 10 ? mp + 3 : mp - 9
+		if (mm <= 2) y += 1
+		printf "%04d-%02d-%02d %02d:%02d:%02d %s\n", y, mm, dd,
+			int(sod / 3600), int(sod % 3600 / 60), sod % 60, z
+	}'
+}
+
+# A throwaway repository so that commands needing one never touch the
+# repository of the test.
+scratch=
+make_scratch () {
+	test -n "$scratch" && return
+	scratch=$(mktemp -d "${TMPDIR:-/tmp}/rgit-test-tool.XXXXXX") || exit 128
+	trap 'rm -rf "$scratch"' EXIT
+	mkdir -p "$scratch/objects" "$scratch/refs/heads" &&
+	printf 'ref: refs/heads/main\n' >"$scratch/HEAD" || exit 128
+}
+
+run_git () {
+	make_scratch
+	(
+		unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR GIT_OBJECT_DIRECTORY \
+			GIT_ALTERNATE_OBJECT_DIRECTORIES GIT_INDEX_FILE \
+			GIT_CONFIG_PARAMETERS GIT_CONFIG_COUNT GIT_CONFIG
+		cd "$scratch" &&
+		GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
+			"$RGIT" --git-dir="$scratch" "$@"
+	)
+}
+
+do_parse () {
+	for d in "$@"
+	do
+		out=$(GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@t GIT_AUTHOR_DATE=$d \
+			run_git var GIT_AUTHOR_IDENT 2>"$scratch/test-tool.err")
+		rc=$?
+		if test $rc = 0
+		then
+			set -- $out
+			# "<name> <<email>> <seconds> <zone>": the last two words
+			while test $# -gt 2
+			do
+				shift
+			done
+			printf '%s -> %s\n' "$d" "$(format_time "$1" "$2")"
+		elif grep -q '^fatal: invalid date format' "$scratch/test-tool.err"
+		then
+			printf '%s -> bad\n' "$d"
+		else
+			cat "$scratch/test-tool.err" >&2
+			rm -f "$scratch/test-tool.err"
+			exit $rc
+		fi
+		rm -f "$scratch/test-tool.err"
+	done
+}
+
+if test $# -lt 1
+then
+	forward "$@"
+fi
+
+action=$1
+case $action in
+parse)
+	shift
+	make_scratch
+	do_parse "$@"
+	;;
+approxidate|timestamp)
+	shift
+	test $# -gt 0 || exit 0
+	make_scratch
+	# One rev-parse call answers every date, one "--max-age=<n>" line each.
+	args=
+	for d in "$@"
+	do
+		args="$args --since=$(printf '%s' "$d" | sed "s/'/'\\\\''/g; s/^/'/; s/\$/'/")"
+	done
+	out=$(eval "run_git rev-parse $args") || exit $?
+	printf '%s\n' "$out" | {
+		for d in "$@"
+		do
+			IFS= read -r line || {
+				echo "test-tool (rgit): rev-parse gave too few lines" >&2
+				exit 128
+			}
+			n=${line#--max-age=}
+			if test "$action" = timestamp
+			then
+				printf '%s -> %s\n' "$d" "$n"
+			else
+				printf '%s -> %s\n' "$d" "$(format_time "$n" +0000)"
+			fi
+		done
+	}
+	;;
+*)
+	forward "$@"
+	;;
+esac

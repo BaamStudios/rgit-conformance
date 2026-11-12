@@ -27,6 +27,7 @@ against rgit to prove that rgit behaves exactly like git.
 | `STATUS.md` | Generated: per-script and per-case results of all passes |
 | `selftest/` | Self-test of the regression gate |
 | `results/` | Raw results of the last run (not committed) |
+| `test-tool/`, `TEST-TOOL.md` | `test-tool` dispatcher and rgit-backed substitutes, inventory of the subcommands the scripts use (rgit issue #6) |
 
 ## How it works
 
