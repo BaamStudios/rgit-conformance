@@ -32,7 +32,8 @@ Results:
   --baseline FILE      baseline of passing cases (default: baseline.txt)
   --check              exit 1 if a baseline case no longer passes
   --check-status       exit 1 if the generated STATUS file differs from the
-                       committed one (implies --no-status, prints the diff)
+                       committed one (implies --no-status, prints the diff;
+                       the generated file is kept in DIR/<variant>/)
   --update-baseline    rewrite the baseline from the current results
 
 Variants (whole-suite switches):
@@ -677,14 +678,13 @@ then
 fi
 if test -n "$CHECK_STATUS"
 then
-	gen=$(mktemp)
+	gen=$RES/STATUS.generated.md
 	write_status "$gen"
 	if ! diff -u "$STATUS_FILE" "$gen" >&2
 	then
-		note "STATUS file differs from the generated one (run ./run and commit $STATUS_FILE)"
+		note "$STATUS_FILE differs from the generated $gen (run ./run and commit it)"
 		rc=1
 	fi
-	rm -f "$gen"
 fi
 if test -n "$UPDATE_BASELINE"
 then
