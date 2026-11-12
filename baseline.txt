@@ -20,8 +20,12 @@ fallback t1310-config-default.sh 1-5
 fallback t1401-symbolic-ref.sh 1-24,26-27
 fallback t1500-rev-parse.sh 1-82
 fallback t1501-work-tree.sh 1-39
+fallback t1503-rev-parse-verify.sh 1-12
 fallback t1504-ceiling-dirs.sh 1-44
+fallback t1506-rev-parse-diagnosis.sh 1-30
+fallback t1507-rev-parse-upstream.sh 1-29
 fallback t1510-repo-setup.sh 1-109
+fallback t1512-rev-parse-disambiguation.sh 1-16,19-20,22-38
 fallback t1517-outside-repo.sh 1-19,24-81,96-111,116-124,126,128-135,138-139,142-145,148-157,164-169,172-202,204,206,208,210-218,220,222-226,228,232-241,246-253,256-285,294-297,300-319,324-325,330-331,334-341,344-350,352-354,360-377,382-394,396,400-404
 fallback t3070-wildmatch.sh 1-23,25,27,29,31-493,495,497,499,501-503,505,507,509,511-523,525,527,529,531-613,615,617,619,621-843,845,847,849,851-853,855,857,859,861-903,905,907,909,911-1483,1485,1487,1489,1491-1493,1495,1497,1499,1501-1901
 fallback t7005-editor.sh 1-12
