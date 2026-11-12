@@ -37,3 +37,5 @@ hash-object
 mktag
 mktree
 index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...
+# rgit-repo init (rgit #27): every call.
+init
