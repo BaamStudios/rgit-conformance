@@ -45,3 +45,6 @@ rev-list @(--all|--branches|--tags|--remotes|--not|--topo-order|--date-order|--r
 log @(--all|--branches|--tags|--remotes|--not|--topo-order|--date-order|--reverse|--first-parent|--parents|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|--pretty|--pretty=@(oneline|short|medium|full|fuller|raw)|--format=@(oneline|short|medium|full|fuller|raw)|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--no-decorate|--mailmap|--no-mailmap|--use-mailmap|--no-use-mailmap|!(-*|*...*|*:*|*@{*))...
 # rgit ls-tree (rgit #88): every call.
 ls-tree
+# rgit ls-files and update-index (rgit #39): every call.
+ls-files
+update-index
