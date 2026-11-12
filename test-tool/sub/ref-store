@@ -1,0 +1,29 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Substitute for `test-tool ref-store <store> <function> ...` (t1405, t0600).
+#
+# The functions that rgit-test-tool implements (rgit issue #192, on top of
+# rgit-refs and its reflogs) go to `rgit-test-tool ref-store`, found like in
+# sub/rgit-test-tool.sh. Other functions, and every call when no
+# rgit-test-tool is found, go to the reference test-tool (or fail with 127
+# under RGIT_TEST_TOOL_STRICT=1).
+
+case ${2:-} in
+create-symref|delete-refs|rename-ref|for-each-ref|resolve-ref|verify-ref|\
+for-each-reflog|for-each-reflog-ent|for-each-reflog-ent-reverse|\
+reflog-exists|create-reflog|delete-reflog|update-ref|delete-ref)
+	RGIT_TEST_TOOL_SUB=ref-store exec "$(dirname "$0")/rgit-test-tool.sh" "$@"
+	;;
+esac
+
+if test "$RGIT_TEST_TOOL_STRICT" = 1
+then
+	echo "test-tool (rgit): ref-store ${2:-} has no rgit substitute" >&2
+	exit 127
+fi
+if test -n "$RGIT_TEST_TOOL_FORWARD_LOG"
+then
+	echo "ref-store ${2:-}" >>"$RGIT_TEST_TOOL_FORWARD_LOG"
+fi
+exec "${REF_TEST_TOOL:?REF_TEST_TOOL not set}" ref-store "$@"
