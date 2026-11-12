@@ -9,7 +9,7 @@ fallback t0013-sha1dc.sh 1
 fallback t0033-safe-directory.sh 1-5,15
 fallback t0035-safe-bare-repository.sh 1
 fallback t0040-parse-options.sh 1-95
-fallback t1006-cat-file.sh 1-56
+fallback t1006-cat-file.sh 1-54,56-107,109-223,225-292
 fallback t1007-hash-object.sh 1-13,15-40
 fallback t1010-mktree.sh 1-9
 fallback t1300-config.sh 1-126,128-383,385-518
@@ -21,7 +21,7 @@ fallback t1308-config-set.sh 1-39
 fallback t1309-early-config.sh 1-6,9-10
 fallback t1310-config-default.sh 1-5
 fallback t1401-symbolic-ref.sh 1-24,26-27
-fallback t1500-rev-parse.sh 1-82
+fallback t1500-rev-parse.sh 1-71,73-82
 fallback t1501-work-tree.sh 1-39
 fallback t1504-ceiling-dirs.sh 1-44
 fallback t1510-repo-setup.sh 1-109

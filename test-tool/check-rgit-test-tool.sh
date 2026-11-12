@@ -10,7 +10,7 @@
 #   test-tool/check-rgit-test-tool.sh REF_BUILD RGIT_TEST_TOOL [SCRIPT...]
 #
 # REF_BUILD is a built git tree (git and t/helper/test-tool), for example
-# ~/.cache/rgit-conformance/git-v2.56.1 from ./run. Default scripts: the M1
+# ~/.cache/rgit-conformance/git-v2.56.1-norust from ./run. Default scripts: the M1
 # scripts that call sha1, sha1-is-sha1dc, parse-options*, parse-subcommand,
 # config and date show/relative/human. In t0006 the date parse actions go
 # through sub/date to the reference git, so that script checks the
