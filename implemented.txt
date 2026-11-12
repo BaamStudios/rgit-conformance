@@ -1,7 +1,31 @@
-# Subcommands that fallback mode sends to rgit; everything else goes to the
-# reference git. One per line: a subcommand ("init"), a dashed program name
-# without "git-" ("upload-pack"), or an option-only call ("--version",
-# "--exec-path").
+# Calls that fallback mode sends to rgit; everything else goes to the
+# reference git (rgit-conformance #4).
+#
+# One entry per line: <subcommand> [<token>...]
+#   <subcommand>  a subcommand ("init"), a dashed program name without "git-"
+#                 ("upload-pack"), or an option-only call ("--version",
+#                 "--exec-path"). Global options before it (-C, -c, ...) are
+#                 skipped and not matched.
+#   no tokens     every call of the subcommand goes to rgit.
+#   tokens        the arguments after the subcommand must match the tokens in
+#                 order, all of them and nothing more. A token is a bash extglob
+#                 for exactly one argument ("--git-dir", "@(-q|--quiet)",
+#                 "!(-*)"); "<glob>..." matches one or more arguments;
+#                 "..." alone matches any remaining arguments.
+# The first matching line wins and is reported per test case in STATUS.md.
+# Tokens cannot contain whitespace or "#".
 --version
-config
+# `version` is not listed: test-lib reads `version --build-options` for
+# prerequisites (RUST), which rgit answers differently by design.
+# rgit-config (rgit #99): everything but --blob, which needs the object
+# database (rgit #14, #32).
+config !(--blob|--blob=*)...
+# rgit-repo (rgit #26, #33): discovery queries only.
+rev-parse @(--git-dir|--absolute-git-dir|--show-toplevel|--show-prefix|--show-cdup|--is-bare-repository|--is-inside-work-tree|--is-inside-git-dir)...
+# Read-only symbolic-ref: one ref name, no -d, no target.
+symbolic-ref !(-*)
+symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
+# rgit-ident (rgit #122): git var.
+var
+# rgit-repo init (rgit #27): every call.
 init

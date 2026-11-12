@@ -67,7 +67,7 @@ jobs:
       - name: Build rgit
         id: rgit
         run: |
-          cargo build --locked --manifest-path rgit/Cargo.toml --bin rgit
+          cargo build --locked --manifest-path rgit/Cargo.toml --bin rgit --bin rgit-test-tool
           echo "commit=$(git -C rgit rev-parse HEAD)" >>"$GITHUB_OUTPUT"
 
       - name: Run the suite (fallback + strict), check, refresh

@@ -19,9 +19,9 @@ against rgit to prove that rgit behaves exactly like git.
 | `t/` | Shell tests copied from `git/t/` (same names, e.g. `t1006-cat-file.sh`) plus `test-lib.sh`, `test-lib-functions.sh` and needed `lib-*.sh` |
 | `unit/` | Rust ports of git's C unit tests (`git/t/unit-tests/`), run against rgit's crates; see [unit/README.md](unit/README.md) |
 | `run` | Test runner: builds the reference git, runs the scripts, writes `STATUS.md`, checks the baseline |
-| `import` | Copies files from git's `t/` into `t/` with the required header |
+| `import` | Copies files from git's `t/` into `t/` with the required header (binary files byte-identical, listed in `t/BINARY-FILES`) |
 | `REFERENCE_VERSION` | The git version the scripts were copied from and that is built as reference (`v2.56.1`) |
-| `implemented.txt` | Subcommands that fallback mode sends to rgit |
+| `implemented.txt` | Calls (subcommand + argument patterns) that fallback mode sends to rgit |
 | `exclude.txt` | Optional: cases excluded on purpose (`<script> <case numbers> # reason`) |
 | `baseline.txt` | Generated: cases that pass against rgit; a listed case that fails is a regression |
 | `STATUS.md` | Generated: per-script and per-case results of all passes |
@@ -60,10 +60,13 @@ Per script and pass, `run`
 - runs the script from `t/` with `GIT_BUILD_DIR` pointing at the reference build
   (so `test-tool`, templates and `GIT-BUILD-OPTIONS` come from there);
 - for the rgit passes sets `GIT_TEST_INSTALLED` to a generated directory under
-  `results/<variant>/install-<mode>/` that contains `git` and the dashed programs
-  `git-upload-pack`, `git-receive-pack`, `git-upload-archive`;
+  `results/<variant>/install-<mode>/` that contains `git`, the dashed programs
+  `git-upload-pack`, `git-receive-pack`, `git-upload-archive` and `test-tool`
+  (the dispatcher `test-tool/test-tool`, see [TEST-TOOL.md](TEST-TOOL.md); it
+  uses `rgit-test-tool` when one is found next to the rgit binary);
 - parses the TAP output into `results/<variant>/<pass>/<script>.tsv`
-  (`case number, status, forwarded subcommands, description`; status is `pass`,
+  (`case number, status, forwarded subcommands, routed implemented.txt lines,
+  description`; status is `pass`,
   `fail`, `skip`, `todo` for a known breakage or `fixed` when it vanished) and a
   `.meta` file with the script state (`complete`, `complete_failed`,
   `skip_all`, `bail`, `error`). Raw TAP, stderr and trash directories stay in
@@ -81,19 +84,44 @@ timestamps or rgit version, so two runs over the same state produce the same fil
 - **fallback**: `git` is a wrapper. It determines the subcommand (skipping
   global options like `-C`, `-c`, `--git-dir`; an option-only call such as
   `git --exec-path` uses the option as its name; a dashed program uses its name
-  without `git-`). If the subcommand is listed in `implemented.txt` it runs
-  rgit, otherwise the reference git. Every forwarded call is written into the
-  script's TAP stream as `# rgit-forwarded: <subcommand>`; the parser assigns it
-  to the next test case, so `STATUS.md` lists per case what was forwarded
-  (calls from code outside a test block are counted for the following case).
-  Calls that the reference git makes internally are not seen by the wrapper.
+  without `git-`). If the call matches a line of `implemented.txt` it runs
+  rgit, otherwise the reference git. Every call is written into the script's
+  TAP stream, as `# rgit-routed: <matching line>` or
+  `# rgit-forwarded: <subcommand>`; the parser assigns it to the next test
+  case, so `STATUS.md` lists per case which `implemented.txt` lines ran rgit
+  and what was forwarded (calls from code outside a test block are counted for
+  the following case). Calls of `test-tool` substitutes that run
+  `rgit-test-tool` are reported as `test-tool <subcommand>`. Calls that the
+  reference git makes internally are not seen by the wrapper.
 - **strict**: `git` is rgit. As long as rgit does not answer `--exec-path`
   (rgit #73) a shim answers it with the install directory.
 
+#### implemented.txt
+
+One entry per line, `<subcommand> [<token>...]`:
+
+```
+config !(--blob|--blob=*)...
+rev-parse @(--git-dir|--show-toplevel|--show-prefix)...
+symbolic-ref !(-*)
+symbolic-ref @(-q|--quiet|--short)... !(-*)
+```
+
+A line without tokens sends every call of the subcommand to rgit. With tokens,
+the arguments after the subcommand (global options before it are skipped) must
+match the tokens in order, all of them and nothing more. A token is a bash
+extglob for exactly one argument; `<glob>...` matches one or more arguments and
+a bare `...` any remaining arguments. The first matching line wins. Tokens
+cannot contain whitespace or `#`. So a partially implemented command can run
+through rgit only in the forms rgit supports: `rev-parse --git-dir` goes to
+rgit, `rev-parse HEAD` to the reference git, `symbolic-ref HEAD` to rgit,
+`symbolic-ref HEAD refs/heads/x` to the reference git.
+
 With only `--version` in `implemented.txt`, fallback mode is pure reference
 behaviour and every valid case must pass; this is the sanity check of the
-wrapper. `version` itself can only be listed once rgit supports
-`git version --build-options` (test-lib reads `default-hash:` from it).
+wrapper (`selftest/gate.sh`). `version` is not listed: test-lib derives
+prerequisites such as `RUST` from `git version --build-options`, which rgit
+answers differently by design.
 
 ### Baseline and regressions
 
