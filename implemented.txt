@@ -27,3 +27,4 @@ symbolic-ref !(-*)
 symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
 # rgit-ident (rgit #122): git var.
 var
+index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...
