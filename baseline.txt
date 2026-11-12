@@ -3,8 +3,26 @@
 # <mode> <script> <case numbers>
 fallback t0000-basic.sh 1-92
 fallback t0001-init.sh 1-47,50-87,90-103
-fallback t1300-config.sh 1-126,128-212,215-216,218-383,385-469,472-473,475-518
+fallback t0006-date.sh 1-149
+fallback t0013-sha1dc.sh 1
+fallback t0033-safe-directory.sh 1-5,15
+fallback t0035-safe-bare-repository.sh 1
+fallback t0040-parse-options.sh 1-95
+fallback t1300-config.sh 1-126,128-383,385-518
+fallback t1302-repo-version.sh 1-2,4-18
 fallback t1303-wacky-config.sh 1-11
+fallback t1305-config-include.sh 1-15,17-27,30-44
+fallback t1307-config-blob.sh 1-13
+fallback t1308-config-set.sh 1-39
+fallback t1309-early-config.sh 1-6,9-10
+fallback t1310-config-default.sh 1-5
+fallback t1401-symbolic-ref.sh 1-24,26-27
+fallback t1500-rev-parse.sh 1-82
+fallback t1501-work-tree.sh 1-39
+fallback t1504-ceiling-dirs.sh 1-44
+fallback t1510-repo-setup.sh 1-109
+fallback t1517-outside-repo.sh 1-19,24-81,96-111,116-124,126,128-135,138-139,142-145,148-157,164-169,172-202,204,206,208,210-218,220,222-226,228,232-241,246-253,256-285,294-297,300-319,324-325,330-331,334-341,344-350,352-354,360-377,382-394,396,400-404
+fallback t3070-wildmatch.sh 1-23,25,27,29,31-493,495,497,499,501-503,505,507,509,511-523,525,527,529,531-613,615,617,619,621-843,845,847,849,851-853,855,857,859,861-903,905,907,909,911-1483,1485,1487,1489,1491-1493,1495,1497,1499,1501-1901
 fallback t3100-ls-tree-restrict.sh 1-14
 fallback t3101-ls-tree-dirname.sh 1-19
 fallback t3102-ls-tree-wildcards.sh 1-3
