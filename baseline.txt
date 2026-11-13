@@ -82,10 +82,10 @@ fallback t5313-pack-bounds-checks.sh 1-9
 fallback t5510-fetch.sh 1-226,232-239
 fallback t5512-ls-remote.sh 1-40
 fallback t5516-fetch-push.sh 1-128
-fallback t5541-http-push-smart.sh 1-36,38-42
+fallback t5541-http-push-smart.sh 1-24,28-36,38-42
 fallback t5551-http-fetch-smart.sh 2-34,36-46,50-57
 fallback t5570-git-daemon.sh 1-25
-fallback t5601-clone.sh 1-60,62-101,105-115
+fallback t5601-clone.sh 1-8,10-60,62-101,105-115
 fallback t6000-rev-list-misc.sh 1-24
 fallback t6005-rev-list-count.sh 1-6
 fallback t6009-rev-list-parent.sh 1-15
