@@ -25,7 +25,8 @@ against rgit to prove that rgit behaves exactly like git.
 | `exclude.txt` | Optional: cases excluded on purpose (`<script> <case numbers> # reason`) |
 | `baseline.txt` | Generated: cases that pass against rgit; a listed case that fails is a regression |
 | `STATUS.md` | Generated: per-script and per-case results of all passes |
-| `selftest/` | Self-test of the regression gate |
+| `selftest/` | Self-tests of the regression gate and of `check-spdx` |
+| `check-spdx` | License guard: SPDX headers, run in CI on every push and pull request |
 | `results/` | Raw results of the last run (not committed) |
 | `test-tool/`, `TEST-TOOL.md` | `test-tool` dispatcher and rgit-backed substitutes, inventory of the subcommands the scripts use (rgit issue #6) |
 
@@ -180,3 +181,10 @@ Work items are tracked in the rgit repository:
 ## License
 
 GPL-2.0, see [LICENSE](LICENSE).
+
+Files written for this repository (scripts, `test-tool/`, `unit/`, `selftest/`,
+workflows) start with `# SPDX-License-Identifier: GPL-2.0-only` (`//` in Rust,
+after a `#!` line if there is one). Files imported from git keep upstream's
+notice and are recognised by the header `import` writes (binary files by
+`t/BINARY-FILES`). An MIT identifier anywhere fails the check. Run
+`./check-spdx` before pushing.
