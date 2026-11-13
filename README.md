@@ -126,6 +126,31 @@ wrapper (`selftest/gate.sh`). `version` is not listed: test-lib derives
 prerequisites such as `RUST` from `git version --build-options`, which rgit
 answers differently by design.
 
+### Network fixtures (HTTP, git daemon, ssh)
+
+Transport scripts need servers (rgit #87). They come from upstream unchanged:
+
+| Fixture | Server | Needs |
+|---|---|---|
+| `t/lib-httpd.sh`, `t/lib-httpd/` | Apache httpd with the reference `git http-backend` as CGI | Apache 2.4 with its modules (`apache2` on Debian/Ubuntu, `apache` on Arch), not running as root |
+| `t/lib-git-daemon.sh` | reference `git daemon` on a local port | FIFOs |
+| fake ssh | `t/helper/test-fake-ssh` of the reference build, copied by the scripts (e.g. `t5601-clone.sh`) | nothing |
+| `t/lib-credential.sh` | credential helper checks (e.g. `t0302-credential-store.sh`) | nothing |
+
+The server side is always the reference git (until rgit #70); these scripts
+test the git under test as a client against real git. In the rgit passes the
+reference `--exec-path` (fallback) provides `git-http-backend` to Apache.
+
+Without a web server `lib-httpd.sh` skips the script (or, in `t5601` and
+`t5510`, which source it halfway, the rest of it). `run` records the reason
+in the `.meta` file (`skip_all=` / `skip_rest=`) and `STATUS.md` lists such a
+script as `skipped (prereq): <reason>`, never as passed. CI sets
+`GIT_TEST_HTTPD=true` and `GIT_TEST_GIT_DAEMON=true`, which turns a missing
+server into a failure; the `network` workflow runs these scripts against the
+reference git on every pull request, the nightly `refresh` installs Apache as
+well. To run them locally, install Apache (or run `./run` in a container that
+has it, as a non-root user).
+
 ### Baseline and regressions
 
 `./run --update-baseline` writes `baseline.txt` (`<mode> <script> <ranges>`)

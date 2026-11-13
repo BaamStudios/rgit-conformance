@@ -13,6 +13,7 @@ fallback t0035-safe-bare-repository.sh 1
 fallback t0040-parse-options.sh 1-95
 fallback t0055-beyond-symlinks.sh 1-3
 fallback t0056-git-C.sh 1-11
+fallback t0302-credential-store.sh 1-65
 fallback t0600-reffiles-backend.sh 1-29,31-34
 fallback t1006-cat-file.sh 1-54,56-107,109-223,225-292
 fallback t1007-hash-object.sh 1-13,20-40
@@ -78,6 +79,13 @@ fallback t5306-pack-nobase.sh 1-4
 fallback t5308-pack-detect-duplicates.sh 1-6
 fallback t5309-pack-delta-cycles.sh 1-7
 fallback t5313-pack-bounds-checks.sh 1-9
+fallback t5510-fetch.sh 1-226,232-239
+fallback t5512-ls-remote.sh 1-40
+fallback t5516-fetch-push.sh 1-128
+fallback t5541-http-push-smart.sh 1-36,38-42
+fallback t5551-http-fetch-smart.sh 2-34,36-46,50-57
+fallback t5570-git-daemon.sh 1-25
+fallback t5601-clone.sh 1-60,62-101,105-115
 fallback t6000-rev-list-misc.sh 1-24
 fallback t6005-rev-list-count.sh 1-6
 fallback t6009-rev-list-parent.sh 1-15
@@ -96,6 +104,7 @@ strict t0013-sha1dc.sh 1
 strict t0040-parse-options.sh 1-95
 strict t0055-beyond-symlinks.sh 1-3
 strict t0056-git-C.sh 2
+strict t0302-credential-store.sh 18,36
 strict t0600-reffiles-backend.sh 22
 strict t0600-reffiles-backend.sh 22-23
 strict t1006-cat-file.sh 1-54,75
@@ -156,6 +165,10 @@ strict t5308-pack-detect-duplicates.sh 1-6
 strict t5309-pack-delta-cycles.sh 1-6
 strict t5309-pack-delta-cycles.sh 3-6
 strict t5313-pack-bounds-checks.sh 1
+strict t5512-ls-remote.sh 1-2,14,20,40
+strict t5516-fetch-push.sh 92,124
+strict t5551-http-fetch-smart.sh 4,11,21
+strict t5601-clone.sh 2-3,22-23,27,39,59,70-72
 strict t6014-rev-list-all.sh 4
 strict t6101-rev-parse-parents.sh 4,9-11,26-29,33-38
 strict t7005-editor.sh 1,3

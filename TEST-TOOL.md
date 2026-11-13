@@ -232,7 +232,8 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | `path-utils absolute_path` | 2 | 1 | - | M1 | A |  | expected path for comparisons |
 | `path-utils readlink` | 2 | 1 | - | M1 | A |  | symlink target |
 | `pkt-line pack` | 33 | 4 | - | M1, M2 | B |  | encodes request input; the git under test decodes it |
-| `pkt-line unpack` | 25 | 2 | - | M2 | B |  | decodes the output of the git under test |
+| `pkt-line unpack` | 26 | 3 | - | M2 | B |  | decodes the output of the git under test |
+| `pkt-line pack-raw-stdin` | 1 | 1 | - | - | B |  | encodes request input; the git under test decodes it |
 | `reach` | 1 | 1 | - | M2 | C | #50 | reachability queries (t6600) |
 | `ref-store delete-refs` | 31 | 4 | - | M1, M2 | C | #29 | ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30 |
 | `ref-store for-each-reflog-ent` | 23 | 3 | - | M1, M2 | C | #30 | reflog reader |
@@ -292,6 +293,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t0090-cache-tree.sh | M2 #79, M2 #123 | `dump-cache-tree` 2, `dump-split-index` 2, `scrap-cache-tree` 4 |
 | t0100-previous.sh | M2 #30 | - |
 | t0300-credentials.sh | M2 #161 | - |
+| t0302-credential-store.sh | imported | - |
 | t0303-credential-external.sh | M2 #161 | - |
 | t0450-txt-doc-vs-help.sh | M1 #73 | - |
 | t0600-reffiles-backend.sh | M1 #29 | `path-utils readlink` 2, `ref-store create-symref` 1, `ref-store for-each-reflog` 2 |
@@ -467,6 +469,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5551-http-fetch-smart.sh | M2 #66, M2 #87, M2 #162 | - |
 | t5555-http-smart-common.sh | M2 #162 | `pkt-line unpack` 10 |
 | t5563-simple-http-auth.sh | M2 #162 | - |
+| t5570-git-daemon.sh | imported | `pkt-line pack-raw-stdin` 1, `pkt-line unpack` 1 |
 | t5574-fetch-output.sh | M2 #62 | `path-utils real_path` 4 |
 | t5581-http-curl-verbose.sh | M2 #162 | - |
 | t5582-fetch-negative-refspec.sh | M2 #62 | - |
@@ -529,7 +532,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 
 | Library | Used by | Subcommands (calls) |
 |---|---:|---|
-| lib-git-daemon.sh | 2 | `env-helper` 1 |
+| lib-git-daemon.sh | 3 | `env-helper` 1 |
 | lib-httpd.sh | 11 | `env-helper` 1 |
 | lib-loose.sh | 2 | `sha1/sha256 (via $algo)` 1, `zlib` 1 |
 | lib-pack.sh | 2 | `sha1/sha256 (via $algo)` 1 |
