@@ -13,5 +13,6 @@ t5601-clone.sh 9 104  # 9 "clone from hooks" clones from a pre-commit hook, and 
 t5601-clone.sh 108  # "batch missing blob request during checkout": checkout (routed to rgit) in a partial clone must fetch the missing blobs from the promisor remote (rgit #24)
 t2060-switch.sh 16  # "switch back when temporarily detached and checked out elsewhere" needs worktrees and the refusal to check out a branch used by another worktree (--ignore-other-worktrees, rgit #104)
 t7201-co.sh 36  # "checkout -m works after (mistaken) resolution": checkout -m (rgit #158) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
+t2070-restore.sh 13  # "restore --merge to unresolve after (mistaken) resolution": restore --merge (rgit #158) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
 t0003-attributes.sh 53  # "we do not allow user defined builtin_* attributes" expects git add to warn about .gitattributes; rgit add reads attributes once it converts content (rgit #111)
 t6135-pathspec-with-attrs.sh 23 24 25 26 27  # attr: pathspec magic in git add (rgit #360)
