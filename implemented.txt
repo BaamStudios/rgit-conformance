@@ -56,3 +56,9 @@ update-ref !(--batch-updates|-0)...
 show-ref
 pack-refs
 for-each-ref @(--format=*([^%]|%%|%\(?(\*)@(refname|objectname|objecttype|objectsize|HEAD|symref)?(:*([^\)]))\))|--sort=?(-)@(refname|objectname|objecttype|objectsize)|--count=+([0-9])|--shell|--perl|--python|--tcl|--include-root-refs|--exclude=*|--points-at=*|--ignore-case|--omit-empty|!(-*))...
+# rgit add (rgit #41): everything except the interactive modes (rgit #109),
+# --renormalize (rgit #111), --refresh, --no-all/--ignore-removal and the
+# embedded-repository options (rgit #114).
+add @(-n|--dry-run|-v|--verbose|-f|--force|-u|--update|-A|--all|-N|--intent-to-add|--ignore-errors|--no-ignore-errors|--ignore-missing|--sparse|--chmod=*|--no-chmod|--pathspec-from-file=*|--pathspec-file-nul|--|!(-*))...
+# rgit mv (rgit #41): files and directories; no submodules (rgit #114).
+mv
