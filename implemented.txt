@@ -66,10 +66,13 @@ commit @(-q|--quiet|-m|-m?*|--message|--message=*|-F|-F?*|--file|--file=*|--auth
 add @(-n|--dry-run|-v|--verbose|-f|--force|-u|--update|-A|--all|-N|--intent-to-add|--ignore-errors|--no-ignore-errors|--ignore-missing|--sparse|--chmod=*|--no-chmod|--pathspec-from-file=*|--pathspec-file-nul|--warn-embedded-repo|--no-warn-embedded-repo|--|!(-*))...
 # rgit mv (rgit #41): files and directories; no submodules (rgit #114).
 mv
-# rgit switch and branch checkout (rgit #42), checkout of paths in overlay
-# mode (rgit #108). Not yet: -m/--merge and --conflict (rgit #158),
-# -p/--patch (rgit #109), --ours/--theirs, --no-overlay and
-# --pathspec-from-file (rgit #108), --recurse-submodules (rgit #121),
-# --ignore-other-worktrees (rgit #104).
+# rgit switch and branch checkout (rgit #42), checkout of paths with
+# --overlay/--no-overlay, --ours/--theirs and --pathspec-from-file
+# (rgit #108). Not yet: -m/--merge and --conflict (rgit #158), -p/--patch
+# (rgit #109), --recurse-submodules (rgit #121), --ignore-other-worktrees
+# (rgit #104).
 switch !(-m|--merge|--conflict|--conflict=*|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
-checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
+checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
+# rgit restore (rgit #108). Not yet: -m/--merge and --conflict (rgit #158),
+# -p/--patch (rgit #109), --recurse-submodules (rgit #121).
+restore !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*)...
