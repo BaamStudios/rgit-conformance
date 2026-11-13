@@ -1,0 +1,3 @@
+# rgit-conformance: copied unchanged from git v2.56.1, path t/lib-httpd/proxy-passwd
+# (https://github.com/git/git/blob/v2.56.1/t/lib-httpd/proxy-passwd). GPL-2.0, see LICENSE.
+proxuser:$apr1$RxS6MLkD$DYsqQdflheq4GPNxzJpx5.
