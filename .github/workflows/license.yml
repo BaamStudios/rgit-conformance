@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# License guard (rgit #241): GPL-2.0-only SPDX headers on rgit's own files,
+# upstream files recognised by their import header, no MIT identifiers.
+name: license
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  spdx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: SPDX headers
+        run: ./check-spdx
+      - name: Self-test of the SPDX check
+        run: selftest/spdx.sh
