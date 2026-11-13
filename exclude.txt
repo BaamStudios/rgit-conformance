@@ -10,3 +10,6 @@ t0005-signals.sh 1  # "sigchain works" tests the C signal-handler chain of git i
 t5510-fetch.sh 228 231  # create reftable repositories with git init; rgit init refuses them until rgit #31
 t5551-http-fetch-smart.sh 47 48 49  # 47 creates a SHA-256 repository with git init (rgit #12); 48 and 49 clone it
 t5601-clone.sh 9 104  # 9 "clone from hooks" clones from a pre-commit hook, and rgit commit does not run hooks until rgit #76 (a failure there leaves the script in the wrong directory); 104 "clone with GIT_DEFAULT_HASH" creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
+t5601-clone.sh 108  # "batch missing blob request during checkout": checkout (routed to rgit) in a partial clone must fetch the missing blobs from the promisor remote (rgit #24)
+t2060-switch.sh 16  # "switch back when temporarily detached and checked out elsewhere" needs worktrees and the refusal to check out a branch used by another worktree (--ignore-other-worktrees, rgit #104)
+t7201-co.sh 36  # "checkout -m works after (mistaken) resolution": checkout -m (rgit #158) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
