@@ -358,7 +358,12 @@ parse_tap() {
 		next
 	}
 	/^1\.\.[0-9]+/ { plan = $0; sub(/^1\.\./, "", plan); sub(/[^0-9].*$/, "", plan)
-		if ($0 ~ /# SKIP/) skipall = 1; next }
+		if ($0 ~ /# SKIP/) { skipall = 1; why = $0; sub(/^[^#]*# SKIP */, "", why) }
+		next }
+	# test_done prints "# SKIP <reason>" before the plan when a script ends
+	# early for a missing prerequisite after some cases ran (lib-httpd.sh
+	# sourced in the middle of t5601, t5510).
+	/^# SKIP / { skiprest = $0; sub(/^# SKIP */, "", skiprest); next }
 	/^Bail out!/ { bail = 1; next }
 	END {
 		if (count == 0) printf "" > tsv
@@ -368,6 +373,11 @@ parse_tap() {
 		else if (rc != 0) state = "complete_failed"
 		else state = "complete"
 		printf "state=%s\nexit=%s\ncases=%d\nplan=%s\n", state, rc, count, plan > meta
+		# Reason a whole script (skip_all) or its remaining cases (skip_rest)
+		# were skipped for a missing prerequisite.
+		gsub(/[\t\n|]/, " ", why); gsub(/[\t\n|]/, " ", skiprest)
+		if (skipall && why != "") printf "skip_all=%s\n", why > meta
+		if (!skipall && skiprest != "") printf "skip_rest=%s\n", skiprest > meta
 	}' "$tap"
 }
 
@@ -472,6 +482,9 @@ write_status() {
 		echo "  calls are forwarded to the reference git (both listed per case below)."
 		echo "  **via rgit** counts the passing valid cases in which at least one call ran rgit."
 		echo "- **strict**: everything runs through rgit."
+		echo "- **skipped (prereq)**: the reference pass skipped the whole script, or the rest"
+		echo "  of it, for a missing prerequisite (e.g. no web server for \`lib-httpd.sh\`)."
+		echo "  Those cases are not counted as valid and never as passed."
 		echo
 		echo "## Summary"
 		echo
@@ -499,9 +512,17 @@ write_status() {
 			fpass=$(printf '%s\n' "$c" | awk -F'\t' '$3 == "pass"' | grep -c . || true)
 			rpass=$(printf '%s\n' "$c" | awk -F'\t' '$3 == "pass" && $6 != "-"' | grep -c . || true)
 			spass=$(printf '%s\n' "$c" | awk -F'\t' '$4 == "pass"' | grep -c . || true)
-			local fcol rcol=- scol name=$script
+			local fcol rcol=- scol name=$script why
 			case "$refstate" in
-			complete|complete_failed) ;;
+			complete|complete_failed)
+				why=$(meta_get reference "$script" skip_rest)
+				test -z "$why" || name="$script (rest skipped (prereq): $why)"
+				;;
+			skip_all)
+				# A missing prerequisite (web server, ...) is never a pass.
+				why=$(meta_get reference "$script" skip_all)
+				name="$script (skipped (prereq): ${why:-no reason given})"
+				;;
 			*) name="$script (invalid: reference $refstate)" ;;
 			esac
 			if test -f "$RES/fallback/$script.tsv"

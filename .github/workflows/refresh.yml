@@ -25,8 +25,19 @@ env:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    env:
+      # Network fixtures (rgit #87): a missing web server or git daemon is a
+      # failure here, not a skip.
+      GIT_TEST_HTTPD: "true"
+      GIT_TEST_GIT_DAEMON: "true"
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install Apache for lib-httpd.sh
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends apache2
+          sudo systemctl stop apache2 || :
 
       - name: Reference version and cache key
         id: pin

@@ -25,7 +25,8 @@ against rgit to prove that rgit behaves exactly like git.
 | `exclude.txt` | Optional: cases excluded on purpose (`<script> <case numbers> # reason`) |
 | `baseline.txt` | Generated: cases that pass against rgit; a listed case that fails is a regression |
 | `STATUS.md` | Generated: per-script and per-case results of all passes |
-| `selftest/` | Self-test of the regression gate |
+| `selftest/` | Self-tests of the regression gate and of `check-spdx` |
+| `check-spdx` | License guard: SPDX headers, run in CI on every push and pull request |
 | `results/` | Raw results of the last run (not committed) |
 | `test-tool/`, `TEST-TOOL.md` | `test-tool` dispatcher and rgit-backed substitutes, inventory of the subcommands the scripts use (rgit issue #6) |
 
@@ -126,6 +127,31 @@ wrapper (`selftest/gate.sh`). `version` is not listed: test-lib derives
 prerequisites such as `RUST` from `git version --build-options`, which rgit
 answers differently by design.
 
+### Network fixtures (HTTP, git daemon, ssh)
+
+Transport scripts need servers (rgit #87). They come from upstream unchanged:
+
+| Fixture | Server | Needs |
+|---|---|---|
+| `t/lib-httpd.sh`, `t/lib-httpd/` | Apache httpd with the reference `git http-backend` as CGI | Apache 2.4 with its modules (`apache2` on Debian/Ubuntu, `apache` on Arch), not running as root |
+| `t/lib-git-daemon.sh` | reference `git daemon` on a local port | FIFOs |
+| fake ssh | `t/helper/test-fake-ssh` of the reference build, copied by the scripts (e.g. `t5601-clone.sh`) | nothing |
+| `t/lib-credential.sh` | credential helper checks (e.g. `t0302-credential-store.sh`) | nothing |
+
+The server side is always the reference git (until rgit #70); these scripts
+test the git under test as a client against real git. In the rgit passes the
+reference `--exec-path` (fallback) provides `git-http-backend` to Apache.
+
+Without a web server `lib-httpd.sh` skips the script (or, in `t5601` and
+`t5510`, which source it halfway, the rest of it). `run` records the reason
+in the `.meta` file (`skip_all=` / `skip_rest=`) and `STATUS.md` lists such a
+script as `skipped (prereq): <reason>`, never as passed. CI sets
+`GIT_TEST_HTTPD=true` and `GIT_TEST_GIT_DAEMON=true`, which turns a missing
+server into a failure; the `network` workflow runs these scripts against the
+reference git on every pull request, the nightly `refresh` installs Apache as
+well. To run them locally, install Apache (or run `./run` in a container that
+has it, as a non-root user).
+
 ### Baseline and regressions
 
 `./run --update-baseline` writes `baseline.txt` (`<mode> <script> <ranges>`)
@@ -180,3 +206,10 @@ Work items are tracked in the rgit repository:
 ## License
 
 GPL-2.0, see [LICENSE](LICENSE).
+
+Files written for this repository (scripts, `test-tool/`, `unit/`, `selftest/`,
+workflows) start with `# SPDX-License-Identifier: GPL-2.0-only` (`//` in Rust,
+after a `#!` line if there is one). Files imported from git keep upstream's
+notice and are recognised by the header `import` writes (binary files by
+`t/BINARY-FILES`). An MIT identifier anywhere fails the check. Run
+`./check-spdx` before pushing.

@@ -1,0 +1,84 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Network fixtures (rgit issue #87): the scripts that need a web server
+# (lib-httpd.sh, Apache + git http-backend), git daemon (lib-git-daemon.sh)
+# or the fake ssh (test-fake-ssh of the reference build) must run, not skip,
+# against the reference git. GIT_TEST_HTTPD=true and GIT_TEST_GIT_DAEMON=true
+# turn a missing server into a failure instead of a skip.
+name: network
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  reference:
+    runs-on: ubuntu-latest
+    env:
+      GIT_TEST_HTTPD: "true"
+      GIT_TEST_GIT_DAEMON: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reference version and cache key
+        id: pin
+        run: |
+          version=$(tr -d ' \n' <REFERENCE_VERSION)
+          echo "version=$version" >>"$GITHUB_OUTPUT"
+          echo "cache-key=reference-git-$version-norust-$ImageOS-$ImageVersion" >>"$GITHUB_OUTPUT"
+
+      - name: Restore reference build
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/rgit-conformance/git-${{ steps.pin.outputs.version }}-norust
+          key: ${{ steps.pin.outputs.cache-key }}
+
+      - name: Install Apache
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends apache2
+          # The distribution's instance is not needed; lib-httpd.sh starts its own.
+          sudo systemctl stop apache2 || :
+
+      - name: Build reference git (only if this runner image missed the cache)
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get install -y --no-install-recommends \
+            gettext libcurl4-openssl-dev libexpat1-dev libpcre2-dev libssl-dev zlib1g-dev
+          ./run --build-only
+
+      - name: Run the network scripts against the reference git
+        run: |
+          scripts=$(cd t && grep -l -e 'lib-httpd\.sh' -e 'lib-git-daemon\.sh' -e 'test-fake-ssh' t[0-9]*.sh)
+          echo "scripts: $scripts"
+          ./run --reference-only --no-status $scripts
+          bad=0
+          for s in $scripts
+          do
+            meta=results/default/reference/$s.meta
+            state=$(sed -n 's/^state=//p' "$meta")
+            why=$(sed -n 's/^skip_\(all\|rest\)=//p' "$meta")
+            fails=$(awk -F'\t' '$2 == "fail"' "results/default/reference/$s.tsv" | wc -l)
+            echo "$s: $state, $fails failing case(s)${why:+, skipped (prereq): $why}"
+            if test "$state" != complete || test -n "$why" || test "$fails" != 0
+            then
+              echo "::error::$s did not run completely against the reference git"
+              bad=1
+            fi
+          done
+          exit $bad
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: network-results
+          path: |
+            results/**/*.tap
+            results/**/*.tsv
+            results/**/*.meta
+            results/**/*.stderr
+          if-no-files-found: warn
