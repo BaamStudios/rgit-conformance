@@ -81,3 +81,6 @@ diff @(--color|--color=@(always|never|auto)|--no-color)
 restore !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*)...
 # rgit-attr (rgit #38): git check-attr.
 check-attr
+# rgit stripspace and interpret-trailers (rgit #129): every call.
+stripspace
+interpret-trailers
