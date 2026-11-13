@@ -6,3 +6,4 @@ t5300-pack-object.sh 50 60 61  # create SHA-256 repositories with git init; rgit
 t1060-object-corruption.sh 16  # "internal tree objects are not missing" runs rev-list --objects (rgit #46) and needs the empty tree (rgit #261)
 t1007-hash-object.sh 14  # "set up crlf tests": core.autocrlf/crlf attribute conversion in hash-object needs rgit #111
 t6101-rev-parse-parents.sh 17  # "large graft octopus" needs info/grafts (rgit #105)
+t0005-signals.sh 1  # "sigchain works" tests the C signal-handler chain of git itself through the reference test-tool sigchain; rgit has no such API (rgit #98, #192)
