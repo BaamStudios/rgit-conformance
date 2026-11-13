@@ -76,3 +76,5 @@ checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--
 # rgit restore (rgit #108). Not yet: -m/--merge and --conflict (rgit #158),
 # -p/--patch (rgit #109), --recurse-submodules (rgit #121).
 restore !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*)...
+# rgit-attr (rgit #38): git check-attr.
+check-attr
