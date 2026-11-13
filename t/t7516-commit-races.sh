@@ -1,0 +1,34 @@
+#!/bin/sh
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t7516-commit-races.sh
+# (https://github.com/git/git/blob/v2.56.1/t/t7516-commit-races.sh). GPL-2.0, see LICENSE.
+
+test_description='git commit races'
+
+. ./test-lib.sh
+
+test_expect_success 'race to create orphan commit' '
+	write_script hare-editor <<-\EOF &&
+	git commit --allow-empty -m hare
+	EOF
+	test_must_fail env EDITOR=./hare-editor git commit --allow-empty -m tortoise -e &&
+	git show -s --pretty=format:%s >subject &&
+	test_grep hare subject &&
+	git show -s --pretty=format:%P >out &&
+	test_must_be_empty out
+'
+
+test_expect_success 'race to create non-orphan commit' '
+	write_script airplane-editor <<-\EOF &&
+	git commit --allow-empty -m airplane
+	EOF
+	git checkout --orphan branch &&
+	git commit --allow-empty -m base &&
+	git rev-parse HEAD >base &&
+	test_must_fail env EDITOR=./airplane-editor git commit --allow-empty -m ship -e &&
+	git show -s --pretty=format:%s >subject &&
+	test_grep airplane subject &&
+	git rev-parse HEAD^ >parent &&
+	test_cmp base parent
+'
+
+test_done
