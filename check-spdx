@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# License guard (rgit #241): this repository is GPL-2.0-only.
+#
+#   - Every file under t/ is either imported from git (the header written by
+#     `import` in its first three lines, or listed in t/BINARY-FILES) and keeps
+#     upstream's notice, or is rgit's own and needs the GPL-2.0-only SPDX line.
+#   - Outside t/, every script or source file (shebang, or .sh .py .pl .rs
+#     .toml .yml .yaml) carries `# SPDX-License-Identifier: GPL-2.0-only`
+#     (`// ...` in Rust) in its first three lines. Data and documentation
+#     (.md .txt .tsv, LICENSE, ...) need no header.
+#   - No tracked file declares an MIT SPDX identifier: MIT material belongs in
+#     rgit, GPL material only here.
+#
+# usage: ./check-spdx [<repository>]    (default: this checkout)
+set -euo pipefail
+cd "${1:-$(dirname "${BASH_SOURCE[0]}")}"
+cd "$(git rev-parse --show-toplevel)"
+
+spdx='SPDX-License-Identifier: GPL-2.0-only'
+imported='^# rgit-conformance: .* from git v[0-9]'
+fail=0
+err() { echo "error: $1" >&2; fail=1; }
+
+declare -A binary=()
+if test -f t/BINARY-FILES
+then
+	while read -r path _
+	do
+		case $path in ''|'#'*) continue ;; esac
+		binary["t/$path"]=1
+	done <t/BINARY-FILES
+fi
+
+has_spdx () {
+	head -n 3 -- "$1" | tr -d '\r' | grep -qE "^(#|//) $spdx\$"
+}
+
+while IFS= read -r -d '' f
+do
+	case $f in
+	t/BINARY-FILES)
+		;;
+	t/*)
+		test -n "${binary[$f]:-}" && continue
+		head -n 3 -- "$f" | grep -qE "$imported" && continue
+		has_spdx "$f" ||
+			err "$f: neither imported from git (import header or t/BINARY-FILES) nor '# $spdx'"
+		;;
+	*)
+		code=
+		case $f in
+		*.sh|*.py|*.pl|*.rs|*.toml|*.yml|*.yaml) code=1 ;;
+		*) test "$(head -c 2 -- "$f")" = '#!' && code=1 ;;
+		esac
+		if test -n "$code" && ! has_spdx "$f"
+		then
+			err "$f: needs '# $spdx' ('// ...' in Rust) in its first three lines"
+		fi
+		;;
+	esac
+done < <(git ls-files -z)
+
+# Split so that this script does not match itself.
+mit='SPDX-License-Identifier:.*[^A-Za-z]M''IT([^A-Za-z]|$)'
+if matches=$(git grep -l -I -E "$mit" -- .)
+then
+	while IFS= read -r f
+	do
+		err "$f: MIT SPDX identifier; rgit-conformance is GPL-2.0-only"
+	done <<<"$matches"
+fi
+
+if test $fail -ne 0
+then
+	echo "SPDX check failed (rgit #241)." >&2
+	exit 1
+fi
+echo "SPDX check passed."
