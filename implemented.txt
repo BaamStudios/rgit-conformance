@@ -61,3 +61,8 @@ for-each-ref @(--format=*([^%]|%%|%\(?(\*)@(refname|objectname|objecttype|object
 # --fixup, --squash, -v, --dry-run and the status formats, -S, -p,
 # --interactive, --trailer, --pathspec-from-file.
 commit @(-q|--quiet|-m|-m?*|--message|--message=*|-F|-F?*|--file|--file=*|--author|--author=*|--date|--date=*|--reset-author|-e|--edit|--no-edit|--cleanup|--cleanup=*|--status|--no-status|-a|--all|-i|--include|-o|--only|-n|--no-verify|--verify|--amend|--no-post-rewrite|-u|-u@(no|normal|all)|--untracked-files|--untracked-files=*|--allow-empty|--allow-empty-message|-+([qaeino])?([mF])|--|-|!(-*))...
+# rgit add (rgit #41): everything except the interactive modes (rgit #109),
+# --renormalize (rgit #111), --refresh and --no-all/--ignore-removal.
+add @(-n|--dry-run|-v|--verbose|-f|--force|-u|--update|-A|--all|-N|--intent-to-add|--ignore-errors|--no-ignore-errors|--ignore-missing|--sparse|--chmod=*|--no-chmod|--pathspec-from-file=*|--pathspec-file-nul|--warn-embedded-repo|--no-warn-embedded-repo|--|!(-*))...
+# rgit mv (rgit #41): files and directories; no submodules (rgit #114).
+mv
