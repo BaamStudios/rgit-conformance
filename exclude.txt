@@ -13,3 +13,4 @@ t5601-clone.sh 9 104  # 9 "clone from hooks" clones from a pre-commit hook, and 
 t5601-clone.sh 108  # "batch missing blob request during checkout": checkout (routed to rgit) in a partial clone must fetch the missing blobs from the promisor remote (rgit #24)
 t2060-switch.sh 16  # "switch back when temporarily detached and checked out elsewhere" needs worktrees and the refusal to check out a branch used by another worktree (--ignore-other-worktrees, rgit #104)
 t7201-co.sh 36  # "checkout -m works after (mistaken) resolution": checkout -m (rgit #158) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
+t7300-clean.sh 54  # "avoid traversing into ignored directories" counts read_directory visits in GIT_TRACE2_PERF output; rgit has no trace2 (rgit #180)

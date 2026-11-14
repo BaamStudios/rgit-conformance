@@ -73,3 +73,11 @@ mv
 # --ignore-other-worktrees (rgit #104).
 switch !(-m|--merge|--conflict|--conflict=*|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
 checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
+# rgit clean (rgit #110): every call.
+clean
+# rgit status --ignored (rgit #323): porcelain and short format calls that
+# ask for ignored files.
+status @(--porcelain|--porcelain=v1|--porcelain=v2|-s|--short|-u|-uall|-unormal|-uno|--untracked-files=*|-z)... @(--ignored|--ignored=*)
+status @(--porcelain|--porcelain=v1|--porcelain=v2|-s|--short|-u|-uall|-unormal|-uno|--untracked-files=*|-z)... @(--ignored|--ignored=*) @(--porcelain|--porcelain=v1|--porcelain=v2|-s|--short|-u|-uall|-unormal|-uno|--untracked-files=*|-z|--|!(-*))...
+# rgit check-ignore (rgit #37): every call.
+check-ignore
