@@ -32,7 +32,7 @@ var
 # rgit does not implement yet (--textconv, --filters, --path: rgit #112, #147;
 # --use-mailmap: rgit #127; --filter: rgit #24).
 cat-file !(--filter|--filter=*|--no-filter|--textconv|--filters|--path|--path=*|--no-path|--use-mailmap|--mailmap|--no-use-mailmap|--no-mailmap)...
-# hash-object hashes without content filters (rgit #111, #112).
+# hash-object: line endings, ident and working-tree-encoding (rgit #111); filter drivers do not run (rgit #112).
 hash-object
 mktag
 mktree
