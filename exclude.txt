@@ -13,6 +13,7 @@ t5601-clone.sh 104  # "clone with GIT_DEFAULT_HASH" creates a SHA-256 repository
 t5601-clone.sh 108  # "batch missing blob request during checkout": checkout (routed to rgit) in a partial clone must fetch the missing blobs from the promisor remote (rgit #24)
 t2060-switch.sh 16  # "switch back when temporarily detached and checked out elsewhere" needs worktrees and the refusal to check out a branch used by another worktree (--ignore-other-worktrees, rgit #104)
 t7201-co.sh 36  # "checkout -m works after (mistaken) resolution": checkout -m (rgit #158) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
+t7300-clean.sh 54  # "avoid traversing into ignored directories" counts read_directory visits in GIT_TRACE2_PERF output; rgit has no trace2 (rgit #180)
 t5505-remote.sh 43 68  # 43 "add --mirror setting HEAD": a fetch from a mirror remote updates HEAD, which rgit fetch does not do yet (rgit #164); 68 "rename a remote" checks the trace2 progress region "Renaming remote references" (rgit #180)
 t1800-hook.sh 77 78 79  # "hook.jobs=-1 / hook.<event>.jobs=-1 / -j-1 resolves to online_cpus()" read the hook region from GIT_TRACE2_EVENT, which rgit does not write (rgit #180); without the trace file test_grep aborts the script
 t2070-restore.sh 13  # "restore --merge to unresolve after (mistaken) resolution": restore --merge (rgit #158) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
