@@ -53,3 +53,10 @@ t3501-revert-cherry-pick.sh 4 5 13  # cherry-pick/revert across a renamed file n
 t3501-revert-cherry-pick.sh 7 8 9 10 12 14  # run in the state that cases 4 and 5 (rename detection, rgit #151) leave behind
 t3504-cherry-pick-rerere.sh 4 5 6 7 8  # rerere and --rerere-autoupdate (rgit #156)
 t3514-cherry-pick-revert-gpg.sh 4 5 10 11 12 13 14 15 16 17 18 19 21 22 23 24 25 26 27 28 29 30 31 33 35 36  # commit.gpgSign and -S for cherry-pick and revert (rgit #51)
+t3903-stash.sh 84  # "stash list --cc shows combined diff": the combined diff of the stash commit needs rgit #148 (and log -g with diffs, rgit #47, #126)
+t3903-stash.sh 101 107  # stash -p (rgit #109)
+t3904-stash-patch.sh 3 4 5 6 8 9  # stash -p (rgit #109)
+t3908-stash-in-worktree.sh 2  # reset --hard inside a linked worktree updates the main HEAD: per-worktree refs are rgit #104
+t4202-log.sh 17 18 21 113  # log --format with path arguments (log.follow, pathspec magic, ".."): the routed log has no path limiting yet (rgit #124)
+t4202-log.sh 90  # "git log -c --follow": the setup merges a branch that renamed the file; merge (routed to rgit) has no rename detection yet (rgit #151)
+t7201-co.sh 48  # "custom merge driver with checkout -m": merge (routed to rgit) does not run merge.<driver>.driver from gitattributes yet (rgit #153)
