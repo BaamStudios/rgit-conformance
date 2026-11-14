@@ -100,3 +100,6 @@ interpret-trailers
 # rgit merge-file (rgit #56): every call. --diff-algorithm=patience and
 # histogram are not supported yet (rgit #53).
 merge-file
+# rgit apply (rgit #149): every call. --3way and binary patches are rgit #150;
+# only t4117 calls --3way (with --reject, which both refuse alike).
+apply

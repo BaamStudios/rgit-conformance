@@ -1,0 +1,7 @@
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t4135/diff-with spaces.diff
+# (https://github.com/git/git/blob/v2.56.1/t/t4135/diff-with spaces.diff). GPL-2.0, see LICENSE.
+--- post image.txt.orig	2010-08-18 20:13:31.544002255 -0500
++++ post image.txt	2010-08-18 20:13:31.544002255 -0500
+@@ -1 +1 @@
+-preimage
++postimage
