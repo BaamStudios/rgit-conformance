@@ -1,0 +1,7 @@
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t4135/diff-plain.diff
+# (https://github.com/git/git/blob/v2.56.1/t/t4135/diff-plain.diff). GPL-2.0, see LICENSE.
+--- postimage.txt.orig	2010-08-18 20:13:31.432002255 -0500
++++ postimage.txt	2010-08-18 20:13:31.432002255 -0500
+@@ -1 +1 @@
+-preimage
++postimage
