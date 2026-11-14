@@ -53,11 +53,12 @@ update-index
 # rgit-config (rgit #28, #99), including --blob (rgit #252).
 config
 # rgit-refs (rgit #29, #102, #103): update-ref without --batch-updates,
-# show-ref, pack-refs, and for-each-ref with the implemented atoms and options.
+# show-ref, pack-refs, and for-each-ref: every call with arguments except
+# formats with %(describe) (rgit #131), %(is-base) and %(signature) (rgit #51).
 update-ref !(--batch-updates|-0)...
 show-ref
 pack-refs
-for-each-ref @(--format=*([^%]|%%|%\(?(\*)@(refname|objectname|objecttype|objectsize|HEAD|symref)?(:*([^\)]))\))|--sort=?(-)@(refname|objectname|objecttype|objectsize)|--count=+([0-9])|--shell|--perl|--python|--tcl|--include-root-refs|--exclude=*|--points-at=*|--ignore-case|--omit-empty|!(-*))...
+for-each-ref !(*%\(?(\*)@(describe|is-base|signature)*)...
 # rgit commit (rgit #45, #128): -m/-F/editor, -a, paths with -o/-i,
 # --amend, --author, --date, cleanup and status options, -t/commit.template,
 # -s, --trailer, -C/-c, --fixup, --squash, -v, --dry-run and the status
@@ -114,6 +115,6 @@ help !(-c|--config|--config-for-completion|--config-sections-for-completion)...
 # only t4117 calls --3way (with --reject, which both refuse alike).
 apply
 # rgit tag (rgit #130): creating, deleting and listing tags. Not yet:
-# signing and verifying signatures (-s, -u, -v; rgit #51), --column,
-# --color, and --format with atoms for-each-ref does not implement yet.
-tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--column|--column=*|--color|--color=*|--format|--format=!(*([^%]|%%|%\(?(\*)@(refname|objectname|objecttype|objectsize|HEAD|symref)?(:*([^\)]))\))))...
+# signing and verifying signatures (-s, -u, -v; rgit #51), --column, and
+# --format with %(describe), %(is-base) or %(signature) (rgit #102).
+tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--column|--column=*|--format|--format=*%\(?(\*)@(describe|is-base|signature)*)...
