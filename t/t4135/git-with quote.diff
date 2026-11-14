@@ -1,0 +1,9 @@
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t4135/git-with quote.diff
+# (https://github.com/git/git/blob/v2.56.1/t/t4135/git-with quote.diff). GPL-2.0, see LICENSE.
+diff --git "a/\"postimage\".txt" "b/\"postimage\".txt"
+new file mode 100644
+index 0000000..eff0c54
+--- /dev/null
++++ "b/\"postimage\".txt"
+@@ -0,0 +1 @@
++postimage

@@ -105,3 +105,6 @@ merge-file
 # arguments stays with the reference git: a line without tokens would route
 # -c as well.
 help !(-c|--config|--config-for-completion|--config-sections-for-completion)...
+# rgit apply (rgit #149): every call. --3way and binary patches are rgit #150;
+# only t4117 calls --3way (with --reject, which both refuse alike).
+apply
