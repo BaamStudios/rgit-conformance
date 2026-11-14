@@ -1,0 +1,5 @@
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t4135/.gitignore
+# (https://github.com/git/git/blob/v2.56.1/t/t4135/.gitignore). GPL-2.0, see LICENSE.
+/file-creation/
+/trad-creation/
+/trad-modification/
