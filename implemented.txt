@@ -91,6 +91,10 @@ checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--
 # rgit #75: colour of branch listings and diffs.
 branch @(--color|--color=@(always|never|auto)|--no-color|-a|--all|-r|--remotes|-v|-vv|--verbose)...
 diff @(--color|--color=@(always|never|auto)|--no-color)
+# rgit #53: diff algorithms (--patience, --histogram, --minimal, --anchored,
+# --diff-algorithm) for two files; not yet per-driver diff.<driver>.algorithm
+# from attributes.
+diff --no-index @(--patience|--histogram|--minimal|--diff-algorithm=*|--anchored=*)... !(-*) !(-*)
 # rgit restore (rgit #108). Not yet: -m/--merge and --conflict (rgit #158),
 # -p/--patch (rgit #109), --recurse-submodules (rgit #121).
 restore !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*)...
@@ -99,8 +103,7 @@ check-attr
 # rgit stripspace and interpret-trailers (rgit #129): every call.
 stripspace
 interpret-trailers
-# rgit merge-file (rgit #56): every call. --diff-algorithm=patience and
-# histogram are not supported yet (rgit #53).
+# rgit merge-file (rgit #56, algorithms #53): every call.
 merge-file
 # rgit help (rgit #179): everything but the configuration listings (-c and
 # the completion variants need a list of all variables). `git help` without
