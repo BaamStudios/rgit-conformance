@@ -49,6 +49,10 @@ t6413-merge-crlf.sh 3  # the conflicted file is written without core.autocrlf co
 t6120-describe.sh 75 76 77  # describe --dirty/--broken with a broken submodule gitfile: diff-index does not check submodules yet (rgit #114)
 t6120-describe.sh 95  # name-rev with a commit-graph and non-monotonic commit dates needs commit-graph generation numbers (rgit #22)
 t6120-describe.sh 107  # describe --contains with misleading tagger dates: name-rev tie-breaking between tags not fully matched yet (rgit #131)
+t3501-revert-cherry-pick.sh 4 5 13  # cherry-pick/revert across a renamed file need rename detection in the merge (rgit #151)
+t3501-revert-cherry-pick.sh 7 8 9 10 12 14  # run in the state that cases 4 and 5 (rename detection, rgit #151) leave behind
+t3504-cherry-pick-rerere.sh 4 5 6 7 8  # rerere and --rerere-autoupdate (rgit #156)
+t3514-cherry-pick-revert-gpg.sh 4 5 10 11 12 13 14 15 16 17 18 19 21 22 23 24 25 26 27 28 29 30 31 33 35 36  # commit.gpgSign and -S for cherry-pick and revert (rgit #51)
 t3903-stash.sh 84  # "stash list --cc shows combined diff": the combined diff of the stash commit needs rgit #148 (and log -g with diffs, rgit #47, #126)
 t3903-stash.sh 101 107  # stash -p (rgit #109)
 t3904-stash-patch.sh 3 4 5 6 8 9  # stash -p (rgit #109)

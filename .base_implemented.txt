@@ -1,0 +1,128 @@
+# Calls that fallback mode sends to rgit; everything else goes to the
+# reference git (rgit-conformance #4).
+#
+# One entry per line: <subcommand> [<token>...]
+#   <subcommand>  a subcommand ("init"), a dashed program name without "git-"
+#                 ("upload-pack"), or an option-only call ("--version",
+#                 "--exec-path"). Global options before it (-C, -c, ...) are
+#                 skipped and not matched.
+#   no tokens     every call of the subcommand goes to rgit.
+#   tokens        the arguments after the subcommand must match the tokens in
+#                 order, all of them and nothing more. A token is a bash extglob
+#                 for exactly one argument ("--git-dir", "@(-q|--quiet)",
+#                 "!(-*)"); "<glob>..." matches one or more arguments;
+#                 "..." alone matches any remaining arguments.
+# The first matching line wins and is reported per test case in STATUS.md.
+# Tokens cannot contain whitespace or "#".
+--version
+# `version` is not listed: test-lib reads `version --build-options` for
+# prerequisites (RUST), which rgit answers differently by design.
+# rgit-config (rgit #99): everything but --blob, which needs the object
+# database (rgit #14, #32).
+config !(--blob|--blob=*)...
+# rgit-repo (rgit #26, #33) and revisions (rgit #32): everything except the
+# options rgit does not implement yet.
+rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-common-dir|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--is-shallow-repository|--show-superproject-working-tree|--shared-index-path|--bisect|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
+# Read-only symbolic-ref: one ref name, no -d, no target.
+symbolic-ref !(-*)
+symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
+# rgit-ident (rgit #122): git var.
+var
+# rgit #15: plumbing on rgit-object/rgit-odb. cat-file without the options
+# rgit does not implement yet (--textconv, --filters, --path: rgit #112, #147;
+# --use-mailmap: rgit #127; --filter: rgit #24).
+cat-file !(--filter|--filter=*|--no-filter|--textconv|--filters|--path|--path=*|--no-path|--use-mailmap|--mailmap|--no-use-mailmap|--no-mailmap)...
+# hash-object: line endings, ident and working-tree-encoding (rgit #111); filter drivers do not run (rgit #112).
+hash-object
+mktag
+mktree
+index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...
+# rgit-repo init (rgit #27): every call.
+init
+# rgit-revwalk (rgit #78, #46): rev-list and log with the walk, ordering,
+# limiting, boundary, sides, ref sets, --stdin, --objects and built-in
+# format options; no paths, no reflogs, no --cherry-*, no %-formats; log
+# without --grep/--author/--committer (no match colouring yet).
+rev-list @(--all|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*describe*|*%G*|email|mboxrd)|--format=!(*describe*|*%G*|email|mboxrd)|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
+log @(--all|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--pretty|--pretty=!(*describe*|*%G*|email|mboxrd)|--format=!(*describe*|*%G*|email|mboxrd)|--date=*|--no-decorate|--decorate|--decorate=@(short|full|auto|no)|--decorate-refs=*|--decorate-refs-exclude=*|--clear-decorations|-z|--no-notes|--color|--color=@(always|never|auto)|--no-color|--mailmap|--no-mailmap|--use-mailmap|--no-use-mailmap|!(-*|*@{*))...
+# rgit ls-tree (rgit #88): every call.
+ls-tree
+# rgit ls-files and update-index (rgit #39): every call.
+ls-files
+update-index
+# rgit-config (rgit #28, #99), including --blob (rgit #252).
+config
+# rgit-refs (rgit #29, #102, #103): update-ref without --batch-updates,
+# show-ref, pack-refs, and for-each-ref: every call with arguments except
+# formats with %(describe) (rgit #131), %(is-base) and %(signature) (rgit #51).
+update-ref !(--batch-updates|-0)...
+show-ref
+pack-refs
+for-each-ref !(*%\(?(\*)@(describe|is-base|signature)*)...
+# rgit commit (rgit #45, #128): -m/-F/editor, -a, paths with -o/-i,
+# --amend, --author, --date, cleanup and status options, -t/commit.template,
+# -s, --trailer, -C/-c, --fixup, --squash, -v, --dry-run and the status
+# formats, --pathspec-from-file. Not yet: -S, -p, --interactive.
+commit @(-q|--quiet|-m|-m?*|--message|--message=*|-F|-F?*|--file|--file=*|--author|--author=*|--date|--date=*|--reset-author|-e|--edit|--no-edit|--cleanup|--cleanup=*|--status|--no-status|-a|--all|-i|--include|-o|--only|-n|--no-verify|--verify|--amend|--no-post-rewrite|--post-rewrite|-u|-u@(no|normal|all)|--untracked-files|--untracked-files=*|--allow-empty|--allow-empty-message|-v|--verbose|--no-verbose|-c|-c?*|--reedit-message|--reedit-message=*|-C|-C?*|--reuse-message|--reuse-message=*|--fixup|--fixup=*|--squash|--squash=*|--trailer|--trailer=*|-s|--signoff|--no-signoff|-t|-t?*|--template|--template=*|--dry-run|--short|--porcelain|--long|-z|--null|--branch|--no-branch|--ahead-behind|--no-ahead-behind|--no-gpg-sign|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|-+([qaeinovsz])?([mFcCt])|--|-|!(-*))...
+# rgit add (rgit #41): everything except the interactive modes (rgit #109),
+# --renormalize (rgit #111), --refresh and --no-all/--ignore-removal.
+add @(-n|--dry-run|-v|--verbose|-f|--force|-u|--update|-A|--all|-N|--intent-to-add|--ignore-errors|--no-ignore-errors|--ignore-missing|--sparse|--chmod=*|--no-chmod|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--warn-embedded-repo|--no-warn-embedded-repo|--|!(-*))...
+# rgit mv (rgit #41): files and directories; no submodules (rgit #114).
+mv
+# rgit switch and branch checkout (rgit #42), checkout of paths with
+# --overlay/--no-overlay, --ours/--theirs and --pathspec-from-file
+# (rgit #108). Not yet: -m/--merge and --conflict (rgit #158), -p/--patch
+# (rgit #109), --recurse-submodules (rgit #121), --ignore-other-worktrees
+# (rgit #104).
+switch !(-m|--merge|--conflict|--conflict=*|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
+checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
+# rgit clean (rgit #110): every call.
+clean
+# rgit status --ignored (rgit #323): porcelain and short format calls that
+# ask for ignored files.
+status @(--porcelain|--porcelain=v1|--porcelain=v2|-s|--short|-u|-uall|-unormal|-uno|--untracked-files=*|-z)... @(--ignored|--ignored=*)
+status @(--porcelain|--porcelain=v1|--porcelain=v2|-s|--short|-u|-uall|-unormal|-uno|--untracked-files=*|-z)... @(--ignored|--ignored=*) @(--porcelain|--porcelain=v1|--porcelain=v2|-s|--short|-u|-uall|-unormal|-uno|--untracked-files=*|-z|--|!(-*))...
+# rgit check-ignore (rgit #37): every call.
+check-ignore
+# rgit remote (rgit #168): every subcommand.
+remote
+# rgit hook (rgit #76): `hook run` and `hook list`.
+hook
+checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
+# rgit #75: colour of branch listings and diffs.
+branch @(--color|--color=@(always|never|auto)|--no-color|-a|--all|-r|--remotes|-v|-vv|--verbose)...
+diff @(--color|--color=@(always|never|auto)|--no-color)
+# rgit #53: diff algorithms (--patience, --histogram, --minimal, --anchored,
+# --diff-algorithm) for two files; not yet per-driver diff.<driver>.algorithm
+# from attributes.
+diff --no-index @(--patience|--histogram|--minimal|--diff-algorithm=*|--anchored=*)... !(-*) !(-*)
+# rgit restore (rgit #108). Not yet: -m/--merge and --conflict (rgit #158),
+# -p/--patch (rgit #109), --recurse-submodules (rgit #121).
+restore !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*)...
+# rgit-attr (rgit #38): git check-attr.
+check-attr
+# rgit stripspace and interpret-trailers (rgit #129): every call.
+stripspace
+interpret-trailers
+# rgit merge-file (rgit #56, algorithms #53): every call.
+merge-file
+# rgit merge (rgit #57) on the merge engine (rgit #55). Not yet: signatures
+# (-S, --verify-signatures; rgit #51), --autostash, rerere (rgit #156), the
+# strategies octopus, resolve and subtree and the whitespace and renormalize
+# -X options (rgit #153). Without arguments it stays with the reference git.
+merge !(-S*|--gpg-sign|--gpg-sign=*|--verify-signatures|--autostash|--rerere-autoupdate|-s@(octopus|resolve|subtree)|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
+# rgit help (rgit #179): everything but the configuration listings (-c and
+# the completion variants need a list of all variables). `git help` without
+# arguments stays with the reference git: a line without tokens would route
+# -c as well.
+help !(-c|--config|--config-for-completion|--config-sections-for-completion)...
+# rgit apply (rgit #149): every call. --3way and binary patches are rgit #150;
+# only t4117 calls --3way (with --reject, which both refuse alike).
+apply
+# rgit tag (rgit #130): creating, deleting and listing tags. Not yet:
+# signing and verifying signatures (-s, -u, -v; rgit #51), --column, and
+# --format with %(describe), %(is-base) or %(signature) (rgit #102).
+tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--column|--column=*|--format|--format=*%\(?(\*)@(describe|is-base|signature)*)...
+# rgit describe and name-rev (rgit #131): every call.
+describe
+name-rev

@@ -49,6 +49,10 @@ t6413-merge-crlf.sh 3  # the conflicted file is written without core.autocrlf co
 t6120-describe.sh 75 76 77  # describe --dirty/--broken with a broken submodule gitfile: diff-index does not check submodules yet (rgit #114)
 t6120-describe.sh 95  # name-rev with a commit-graph and non-monotonic commit dates needs commit-graph generation numbers (rgit #22)
 t6120-describe.sh 107  # describe --contains with misleading tagger dates: name-rev tie-breaking between tags not fully matched yet (rgit #131)
+t3903-stash.sh 84  # "stash list --cc shows combined diff": the combined diff of the stash commit needs rgit #148 (and log -g with diffs, rgit #47, #126)
+t3903-stash.sh 101 107  # stash -p (rgit #109)
+t3904-stash-patch.sh 3 4 5 6 8 9  # stash -p (rgit #109)
+t3908-stash-in-worktree.sh 2  # reset --hard inside a linked worktree updates the main HEAD: per-worktree refs are rgit #104
 t4202-log.sh 17 18 21 113  # log --format with path arguments (log.follow, pathspec magic, ".."): the routed log has no path limiting yet (rgit #124)
 t4202-log.sh 90  # "git log -c --follow": the setup merges a branch that renamed the file; merge (routed to rgit) has no rename detection yet (rgit #151)
 t7201-co.sh 48  # "custom merge driver with checkout -m": merge (routed to rgit) does not run merge.<driver>.driver from gitattributes yet (rgit #153)
