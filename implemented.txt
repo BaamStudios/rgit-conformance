@@ -126,3 +126,8 @@ tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--column|--colu
 # rgit describe and name-rev (rgit #131): every call.
 describe
 name-rev
+# rgit cherry-pick and revert on the sequencer (rgit #58). Not yet: -S
+# (rgit #51), rerere (rgit #156), the strategies resolve, octopus and
+# subtree and the whitespace -X options (rgit #153).
+cherry-pick !(-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
+revert !(-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
