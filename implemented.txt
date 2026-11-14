@@ -126,3 +126,5 @@ tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--column|--colu
 # rgit describe and name-rev (rgit #131): every call.
 describe
 name-rev
+# rgit stash (rgit #113): every call; -p/--patch is rgit #109 (cases excluded).
+stash
