@@ -58,14 +58,14 @@ update-ref !(--batch-updates|-0)...
 show-ref
 pack-refs
 for-each-ref @(--format=*([^%]|%%|%\(?(\*)@(refname|objectname|objecttype|objectsize|HEAD|symref)?(:*([^\)]))\))|--sort=?(-)@(refname|objectname|objecttype|objectsize)|--count=+([0-9])|--shell|--perl|--python|--tcl|--include-root-refs|--exclude=*|--points-at=*|--ignore-case|--omit-empty|!(-*))...
-# rgit commit (rgit #45): -m/-F/editor, -a, paths with -o/-i, --amend,
-# --author, --date, cleanup and status options. Not yet: -s, -t, -C/-c,
-# --fixup, --squash, -v, --dry-run and the status formats, -S, -p,
-# --interactive, --trailer, --pathspec-from-file.
-commit @(-q|--quiet|-m|-m?*|--message|--message=*|-F|-F?*|--file|--file=*|--author|--author=*|--date|--date=*|--reset-author|-e|--edit|--no-edit|--cleanup|--cleanup=*|--status|--no-status|-a|--all|-i|--include|-o|--only|-n|--no-verify|--verify|--amend|--no-post-rewrite|-u|-u@(no|normal|all)|--untracked-files|--untracked-files=*|--allow-empty|--allow-empty-message|-+([qaeino])?([mF])|--|-|!(-*))...
+# rgit commit (rgit #45, #128): -m/-F/editor, -a, paths with -o/-i,
+# --amend, --author, --date, cleanup and status options, -t/commit.template,
+# -s, --trailer, -C/-c, --fixup, --squash, -v, --dry-run and the status
+# formats, --pathspec-from-file. Not yet: -S, -p, --interactive.
+commit @(-q|--quiet|-m|-m?*|--message|--message=*|-F|-F?*|--file|--file=*|--author|--author=*|--date|--date=*|--reset-author|-e|--edit|--no-edit|--cleanup|--cleanup=*|--status|--no-status|-a|--all|-i|--include|-o|--only|-n|--no-verify|--verify|--amend|--no-post-rewrite|--post-rewrite|-u|-u@(no|normal|all)|--untracked-files|--untracked-files=*|--allow-empty|--allow-empty-message|-v|--verbose|--no-verbose|-c|-c?*|--reedit-message|--reedit-message=*|-C|-C?*|--reuse-message|--reuse-message=*|--fixup|--fixup=*|--squash|--squash=*|--trailer|--trailer=*|-s|--signoff|--no-signoff|-t|-t?*|--template|--template=*|--dry-run|--short|--porcelain|--long|-z|--null|--branch|--no-branch|--ahead-behind|--no-ahead-behind|--no-gpg-sign|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|-+([qaeinovsz])?([mFcCt])|--|-|!(-*))...
 # rgit add (rgit #41): everything except the interactive modes (rgit #109),
 # --renormalize (rgit #111), --refresh and --no-all/--ignore-removal.
-add @(-n|--dry-run|-v|--verbose|-f|--force|-u|--update|-A|--all|-N|--intent-to-add|--ignore-errors|--no-ignore-errors|--ignore-missing|--sparse|--chmod=*|--no-chmod|--pathspec-from-file=*|--pathspec-file-nul|--warn-embedded-repo|--no-warn-embedded-repo|--|!(-*))...
+add @(-n|--dry-run|-v|--verbose|-f|--force|-u|--update|-A|--all|-N|--intent-to-add|--ignore-errors|--no-ignore-errors|--ignore-missing|--sparse|--chmod=*|--no-chmod|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--warn-embedded-repo|--no-warn-embedded-repo|--|!(-*))...
 # rgit mv (rgit #41): files and directories; no submodules (rgit #114).
 mv
 # rgit switch and branch checkout (rgit #42), checkout of paths with
@@ -74,7 +74,7 @@ mv
 # (rgit #109), --recurse-submodules (rgit #121), --ignore-other-worktrees
 # (rgit #104).
 switch !(-m|--merge|--conflict|--conflict=*|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
-checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
+checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
 # rgit clean (rgit #110): every call.
 clean
 # rgit status --ignored (rgit #323): porcelain and short format calls that
