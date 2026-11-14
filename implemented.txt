@@ -118,3 +118,6 @@ apply
 # signing and verifying signatures (-s, -u, -v; rgit #51), --column, and
 # --format with %(describe), %(is-base) or %(signature) (rgit #102).
 tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--column|--column=*|--format|--format=*%\(?(\*)@(describe|is-base|signature)*)...
+# rgit describe and name-rev (rgit #131): every call.
+describe
+name-rev
