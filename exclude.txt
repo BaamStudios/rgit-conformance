@@ -23,3 +23,5 @@ t6403-merge-file.sh 39  # "merging C files with histogram diff algorithm" needs 
 t4114-apply-typechange.sh 9 10  # binary patches (GIT binary patch) are rgit #150
 t4116-apply-reverse.sh 2 3 5 6  # apply --binary of binary files is rgit #150
 t4141-apply-too-large.sh 4  # decoding of binary patches ("corrupt binary patch") is rgit #150
+t6000-rev-list-misc.sh 4 10 11  # 4 "rev-list --objects with pathspecs and copied files" passes a path without "--"; rev-list (routed to rgit) has no path limiting until rgit #124. 10 and 11 build on the history case 4 creates
+t6017-rev-list-stdin.sh 8 10 12 16 26  # the paths come through --stdin, so rev-list --stdin is routed to rgit, which has no path limiting until rgit #124
