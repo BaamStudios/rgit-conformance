@@ -100,3 +100,8 @@ interpret-trailers
 # rgit merge-file (rgit #56): every call. --diff-algorithm=patience and
 # histogram are not supported yet (rgit #53).
 merge-file
+# rgit help (rgit #179): everything but the configuration listings (-c and
+# the completion variants need a list of all variables). `git help` without
+# arguments stays with the reference git: a line without tokens would route
+# -c as well.
+help !(-c|--config|--config-for-completion|--config-sections-for-completion)...
