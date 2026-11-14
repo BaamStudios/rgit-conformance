@@ -108,3 +108,7 @@ help !(-c|--config|--config-for-completion|--config-sections-for-completion)...
 # rgit apply (rgit #149): every call. --3way and binary patches are rgit #150;
 # only t4117 calls --3way (with --reject, which both refuse alike).
 apply
+# rgit tag (rgit #130): creating, deleting and listing tags. Not yet:
+# signing and verifying signatures (-s, -u, -v; rgit #51), --column,
+# --color, and --format with atoms for-each-ref does not implement yet.
+tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--column|--column=*|--color|--color=*|--format|--format=!(*([^%]|%%|%\(?(\*)@(refname|objectname|objecttype|objectsize|HEAD|symref)?(:*([^\)]))\))))...
