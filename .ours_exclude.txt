@@ -1,0 +1,48 @@
+# Cases skipped on purpose in all passes: <script> <case numbers>  # reason
+t0001-init.sh 52 53 54 56 57 60  # creates SHA-256 repositories; rgit init refuses them until rgit #12
+t0001-init.sh 73 74 75 76 78 79 80 85 86  # creates reftable repositories; rgit init refuses them until rgit #31
+t1500-rev-parse.sh 72  # creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
+t5300-pack-object.sh 50 60 61  # create SHA-256 repositories with git init; rgit init refuses them until rgit #12
+t1060-object-corruption.sh 16  # "internal tree objects are not missing" runs rev-list --objects (rgit #46) and needs the empty tree (rgit #261)
+t6101-rev-parse-parents.sh 17  # "large graft octopus" needs info/grafts (rgit #105)
+t0005-signals.sh 1  # "sigchain works" tests the C signal-handler chain of git itself through the reference test-tool sigchain; rgit has no such API (rgit #98, #192)
+t5510-fetch.sh 228 231  # create reftable repositories with git init; rgit init refuses them until rgit #31
+t5551-http-fetch-smart.sh 47 48 49  # 47 creates a SHA-256 repository with git init (rgit #12); 48 and 49 clone it
+t5601-clone.sh 104  # "clone with GIT_DEFAULT_HASH" creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
+t5601-clone.sh 108  # "batch missing blob request during checkout": checkout (routed to rgit) in a partial clone must fetch the missing blobs from the promisor remote (rgit #24)
+t2060-switch.sh 16  # "switch back when temporarily detached and checked out elsewhere" needs worktrees and the refusal to check out a branch used by another worktree (--ignore-other-worktrees, rgit #104)
+t7201-co.sh 36  # "checkout -m works after (mistaken) resolution": checkout -m (rgit #158) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
+t7300-clean.sh 54  # "avoid traversing into ignored directories" counts read_directory visits in GIT_TRACE2_PERF output; rgit has no trace2 (rgit #180)
+t5505-remote.sh 43 68  # 43 "add --mirror setting HEAD": a fetch from a mirror remote updates HEAD, which rgit fetch does not do yet (rgit #164); 68 "rename a remote" checks the trace2 progress region "Renaming remote references" (rgit #180)
+t1800-hook.sh 77 78 79  # "hook.jobs=-1 / hook.<event>.jobs=-1 / -j-1 resolves to online_cpus()" read the hook region from GIT_TRACE2_EVENT, which rgit does not write (rgit #180); without the trace file test_grep aborts the script
+t2070-restore.sh 13  # "restore --merge to unresolve after (mistaken) resolution": restore --merge (rgit #158) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
+t6135-pathspec-with-attrs.sh 23 24 25 26 27  # attr: pathspec magic in git add (rgit #360)
+t4114-apply-typechange.sh 9 10  # binary patches (GIT binary patch) are rgit #150
+t4116-apply-reverse.sh 2 3 5 6  # apply --binary of binary files is rgit #150
+t4141-apply-too-large.sh 4  # decoding of binary patches ("corrupt binary patch") is rgit #150
+t6000-rev-list-misc.sh 4 10 11  # 4 "rev-list --objects with pathspecs and copied files" passes a path without "--"; rev-list (routed to rgit) has no path limiting until rgit #124. 10 and 11 build on the history case 4 creates
+t6017-rev-list-stdin.sh 8 10 12 16 26  # the paths come through --stdin, so rev-list --stdin is routed to rgit, which has no path limiting until rgit #124
+t0021-conversion.sh 2 4 5 6 7 8 9 11 13 14 15 17 18 19 20 21 22 23 24 25 26 27 28 36 40 43  # clean/smudge filter drivers, the long-running filter process protocol and delayed checkout are rgit #112
+t7600-merge.sh 55 60 62 63 65  # --autostash and merge.autoStash are not implemented in rgit merge yet (rgit #57)
+t7600-merge.sh 75  # merging a tag with several signatures reports the signature check, which needs GPG support (rgit #51)
+t7600-merge.sh 82  # "merge --quit" checks the rerere state, which rgit merge does not record (rgit #156)
+t7601-merge-pull-config.sh 62 63  # trying several strategies and keeping the best result, and the resolve strategy (rgit #153)
+t7612-merge-verify-signatures.sh 3 5 9 10 12 15  # merge.verifySignatures needs signature verification (rgit #51)
+t7610-mergetool.sh 8 21  # submodules changed on both sides: rgit-merge does not merge submodule histories yet (rgit #55)
+t7610-mergetool.sh 12  # rerere (rgit #156)
+t7610-mergetool.sh 14 15 16 17 30  # rename/rename and rename/delete conflicts need rename detection (rgit #151)
+t6402-merge-rename.sh 12 14 15 16 17 18 19 21 23 24 26 28 40 42 43 45  # rename detection in merges (rgit #151)
+t6404-recursive-merge.sh 6  # rename/delete (rgit #151)
+t6406-merge-attr.sh 3 4 7 8 9 11 12 13  # merge attributes and custom merge drivers are not implemented in rgit-merge yet (rgit #55)
+t6412-merge-large-rename.sh 2 4 7  # rename detection in merges (rgit #151)
+t6414-merge-rename-nocruft.sh 3  # rename detection in merges (rgit #151)
+t6416-recursive-corner-cases.sh 4 5 6 7 12 13 14 15 16 17 20 38  # renames in criss-cross merges (rgit #151)
+t6417-merge-ours-theirs.sh 5 7  # -Xours/-Xtheirs for binary files and symbolic links (rgit-merge, rgit #55)
+t6418-merge-text-auto.sh 3 4 5 6 7 10 11  # merge.renormalize / -Xrenormalize and text=auto (rgit #153)
+t6426-merge-skip-unneeded-updates.sh 3 4 5 6 7 8 9 10 11 13  # rename detection in merges (rgit #151)
+t6427-diff3-conflict-markers.sh 4 6  # the cases rename a file (rgit #151)
+t6428-merge-conflicts-sparse.sh 2  # SKIP_WORKTREE entries in a merge (sparse checkout) are not handled by rgit merge
+t6430-merge-recursive.sh 34  # rename vs. rename/symlink (rgit #151)
+t6436-merge-overwrite.sh 9  # unstaged changes in a renamed file (rgit #151)
+t6437-submodule-merge.sh 3 5 6 7 8 11 22  # rgit-merge does not merge submodule histories yet (rgit #55)
+t6413-merge-crlf.sh 3  # the conflicted file is written without core.autocrlf conversion: rgit merge writes the work tree without eol conversion yet (rgit #111)

@@ -45,4 +45,7 @@ t4110/patch2.patch v2.56.1
 t4110/patch3.patch v2.56.1
 t4110/patch4.patch v2.56.1
 t4110/patch5.patch v2.56.1
+t7615/base.c v2.56.1
+t7615/ours.c v2.56.1
+t7615/theirs.c v2.56.1
 test-binary-1.png v2.56.1
