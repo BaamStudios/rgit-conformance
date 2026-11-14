@@ -1,0 +1,6 @@
+#!/bin/sh
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t7500/add-comments
+# (https://github.com/git/git/blob/v2.56.1/t/t7500/add-comments). GPL-2.0, see LICENSE.
+echo "# this is a new comment" >> "$1"
+echo "# and so is this" >> "$1"
+exit 0

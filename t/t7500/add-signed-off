@@ -1,0 +1,5 @@
+#!/bin/sh
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t7500/add-signed-off
+# (https://github.com/git/git/blob/v2.56.1/t/t7500/add-signed-off). GPL-2.0, see LICENSE.
+echo "Signed-off-by: foo <bar@frotz>" >> "$1"
+exit 0

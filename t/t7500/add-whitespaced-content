@@ -1,0 +1,10 @@
+#!/bin/sh
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t7500/add-whitespaced-content
+# (https://github.com/git/git/blob/v2.56.1/t/t7500/add-whitespaced-content). GPL-2.0, see LICENSE.
+sed -e 's/|$//' >>"$1" <<\EOF
+
+ |
+commit message  	 |
+
+EOF
+exit 0

@@ -1,0 +1,6 @@
+#!/bin/sh
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t7500/edit-content
+# (https://github.com/git/git/blob/v2.56.1/t/t7500/edit-content). GPL-2.0, see LICENSE.
+sed -e "s/intermediate/edited/g" <"$1" >"$1-"
+mv "$1-" "$1"
+exit 0
