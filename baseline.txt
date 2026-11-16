@@ -571,7 +571,7 @@ strict t7503-pre-commit-and-pre-merge-commit-hooks.sh 1-21
 strict t7504-commit-msg-hook.sh 1-28
 strict t7505-prepare-commit-msg-hook.sh 1-15,17-22
 strict t7507-commit-verbose.sh 1-7,11-12,45
-strict t7508-status.sh 1-5,9,12-20,22-27,29-42,51-55,58-62,65-69,71,95-102,104-106,115-118,122
+strict t7508-status.sh 1-5,9,12-20,22-27,29-42,51-56,58-62,65-69,71,95-102,104-106,115-118,122
 strict t7509-commit-authorship.sh 1-12
 strict t7513-interpret-trailers.sh 1-100
 strict t7517-per-repo-email.sh 1-4,6,8,10,12-16
