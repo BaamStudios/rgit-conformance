@@ -72,5 +72,6 @@ t3404-rebase-interactive.sh 53 54  # "rebase -i continue with only/unstaged subm
 t6030-bisect-porcelain.sh 63 64  # bisecting with pathspecs: start goes to the reference git, rgit bad/good stop with "pathspecs are not supported yet" (rgit #132)
 t3401-rebase-and-am-rename.sh 2  # "rebase --interactive: directory rename detected": rgit-merge has no directory rename detection yet (rgit #151; case 4, rebase --merge, fails for the same reason)
 t3403-rebase-skip.sh 18 19  # a fixup/squash that leaves the commit empty must stop the interactive rebase; rgit completes it (rgit #443)
+t5351-unpack-large-objects.sh 3 6  # 3 needs GIT_ALLOC_LIMIT and streaming of large objects (rgit #89); 6 counts fsync events in GIT_TRACE2_EVENT (rgit #180)
 t3701-add-interactive.sh 62  # diff.wsErrorHighlight in diff output (rgit #146)
 t3701-add-interactive.sh 77 78  # diff-files does not show gitlink changes yet (rgit #114)
