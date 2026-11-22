@@ -218,3 +218,8 @@ show-index
 count-objects
 # rgit #90: unpack-objects (-r recovery and big-object streaming #89 not yet).
 unpack-objects
+# rgit #20, #92: housekeeping.
+prune
+prune-packed
+repack
+gc
