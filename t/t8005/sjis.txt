@@ -1,0 +1,4 @@
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t8005/sjis.txt
+# (https://github.com/git/git/blob/v2.56.1/t/t8005/sjis.txt). GPL-2.0, see LICENSE.
+SJIS_NAME="山田 太郎"
+SJIS_MSG="ブレームのテストです。"

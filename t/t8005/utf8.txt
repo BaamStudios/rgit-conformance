@@ -1,0 +1,4 @@
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t8005/utf8.txt
+# (https://github.com/git/git/blob/v2.56.1/t/t8005/utf8.txt). GPL-2.0, see LICENSE.
+UTF8_NAME="山田 太郎"
+UTF8_MSG="ブレームのテストです。"
