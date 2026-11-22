@@ -35,6 +35,9 @@ cat-file !(--filter|--filter=*|--no-filter|--textconv|--use-mailmap|--mailmap|--
 hash-object
 mktag
 mktree
+# rgit #19: pack-objects with delta search, thin packs and <base-name>
+# output, except the options rgit does not implement yet.
+pack-objects !(--include-tag|--incremental|--local|--unpacked|--unpacked=*|--max-pack-size=*|--stdin-packs|--stdin-packs=*|--shallow|--keep-true-parents|--honor-pack-keep|--keep-pack=*|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--cruft|--cruft-expiration=*|--reflog|--indexed-objects|--write-bitmap-index|--filter=*|--missing=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
 # rgit-repo init (rgit #27): every call.
 init
 # rgit-revwalk (rgit #78, #46): rev-list and log with the walk, ordering,
