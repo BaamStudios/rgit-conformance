@@ -29,8 +29,8 @@ symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
 var
 # rgit #15: plumbing on rgit-object/rgit-odb. cat-file without the options
 # rgit does not implement yet (--textconv, --filters, --path: rgit #112, #147;
-# --use-mailmap: rgit #127; --filter: rgit #24).
-cat-file !(--filter|--filter=*|--no-filter|--textconv|--use-mailmap|--mailmap|--no-use-mailmap|--no-mailmap)...
+# --filter: rgit #24).
+cat-file !(--filter|--filter=*|--no-filter|--textconv)...
 # hash-object: line endings, ident and working-tree-encoding (rgit #111); filter drivers do not run (rgit #112).
 hash-object
 mktag
@@ -39,10 +39,11 @@ mktree
 init
 # rgit-revwalk (rgit #78, #46): rev-list and log with the walk, ordering,
 # limiting, boundary, sides, ref sets, --stdin, --objects and built-in
-# format options and --cherry-pick/--cherry-mark/--cherry (rgit #137);
-# no paths, no reflogs, no %-formats; log
+# format options, --cherry-pick/--cherry-mark/--cherry (rgit #137) and the
+# sources and output options of rgit #394 (--reflog, --exclude-hidden,
+# --disk-usage, -z, ...); no %-formats; log
 # without --grep/--author/--committer (no match colouring yet).
-rev-list @(--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--all|--cherry-pick|--cherry-mark|--cherry|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*%G*|email|mboxrd)|--format=!(*%G*|email|mboxrd)|--encoding=*|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
+rev-list @(--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--all|-z|--reflog|--single-worktree|--ignore-missing|--indexed-objects|--alternate-refs|--unpacked|--disk-usage|--disk-usage=*|--maximal-only|--exclude-hidden=*|--cherry-pick|--cherry-mark|--cherry|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*%G*|email|mboxrd)|--format=!(*%G*|email|mboxrd)|--encoding=*|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
 # rgit ls-tree (rgit #88): every call.
 ls-tree
 # rgit ls-files and update-index (rgit #39): every call.
@@ -226,7 +227,7 @@ patch-id
 cherry
 # rev-list --bisect, --bisect-vars, --bisect-all and rev-parse --bisect
 # (rgit #132).
-rev-list @(--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--bisect|--bisect-vars|--bisect-all|--all|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*%G*|email|mboxrd)|--format=!(*%G*|email|mboxrd)|--encoding=*|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
+rev-list @(--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--bisect|--bisect-vars|--bisect-all|--all|-z|--reflog|--single-worktree|--ignore-missing|--indexed-objects|--alternate-refs|--unpacked|--disk-usage|--disk-usage=*|--maximal-only|--exclude-hidden=*|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*%G*|email|mboxrd)|--format=!(*%G*|email|mboxrd)|--encoding=*|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
 # rgit rebase (rgit #154): the merge back end, interactive rebase, --exec,
 # --autosquash and --edit-todo (rgit #155). Not yet: --rebase-merges
 # (rgit #155), the apply back end (--apply, -C, --whitespace;
@@ -315,3 +316,6 @@ checkout-index
 merge-base
 # rgit column (rgit #399).
 column
+# rgit shortlog and check-mailmap (rgit #127): every call.
+shortlog
+check-mailmap
