@@ -22,7 +22,7 @@
 config !(--blob|--blob=*)...
 # rgit-repo (rgit #26, #33) and revisions (rgit #32): everything except the
 # options rgit does not implement yet.
-rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-common-dir|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--is-shallow-repository|--show-superproject-working-tree|--shared-index-path|--bisect|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
+rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--is-shallow-repository|--show-superproject-working-tree|--shared-index-path|--bisect|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
 # Read-only symbolic-ref: one ref name, no -d, no target.
 symbolic-ref !(-*)
 symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
@@ -72,10 +72,9 @@ mv
 # rgit switch and branch checkout (rgit #42), checkout of paths with
 # --overlay/--no-overlay, --ours/--theirs and --pathspec-from-file
 # (rgit #108). Not yet: -m/--merge and --conflict (rgit #158), -p/--patch
-# (rgit #109), --recurse-submodules (rgit #121), --ignore-other-worktrees
-# (rgit #104).
-switch !(-m|--merge|--conflict|--conflict=*|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
-checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
+# (rgit #109), --recurse-submodules (rgit #121).
+switch !(-m|--merge|--conflict|--conflict=*|--recurse-submodules|--recurse-submodules=*)...
+checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*)...
 # rgit clean (rgit #110): every call.
 clean
 # rgit status --ignored (rgit #323): porcelain and short format calls that
@@ -88,7 +87,7 @@ check-ignore
 remote
 # rgit hook (rgit #76): `hook run` and `hook list`.
 hook
-checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
+checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*)...
 # rgit #75: colour of branch listings and diffs.
 branch @(--color|--color=@(always|never|auto)|--no-color|-a|--all|-r|--remotes|-v|-vv|--verbose)...
 diff @(--color|--color=@(always|never|auto)|--no-color)
@@ -126,6 +125,11 @@ tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--column|--colu
 # rgit describe and name-rev (rgit #131): every call.
 describe
 name-rev
+# rgit cherry-pick and revert on the sequencer (rgit #58). Not yet: -S
+# (rgit #51), rerere (rgit #156), the strategies resolve, octopus and
+# subtree and the whitespace -X options (rgit #153).
+cherry-pick !(-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
+revert !(-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
 # rgit stash (rgit #113): every call; -p/--patch is rgit #109 (cases excluded).
 stash
 # rgit #145: rename, copy and break detection, pickaxe and --diff-filter
@@ -147,3 +151,5 @@ diff-tree @(-p|-u|-z|-r|-R|--cached|--raw|--name-status|--name-only|--stat|--num
 diff-tree !(-*) !(-*) @(-p|-u|-z|-r|-R|--cached|--raw|--name-status|--name-only|--stat|--numstat|--summary|--no-abbrev|--abbrev|--full-index|-l|-l?*)... @(-M|-M?*|-C|-C?*|-B|-B?*|--find-copies-harder|--find-renames|--find-renames=*|--find-copies|--find-copies=*|--break-rewrites|--break-rewrites=*|--no-renames|--rename-empty|--no-rename-empty|-D|--irreversible-delete|-S?*|-G?*|--pickaxe-all|--pickaxe-regex|--diff-filter=*) @(-p|-u|-z|-r|-R|--cached|--raw|--name-status|--name-only|--stat|--numstat|--summary|--no-abbrev|--abbrev|--full-index|-l|-l?*|-M|-M?*|-C|-C?*|-B|-B?*|--find-copies-harder|--find-renames|--find-renames=*|--find-copies|--find-copies=*|--break-rewrites|--break-rewrites=*|--no-renames|--rename-empty|--no-rename-empty|-D|--irreversible-delete|-S?*|-G?*|--pickaxe-all|--pickaxe-regex|--diff-filter=*|--|!(-*))...
 # rgit #145: staged renames in status.
 status @(--no-renames|--renames|-M|-M?*|--find-renames|--find-renames=*)...
+# rgit #104: linked worktrees.
+worktree
