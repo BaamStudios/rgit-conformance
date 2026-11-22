@@ -115,11 +115,10 @@ fmt-merge-msg
 # --verify-signatures; rgit #51), rerere (rgit #156). Without arguments it
 # stays with the reference git.
 merge !(-S*|--gpg-sign|--gpg-sign=*|--verify-signatures|--rerere-autoupdate)...
-# rgit help (rgit #179): everything but the configuration listings (-c and
-# the completion variants need a list of all variables). `git help` without
-# arguments stays with the reference git: a line without tokens would route
-# -c as well.
-help !(-c|--config|--config-for-completion|--config-sections-for-completion)...
+# rgit help (rgit #179, #413): every call with arguments (also -c and the
+# completion variants, from the variable list rgit builds from the
+# documentation). `git help` without arguments stays with the reference git.
+help *...
 # rgit apply (rgit #149): every call. --3way and binary patches are rgit #150;
 # only t4117 calls --3way (with --reject, which both refuse alike).
 apply
@@ -301,13 +300,18 @@ ls-remote
 fetch !(--recurse-submodules|--recurse-submodules=*|--no-recurse-submodules|--filter|--filter=*|--negotiate-only|--prefetch|--bundle-uri|--bundle-uri=*)...
 clone !(--ref-format=reftable|--recurse-submodules|--recurse-submodules=*|--recursive|--recursive=*|--filter|--filter=*|--sparse|--bundle-uri|--bundle-uri=*|--shallow-submodules|--also-filter-submodules)...
 push !(--force-with-lease|--force-with-lease=*|--force-if-includes|--signed|--signed=*|--recurse-submodules|--recurse-submodules=*)...
-# rgit write-tree and commit-tree (rgit #123, #319): every call. read-tree
-# (rgit #107, #319) with one or two trees; not yet three-way
-# merges (rgit #107).
+# rgit write-tree and commit-tree (rgit #123, #319): every call.
 write-tree
 commit-tree
-read-tree @(-m|--reset|-u|-i|-n|--dry-run|-v|--trivial|--aggressive|--index-output=*|--prefix=*|--empty|-q|--quiet|--no-sparse-checkout)...
-read-tree @(-m|--reset|-u|-i|-n|--dry-run|-v|--trivial|--aggressive|--index-output=*|--prefix=*|--empty|-q|--quiet|--no-sparse-checkout)... !(-*)
-read-tree @(-m|--reset|-u|-i|-n|--dry-run|-v|--trivial|--aggressive|--index-output=*|--prefix=*|--empty|-q|--quiet|--no-sparse-checkout)... !(-*) !(-*)
-read-tree !(-*)
-read-tree !(-*) !(-*)
+# rgit read-tree (rgit #107, #319, #327): all but three-way merges (rgit
+# #158) and --prefix with several trees.
+read-tree !(-*)...
+read-tree @(-m|--reset|-u|-i|-n|--dry-run|-v|--trivial|--aggressive|--index-output=*|-q|--quiet|--exclude-per-directory=*|--no-sparse-checkout|--prefix=*)... !(-*)
+read-tree @(-m|--reset|-u|-i|-n|--dry-run|-v|--trivial|--aggressive|--index-output=*|-q|--quiet|--exclude-per-directory=*|--no-sparse-checkout)... !(-*) !(-*)
+read-tree @(--empty|--index-output=*|-q|--quiet|--no-sparse-checkout)...
+# rgit checkout-index (rgit #107, #327).
+checkout-index
+# rgit merge-base (rgit #50, #326).
+merge-base
+# rgit column (rgit #399).
+column
