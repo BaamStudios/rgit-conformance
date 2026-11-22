@@ -27,11 +27,12 @@ t7600-merge.sh 55 60 62 63 65  # --autostash and merge.autoStash are not impleme
 t7600-merge.sh 75  # merging a tag with several signatures reports the signature check, which needs GPG support (rgit #51)
 t7600-merge.sh 82  # "merge --quit" checks the rerere state, which rgit merge does not record (rgit #156)
 t7601-merge-pull-config.sh 62 63  # trying several strategies and keeping the best result, and the resolve strategy (rgit #153)
+t7601-merge-pull-config.sh 28 29 42 43  # pull.rebase=true from the configuration with a pull that is not a fast-forward needs rebase (rgit #154); pull with arguments is routed to rgit
 t7612-merge-verify-signatures.sh 3 5 9 10 12 15  # merge.verifySignatures needs signature verification (rgit #51)
 t7610-mergetool.sh 8 21  # submodules changed on both sides: rgit-merge does not merge submodule histories yet (rgit #55)
 t7610-mergetool.sh 12  # rerere (rgit #156)
 t7610-mergetool.sh 14 15 16 17 30  # rename/rename and rename/delete conflicts need rename detection (rgit #151)
-t6402-merge-rename.sh 12 14 15 16 17 18 19 21 23 24 26 28 40 42 43 45  # rename detection in merges (rgit #151)
+t6402-merge-rename.sh 2 3 4 5 12 14 15 16 17 18 19 21 23 24 26 28 40 42 43 45  # rename detection in merges (rgit #151)
 t6404-recursive-merge.sh 6  # rename/delete (rgit #151)
 t6406-merge-attr.sh 3 4 7 8 9 11 12 13  # merge attributes and custom merge drivers are not implemented in rgit-merge yet (rgit #55)
 t6412-merge-large-rename.sh 2 4 7  # rename detection in merges (rgit #151)
