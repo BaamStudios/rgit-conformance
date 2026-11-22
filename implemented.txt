@@ -202,7 +202,6 @@ rev-list @(--bisect|--bisect-vars|--bisect-all|--all|--branches|--branches=*|--t
 # --autosquash and --edit-todo (rgit #155). Not yet: --rebase-merges
 # (rgit #155), the apply back end (--apply, -C, --whitespace;
 rebase !(-r|-r?*|--rebase-merges|--rebase-merges=*|--update-refs|--apply|-C*|--whitespace|--whitespace=*|--ignore-whitespace|--trailer|--trailer=*|-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|-p|--preserve-merges|--show-current-patch|-s@(octopus|resolve|subtree)|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
-rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--show-superproject-working-tree|--shared-index-path|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
 # rgit bisect (rgit #132). Pathspecs are not supported yet ("pathspecs are
 # not supported yet"): start and visualize/view with "--" stay with the
 # reference git. The paths a reference start records stop the following
@@ -218,6 +217,12 @@ show-index
 count-objects
 # rgit #90: unpack-objects (-r recovery and big-object streaming #89 not yet).
 unpack-objects
+# rgit #20, #92: housekeeping.
+prune
+prune-packed
+repack
+gc
+rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--show-superproject-working-tree|--shared-index-path|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
 # rgit #93, #94: clone with alternates or shallow options, shallow fetches.
 clone @(-s|--shared|--reference=*|--reference-if-able=*|--dissociate|--depth=*|--shallow-since=*|--shallow-exclude=*|--reject-shallow|--no-reject-shallow) ...
 clone @(--reference|--reference-if-able|--depth|--shallow-since|--shallow-exclude) ...
