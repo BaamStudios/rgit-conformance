@@ -167,3 +167,7 @@ checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|-
 checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*)...
 # rgit #104: linked worktrees.
 worktree
+# rgit #136: am, mailinfo, mailsplit.
+am
+mailinfo
+mailsplit
