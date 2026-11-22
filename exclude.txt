@@ -100,8 +100,14 @@ t5516-fetch-push.sh 81 83  # remotes from $GIT_DIR/branches use the remote's HEA
 t5516-fetch-push.sh 99 106  # the message for an unadvertised object in a want (rgit #164)
 t5516-fetch-push.sh 109  # push.default=upstream mapping through remote.<name>.fetch (rgit #165)
 t5516-fetch-push.sh 125 126  # push.useBitmaps and pack.usePathWalk (rgit #19)
-t5541-http-push-smart.sh 4 18 28 39 41  # HTTP push: GIT_CURL_VERBOSE trace, chunked POST, progress, reflog URL scrubbing, colours (rgit #162, #181)
-t5551-http-fetch-smart.sh 13 17 26 27 30 31 39 40 41 50 51 53 54  # HTTP client: askpass, redirects, dumb http-backend, cookies, chunked requests, http.curloptResolve, credentials in URLs (rgit #162)
+t5541-http-push-smart.sh 28 41  # HTTP push: progress to a non-tty and coloured errors/hints (rgit #181)
 t5601-clone.sh 99  # shallow clone of a local path (rgit #94)
 t5601-clone.sh 113 114 115  # bundle URIs (rgit #172)
 t0090-cache-tree.sh 23  # "cache-tree is used by write-tree when valid" reads the cache_tree region from GIT_TRACE2_PERF, which rgit does not write (rgit #180)
+t5551-http-fetch-smart.sh 13  # "credential.interactive=false skips askpass" checks the trace2 region "credential interactive"; rgit has no trace2 (rgit #180)
+t5551-http-fetch-smart.sh 26  # "dumb clone via http-backend respects namespace": rgit has no dumb HTTP (rgit #186)
+t5559-http-fetch-smart-http2.sh 13  # trace2 region "credential interactive" (rgit #180)
+t5559-http-fetch-smart-http2.sh 26  # dumb HTTP (rgit #186)
+t5559-http-fetch-smart-http2.sh 47 48 49  # 47 creates a SHA-256 repository with git init (rgit #12); 48 and 49 clone it
+t5563-simple-http-auth.sh 18  # "http.emptyAuth=auto attempts Negotiate": rgit has no GSS-Negotiate (docs/http-config.md)
+t5549-fetch-push-http.sh 1 2 3  # read the push negotiation from GIT_TRACE2_EVENT (rgit #180); push.negotiate is rgit #165
