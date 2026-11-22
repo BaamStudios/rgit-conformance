@@ -51,12 +51,14 @@ update-index
 # rgit-config (rgit #28, #99), including --blob (rgit #252).
 config
 # rgit-refs (rgit #29, #102, #103): update-ref without --batch-updates,
-# show-ref, pack-refs, and for-each-ref: every call with arguments except
-# formats with %(describe) (rgit #131), %(is-base) and %(signature) (rgit #51).
+# show-ref, pack-refs, git refs, and for-each-ref: every call except
+# formats with %(is-base) (rgit #401) and %(signature) (rgit #51).
 update-ref !(--batch-updates|-0)...
 show-ref
 pack-refs
-for-each-ref !(*%\(?(\*)@(describe|is-base|signature)*)...
+refs list !(*%\(?(\*)@(is-base|signature)*)...
+refs @(exists|optimize|create|update|delete|rename) ...
+for-each-ref !(*%\(?(\*)@(is-base|signature)*)...
 # rgit commit (rgit #45, #128): -m/-F/editor, -a, paths with -o/-i,
 # --amend, --author, --date, cleanup and status options, -t/commit.template,
 # -s, --trailer, -C/-c, --fixup, --squash, -v, --dry-run and the status
@@ -83,7 +85,11 @@ remote
 # rgit hook (rgit #76): `hook run` and `hook list`.
 hook
 # rgit #75: colour of branch listings and diffs.
-branch @(--color|--color=@(always|never|auto)|--no-color|-a|--all|-r|--remotes|-v|-vv|--verbose)...
+# rgit branch (rgit #330, #401): listing with filters, sorting, formats
+# and columns, --edit-description, --create-reflog, deletion.
+branch @(--color|--color=@(always|never|auto)|--no-color|-a|--all|-r|--remotes|-v|-vv|--verbose|-i|--ignore-case|--omit-empty|--contains=*|--no-contains=*|--merged=*|--no-merged=*|--points-at=*|--sort=*|--no-sort|--format=*|--abbrev|--abbrev=*|--no-abbrev|--column|--column=*|--no-column)...
+branch @(-l|--list|--contains|--no-contains|--merged|--no-merged|--points-at) ...
+branch @(-d|-D|--delete|--edit-description|--create-reflog) ...
 diff @(--color|--color=@(always|never|auto)|--no-color)
 # rgit #53: diff algorithms (--patience, --histogram, --minimal, --anchored,
 # --diff-algorithm) for two files; not yet per-driver diff.<driver>.algorithm
@@ -114,12 +120,14 @@ help !(-c|--config|--config-for-completion|--config-sections-for-completion)...
 # only t4117 calls --3way (with --reject, which both refuse alike).
 apply
 # rgit tag (rgit #130): creating, deleting and listing tags. Not yet:
-# signing and verifying signatures (-s, -u, -v; rgit #51), --column, and
-# --format with %(describe), %(is-base) or %(signature) (rgit #102).
-tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--column|--column=*|--format|--format=*%\(?(\*)@(describe|is-base|signature)*)...
+# signing and verifying signatures (-s, -u, -v; rgit #51) and
+# --format with %(is-base) or %(signature) (rgit #401, #51).
+tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--format|--format=*%\(?(\*)@(is-base|signature)*)...
 # rgit describe and name-rev (rgit #131): every call.
 describe
 name-rev
+# rgit reflog (rgit #101, #325): every subcommand but show, which is log -g (rgit #47).
+reflog @(expire|delete|drop|write|exists|list) ...
 # rgit cherry-pick and revert on the sequencer (rgit #58). Not yet: -S
 # (rgit #51), rerere (rgit #156), the strategies resolve, octopus and
 # subtree and the whitespace -X options (rgit #153).
@@ -268,7 +276,7 @@ prune
 prune-packed
 repack
 gc
-rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--show-superproject-working-tree|--shared-index-path|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
+rev-parse !(--local-env-vars|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--show-superproject-working-tree|--shared-index-path|--prefix|--exclude-hidden=*|--output-object-format=*)...
 # rgit #93, #94: clone with alternates or shallow options, shallow fetches.
 clone @(-s|--shared|--reference=*|--reference-if-able=*|--dissociate|--depth=*|--shallow-since=*|--shallow-exclude=*|--reject-shallow|--no-reject-shallow) ...
 clone @(--reference|--reference-if-able|--depth|--shallow-since|--shallow-exclude) ...
