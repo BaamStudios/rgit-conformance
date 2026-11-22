@@ -35,7 +35,7 @@ cat-file !(--filter|--filter=*|--no-filter|--textconv|--filters|--path|--path=*|
 hash-object
 mktag
 mktree
-index-pack !(--promisor|--promisor=*)...
+index-pack !(--promisor|--promisor=*|--verify-stat|--verify-stat-only)...
 # rgit-repo init (rgit #27): every call.
 init
 # rgit-revwalk (rgit #78, #46): rev-list and log with the walk, ordering,
@@ -212,9 +212,3 @@ bisect start
 bisect start !(--)...
 bisect @(visualize|view)
 bisect @(visualize|view) !(--)...
-# rgit #91: pack inspection.
-verify-pack
-show-index
-count-objects
-# rgit #90: unpack-objects (-r recovery and big-object streaming #89 not yet).
-unpack-objects
