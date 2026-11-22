@@ -1,0 +1,40 @@
+#!/bin/sh
+# rgit-conformance: copied unchanged from git v2.56.1, path t/t6136-pathspec-in-bare.sh
+# (https://github.com/git/git/blob/v2.56.1/t/t6136-pathspec-in-bare.sh). GPL-2.0, see LICENSE.
+
+test_description='diagnosing out-of-scope pathspec'
+
+. ./test-lib.sh
+
+test_expect_success 'setup a bare and non-bare repository' '
+	test_commit file1 &&
+	git clone --bare . bare
+'
+
+test_expect_success 'log and ls-files in a bare repository' '
+	(
+		cd bare &&
+		test_must_fail git log -- .. >out 2>err &&
+		test_must_be_empty out &&
+		test_grep "outside repository" err &&
+
+		test_must_fail git ls-files -- .. >out 2>err &&
+		test_must_be_empty out &&
+		test_grep "outside repository" err
+	)
+'
+
+test_expect_success 'log and ls-files in .git directory' '
+	(
+		cd .git &&
+		test_must_fail git log -- .. >out 2>err &&
+		test_must_be_empty out &&
+		test_grep "outside repository" err &&
+
+		test_must_fail git ls-files -- .. >out 2>err &&
+		test_must_be_empty out &&
+		test_grep "outside repository" err
+	)
+'
+
+test_done
