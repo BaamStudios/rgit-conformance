@@ -67,3 +67,4 @@ t4153-am-resume-override-opts.sh 3  # "--3way overrides --no-3way": the three-wa
 t4252-am-options.sh 2  # "interrupted am --whitespace=fix": rgit apply ignores --whitespace=fix (rgit #150)
 t4257-am-interactive.sh 3 4  # am --interactive is not implemented yet (rgit #136)
 t4152-am-subjects.sh 13  # "multiline subject preserved (format-patch -k | am -k)": rgit format-patch -k joins the lines of a multi-line subject instead of encoding the newlines (rgit #135)
+t7506-status-submodule.sh 32  # "diff --submodule with merge conflict in .gitmodules" needs the combined diff of the conflicted .gitmodules (rgit #148)
