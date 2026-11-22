@@ -667,6 +667,15 @@ check_baseline() {
 		for n in $(echo "$ranges" | expand_ranges)
 		do
 			st=$(printf '%s\n' "$c" | awk -F'\t' -v n="$n" -v c="$col" '$1 == n { print $c }')
+			# t1517 generates two cases per command from the strict list of
+			# commands, so every new rgit command shifts the numbers. A known
+			# breakage (todo) landing on a formerly passing number is that
+			# shift, not a regression (#42).
+			if test "$script" = t1517-outside-repo.sh && test "$st" = todo
+			then
+				echo "renumbered (ignored): $mode $script case $n: todo (was pass)" >&2
+				continue
+			fi
 			if test "$st" != pass
 			then
 				echo "REGRESSION: $mode $script case $n: ${st:-missing} (was pass)" >&2
