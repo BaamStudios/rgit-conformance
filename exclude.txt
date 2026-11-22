@@ -108,3 +108,13 @@ t6437-submodule-merge.sh 6 7 8  # submodule conflicts: suggested resolutions fro
 t4301-merge-tree-write-tree.sh 19  # a directory rename combined with rename/delete, modify/delete and a directory/file conflict is reported differently by rgit-merge's rename detection (rgit #151)
 t6200-fmt-merge-msg.sh 6 7 8 9 12  # the message for a signed tag shows the signature check, which needs GPG/SSH signature support (rgit #51)
 t2003-checkout-cache-mkdir.sh 9  # checkout-index --prefix with filter.<driver>.smudge: clean/smudge filter drivers are rgit #112
+t7400-submodule-basic.sh 38  # creates a SHA-256 repository; rgit init refuses it until rgit #12
+t7400-submodule-basic.sh 65 107  # 65 format-patch/apply of a gitlink change (rgit #411); 107 needs the submodule commit 65 creates
+t7400-submodule-basic.sh 69 70  # add/reset/ls-files of a submodule path with a trailing slash (rgit #114)
+t7400-submodule-basic.sh 111  # submodule add --depth needs clone --depth (rgit #94)
+t7402-submodule-rebase.sh 6  # submodule conflicts in the merge engine (rgit #396)
+t7406-submodule-update.sh 12  # clone does not apply url.<base>.insteadOf (rgit #166)
+t7406-submodule-update.sh 54 55 61  # shallow submodule clones need clone --depth (rgit #94)
+t7406-submodule-update.sh 63  # --filter needs partial clone (rgit #24)
+t7408-submodule-reference.sh 11 15  # submodule.alternateLocation/alternateErrorStrategy are not implemented yet (rgit #115)
+t7424-submodule-mixed-ref-formats.sh 2 3 5 6 7  # create reftable repositories; rgit init refuses them until rgit #31
