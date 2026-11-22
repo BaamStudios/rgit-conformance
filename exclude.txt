@@ -74,3 +74,4 @@ t3401-rebase-and-am-rename.sh 2  # "rebase --interactive: directory rename detec
 t3403-rebase-skip.sh 18 19  # a fixup/squash that leaves the commit empty must stop the interactive rebase; rgit completes it (rgit #443)
 t3701-add-interactive.sh 62  # diff.wsErrorHighlight in diff output (rgit #146)
 t3701-add-interactive.sh 77 78  # diff-files does not show gitlink changes yet (rgit #114)
+t5700-protocol-v1.sh 18 19 21  # SHA-256 repositories: rgit init refuses --object-format=sha256 until rgit #12
