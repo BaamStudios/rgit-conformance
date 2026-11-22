@@ -6,6 +6,14 @@ t3434/ISO8859-1.txt v2.56.1
 t3434/eucJP.txt v2.56.1
 t3437/expected-combined-message v2.56.1
 t3437/expected-squash-message v2.56.1
+t3900/1-UTF-8.txt v2.56.1
+t3900/2-UTF-8.txt v2.56.1
+t3900/ISO-2022-JP.txt v2.56.1
+t3900/ISO8859-1.txt v2.56.1
+t3900/UTF-16.txt v2.56.1
+t3900/eucJP.txt v2.56.1
+t3901/8859-1.txt v2.56.1
+t3901/utf8.txt v2.56.1
 t4013/diff.config_format.subjectprefix_DIFFERENT_PREFIX v2.56.1
 t4013/diff.diff-tree_--cc_--patch-with-stat_--summary_main v2.56.1
 t4013/diff.diff-tree_--cc_--patch-with-stat_--summary_side v2.56.1
