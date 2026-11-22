@@ -66,4 +66,6 @@ t4150-am.sh 76  # "apply binary blob in partial clone": rgit apply does not fetc
 t4153-am-resume-override-opts.sh 3  # "--3way overrides --no-3way": the three-way fallback needs rename detection in rgit-merge (rgit #151)
 t4252-am-options.sh 2  # "interrupted am --whitespace=fix": rgit apply ignores --whitespace=fix (rgit #150)
 t4257-am-interactive.sh 3 4  # am --interactive is not implemented yet (rgit #136)
-t4152-am-subjects.sh 13  # "multiline subject preserved (format-patch -k | am -k)": rgit format-patch -k joins the lines of a multi-line subject instead of encoding the newlines (rgit #135)
+t4204-patch-id.sh 9 10 13 14 15 16 17 18 19 22  # the patches come from format-patch -O<orderfile> (format-patch routed to rgit), which needs -O from rgit #54
+t4204-patch-id.sh 21  # format-patch --attach (format-patch routed to rgit) is rgit #135
+t3500-cherry.sh 5  # "cherry in partial clone does bulk prefetch" needs a partial clone (rgit #24) and trace2 events (rgit #180)
