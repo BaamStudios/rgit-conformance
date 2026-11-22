@@ -22,7 +22,6 @@
 config !(--blob|--blob=*)...
 # rgit-repo (rgit #26, #33) and revisions (rgit #32): everything except the
 # options rgit does not implement yet.
-rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-common-dir|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--is-shallow-repository|--show-superproject-working-tree|--shared-index-path|--bisect|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
 # Read-only symbolic-ref: one ref name, no -d, no target.
 symbolic-ref !(-*)
 symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
@@ -72,10 +71,6 @@ mv
 # rgit switch and branch checkout (rgit #42), checkout of paths with
 # --overlay/--no-overlay, --ours/--theirs and --pathspec-from-file
 # (rgit #108). Not yet: -m/--merge and --conflict (rgit #158), -p/--patch
-# (rgit #109), --recurse-submodules (rgit #121), --ignore-other-worktrees
-# (rgit #104).
-switch !(-m|--merge|--conflict|--conflict=*|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
-checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
 # rgit clean (rgit #110): every call.
 clean
 # rgit status --ignored (rgit #323): porcelain and short format calls that
@@ -88,7 +83,6 @@ check-ignore
 remote
 # rgit hook (rgit #76): `hook run` and `hook list`.
 hook
-checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*|--ignore-other-worktrees)...
 # rgit #75: colour of branch listings and diffs.
 branch @(--color|--color=@(always|never|auto)|--no-color|-a|--all|-r|--remotes|-v|-vv|--verbose)...
 diff @(--color|--color=@(always|never|auto)|--no-color)
@@ -157,3 +151,13 @@ credential
 credential-store
 credential-cache
 credential-cache--daemon
+# rgit #135: format-patch without --notes, --base, --attach/--inline, --commit-list-format, --interdiff/--range-diff and --relative.
+format-patch
+format-patch !(--notes|--notes=*|--no-notes|--base|--base=*|--attach|--attach=*|--inline|--inline=*|--commit-list-format|--commit-list-format=*|--interdiff=*|--range-diff=*|--creation-factor=*|--relative|--relative=*)...
+rev-parse !(--parseopt|--sq-quote|--local-env-vars|--git-path|--resolve-git-dir|--path-format=*|--show-object-format*|--show-ref-format|--is-shallow-repository|--show-superproject-working-tree|--shared-index-path|--bisect|--since=*|--after=*|--until=*|--before=*|--prefix|--keep-dashdash|--stop-at-non-option|--stuck-long|--exclude-hidden=*|--output-object-format=*)...
+# (rgit #109), --recurse-submodules (rgit #121).
+switch !(-m|--merge|--conflict|--conflict=*|--recurse-submodules|--recurse-submodules=*)...
+checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*)...
+checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*)...
+# rgit #104: linked worktrees.
+worktree
