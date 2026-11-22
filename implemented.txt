@@ -125,6 +125,19 @@ name-rev
 # subtree and the whitespace -X options (rgit #153).
 cherry-pick !(-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
 revert !(-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
+# rgit rebase (rgit #154): the non-interactive merge back end. Not yet:
+# the interactive machinery (-i, --exec, --rebase-merges, --autosquash,
+# --edit-todo; rgit #155), the apply back end (--apply, -C, --whitespace;
+# rgit #136), --update-refs, --ignore-whitespace, --trailer, -S (rgit #51),
+# rerere (rgit #156), --show-current-patch and the strategies resolve,
+# octopus and subtree and the whitespace -X options (rgit #153). Without
+# arguments it stays with the reference git: a line without tokens would
+# route the unsupported options as well.
+rebase !(-i|--interactive|-x|-x?*|--exec|--exec=*|-r|-r?*|--rebase-merges|--rebase-merges=*|--autosquash|--edit-todo|--update-refs|--apply|-C*|--whitespace|--whitespace=*|--ignore-whitespace|--trailer|--trailer=*|-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|-p|--preserve-merges|--show-current-patch|-s@(octopus|resolve|subtree)|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
+# rgit blame and annotate (rgit #133). Not yet: -M/-C move and copy
+# detection, --reverse, --ignore-rev/--ignore-revs-file and -S.
+blame !(-M*|-C*|--reverse|--ignore-rev|--ignore-rev=*|--ignore-revs-file|--ignore-revs-file=*|-S)...
+annotate !(-M*|-C*|--reverse|--ignore-rev|--ignore-rev=*|--ignore-revs-file|--ignore-revs-file=*|-S)...
 # rgit stash (rgit #113): every call; -p/--patch is rgit #109 (cases excluded).
 stash
 # rgit pull (rgit #167): fetch and merge run as children of rgit. Not yet:
