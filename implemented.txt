@@ -315,3 +315,5 @@ checkout-index
 merge-base
 # rgit column (rgit #399).
 column
+# rgit fsck (rgit #95): objects, connectivity, refs, reflogs, indexes.
+fsck
