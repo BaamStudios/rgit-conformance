@@ -27,7 +27,6 @@ t7600-merge.sh 55 60 62 63 65  # --autostash and merge.autoStash are not impleme
 t7600-merge.sh 75  # merging a tag with several signatures reports the signature check, which needs GPG support (rgit #51)
 t7600-merge.sh 82  # "merge --quit" checks the rerere state, which rgit merge does not record (rgit #156)
 t7601-merge-pull-config.sh 62 63  # trying several strategies and keeping the best result, and the resolve strategy (rgit #153)
-t7601-merge-pull-config.sh 28 29 42 43  # pull.rebase=true from the configuration with a pull that is not a fast-forward needs rebase (rgit #154); pull with arguments is routed to rgit
 t7612-merge-verify-signatures.sh 3 5 9 10 12 15  # merge.verifySignatures needs signature verification (rgit #51)
 t7610-mergetool.sh 8 21  # submodules changed on both sides: rgit-merge does not merge submodule histories yet (rgit #55)
 t7610-mergetool.sh 12  # rerere (rgit #156)
