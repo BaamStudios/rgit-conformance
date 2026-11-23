@@ -28,9 +28,6 @@ symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
 # rgit-ident (rgit #122): git var.
 var
 # rgit #15: plumbing on rgit-object/rgit-odb. cat-file without the options
-# rgit does not implement yet (--textconv, --filters, --path: rgit #112, #147;
-# --use-mailmap: rgit #127; --filter: rgit #24).
-cat-file !(--filter|--filter=*|--no-filter|--textconv|--use-mailmap|--mailmap|--no-use-mailmap|--no-mailmap)...
 # hash-object: line endings, ident and working-tree-encoding (rgit #111); filter drivers do not run (rgit #112).
 hash-object
 mktag
@@ -39,10 +36,7 @@ mktree
 init
 # rgit-revwalk (rgit #78, #46): rev-list and log with the walk, ordering,
 # limiting, boundary, sides, ref sets, --stdin, --objects and built-in
-# format options and --cherry-pick/--cherry-mark/--cherry (rgit #137);
-# no paths, no reflogs, no %-formats; log
 # without --grep/--author/--committer (no match colouring yet).
-rev-list @(--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--all|--cherry-pick|--cherry-mark|--cherry|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*%G*|email|mboxrd)|--format=!(*%G*|email|mboxrd)|--encoding=*|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
 # rgit ls-tree (rgit #88): every call.
 ls-tree
 # rgit ls-files and update-index (rgit #39): every call.
@@ -62,8 +56,6 @@ for-each-ref !(*%\(?(\*)@(is-base|signature)*)...
 # rgit commit (rgit #45, #128): -m/-F/editor, -a, paths with -o/-i,
 # --amend, --author, --date, cleanup and status options, -t/commit.template,
 # -s, --trailer, -C/-c, --fixup, --squash, -v, --dry-run and the status
-# formats, --pathspec-from-file. Not yet: -S, -p, --interactive.
-commit @(-p|--patch|-U|-U?*|--unified|--unified=*|--inter-hunk-context|--inter-hunk-context=*|--interactive|-q|--quiet|-m|-m?*|--message|--message=*|-F|-F?*|--file|--file=*|--author|--author=*|--date|--date=*|--reset-author|-e|--edit|--no-edit|--cleanup|--cleanup=*|--status|--no-status|-a|--all|-i|--include|-o|--only|-n|--no-verify|--verify|--amend|--no-post-rewrite|--post-rewrite|-u|-u@(no|normal|all)|--untracked-files|--untracked-files=*|--allow-empty|--allow-empty-message|-v|--verbose|--no-verbose|-c|-c?*|--reedit-message|--reedit-message=*|-C|-C?*|--reuse-message|--reuse-message=*|--fixup|--fixup=*|--squash|--squash=*|--trailer|--trailer=*|-s|--signoff|--no-signoff|-t|-t?*|--template|--template=*|--dry-run|--short|--porcelain|--long|-z|--null|--branch|--no-branch|--ahead-behind|--no-ahead-behind|--no-gpg-sign|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|-+([qaeinovsz])?([mFcCt])|--|-|!(-*))...
 # rgit add (rgit #41): everything except the interactive modes (rgit #109),
 # --renormalize (rgit #111), --refresh and --no-all/--ignore-removal.
 add @(-p|--patch|-U|-U?*|--unified|--unified=*|--inter-hunk-context|--inter-hunk-context=*|-i|--interactive|-e|--edit|--auto-advance|-n|--dry-run|-v|--verbose|-f|--force|-u|--update|-A|--all|-N|--intent-to-add|--ignore-errors|--no-ignore-errors|--ignore-missing|--sparse|--chmod=*|--no-chmod|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--warn-embedded-repo|--no-warn-embedded-repo|--|!(-*))...
@@ -71,7 +63,6 @@ add @(-p|--patch|-U|-U?*|--unified|--unified=*|--inter-hunk-context|--inter-hunk
 mv
 # rgit switch and branch checkout (rgit #42), checkout of paths with
 # --overlay/--no-overlay, --ours/--theirs and --pathspec-from-file
-# (rgit #108). Not yet: -m/--merge and --conflict (rgit #158), -p/--patch
 # rgit clean (rgit #110): every call.
 clean
 # rgit status --ignored (rgit #323): porcelain and short format calls that
@@ -95,10 +86,8 @@ diff @(--color|--color=@(always|never|auto)|--no-color)
 # --diff-algorithm) for two files; not yet per-driver diff.<driver>.algorithm
 # from attributes.
 diff --no-index @(--patience|--histogram|--minimal|--diff-algorithm=*|--anchored=*)... !(-*) !(-*)
-# rgit restore (rgit #108). Not yet: -m/--merge and --conflict (rgit #158),
 # -p/--patch (rgit #109), --recurse-submodules (rgit #121).
 restore @(-p|--patch) ...
-restore !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*)...
 # rgit-attr (rgit #38): git check-attr.
 check-attr
 # rgit stripspace and interpret-trailers (rgit #129): every call.
@@ -122,7 +111,6 @@ help *...
 # rgit apply (rgit #149): every call. --3way and binary patches are rgit #150;
 # only t4117 calls --3way (with --reject, which both refuse alike).
 apply
-# rgit tag (rgit #130): creating, deleting and listing tags. Not yet:
 # signing and verifying signatures (-s, -u, -v; rgit #51) and
 # --format with %(is-base) or %(signature) (rgit #401, #51).
 tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--format|--format=*%\(?(\*)@(is-base|signature)*)...
@@ -131,8 +119,6 @@ describe
 name-rev
 # rgit reflog (rgit #101, #325): every subcommand but show, which is log -g (rgit #47).
 reflog @(expire|delete|drop|write|exists|list) ...
-# rgit cherry-pick and revert on the sequencer (rgit #58). Not yet: -S
-# (rgit #51), rerere (rgit #156), the strategies resolve, octopus and
 # subtree and the whitespace -X options (rgit #153).
 cherry-pick !(-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|--strategy=@(octopus|resolve)|octopus|resolve)...
 revert !(-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|--strategy=@(octopus|resolve)|octopus|resolve)...
@@ -150,7 +136,6 @@ stash
 # rgit pull (rgit #167): fetch and merge or rebase run as children of rgit.
 # Not yet: --rebase=interactive and --rebase=merges unless it is a
 # fast-forward (rgit #155), --autostash with a merge (rgit #57), --all (rgit
-# fetch), --recurse-submodules (rgit #121), signatures (rgit #51) and the
 # strategies and -X options rgit merge lacks (rgit #153). --autostash goes to
 # rgit only together with --rebase (the second and third line). Without
 # arguments it stays with the reference git.
@@ -205,11 +190,8 @@ credential-cache--daemon
 format-patch
 format-patch !(--notes|--notes=*|--no-notes|--base|--base=*|--attach|--attach=*|--inline|--inline=*|--commit-list-format|--commit-list-format=*|--interdiff=*|--range-diff=*|--creation-factor=*|--relative|--relative=*)...
 # (rgit #109), --recurse-submodules (rgit #121).
-switch !(-m|--merge|--conflict|--conflict=*|--recurse-submodules|--recurse-submodules=*)...
 reset @(-p|--patch) ...
 checkout @(-p|--patch) ...
-checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*)...
-checkout !(-m|--merge|--conflict|--conflict=*|-p|--patch|--recurse-submodules|--recurse-submodules=*)...
 # rgit #104: linked worktrees.
 worktree
 # rgit #136: am, mailinfo, mailsplit.
@@ -226,7 +208,6 @@ patch-id
 cherry
 # rev-list --bisect, --bisect-vars, --bisect-all and rev-parse --bisect
 # (rgit #132).
-rev-list @(--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--bisect|--bisect-vars|--bisect-all|--all|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*%G*|email|mboxrd)|--format=!(*%G*|email|mboxrd)|--encoding=*|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
 # rgit rebase (rgit #154): the merge back end, interactive rebase, --exec,
 # --autosquash and --edit-todo (rgit #155). Not yet: --rebase-merges
 # (rgit #155), the apply back end (--apply, -C, --whitespace;
@@ -294,12 +275,9 @@ fetch @(-q|--quiet|-v|--verbose|-p|--prune|-n|--no-tags|-t|--tags|--dry-run|--pr
 # git. Not yet: fetch/clone --recurse-submodules (rgit #115), --filter
 # (rgit #24), --negotiate-only and --prefetch (rgit #164), clone
 # --sparse/--bundle-uri (rgit #172), clone --ref-format=reftable (rgit #31),
-# push --force-with-lease,
-# --force-if-includes, --signed (rgit #165).
 ls-remote
 fetch !(--recurse-submodules|--recurse-submodules=*|--no-recurse-submodules|--filter|--filter=*|--negotiate-only|--prefetch|--bundle-uri|--bundle-uri=*)...
 clone !(--ref-format=reftable|--recurse-submodules|--recurse-submodules=*|--recursive|--recursive=*|--filter|--filter=*|--sparse|--bundle-uri|--bundle-uri=*|--shallow-submodules|--also-filter-submodules)...
-push !(--force-with-lease|--force-with-lease=*|--force-if-includes|--signed|--signed=*|--recurse-submodules|--recurse-submodules=*)...
 # rgit write-tree and commit-tree (rgit #123, #319): every call.
 write-tree
 commit-tree
@@ -317,3 +295,59 @@ merge-base
 column
 # rgit fsck (rgit #95): objects, connectivity, refs, reflogs, indexes.
 fsck
+# rgit #19: pack-objects with delta search, thin packs and <base-name>
+# output, except the options rgit does not implement yet.
+pack-objects !(--include-tag|--incremental|--local|--unpacked|--unpacked=*|--max-pack-size=*|--stdin-packs|--stdin-packs=*|--shallow|--keep-true-parents|--honor-pack-keep|--keep-pack=*|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--cruft|--cruft-expiration=*|--reflog|--indexed-objects|--write-bitmap-index|--filter=*|--missing=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
+# push --signed (rgit #165, #51).
+push !(--signed|--signed=*|--recurse-submodules|--recurse-submodules=*)...
+# send-pack without push certificates (rgit #51) and the remote-helper
+# modes --stateless-rpc / --helper-status (rgit #165).
+send-pack !(--signed|--signed=*|--stateless-rpc|--helper-status)...
+# rgit does not implement yet (--filter: rgit #24; --textconv in batch
+# mode: rgit #147). --textconv of single objects (rgit #147).
+cat-file --textconv !(-*)
+cat-file !(--filter|--filter=*|--no-filter|--textconv)...
+# rgit #115: git submodule, every subcommand, and submodule--helper
+# get-default-remote.
+submodule
+submodule--helper get-default-remote ...
+# format options, --cherry-pick/--cherry-mark/--cherry (rgit #137) and the
+# sources and output options of rgit #394 (--reflog, --exclude-hidden,
+# --disk-usage, -z, ...); no %-formats; log
+rev-list @(--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--all|-z|--reflog|--single-worktree|--ignore-missing|--indexed-objects|--alternate-refs|--unpacked|--disk-usage|--disk-usage=*|--maximal-only|--exclude-hidden=*|--cherry-pick|--cherry-mark|--cherry|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*%G*|email|mboxrd)|--format=!(*%G*|email|mboxrd)|--encoding=*|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
+rev-list @(--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--full-history|--dense|--sparse|--simplify-merges|--show-pulls|--remove-empty|--simplify-by-decoration|--exclude-first-parent-only|--|--bisect|--bisect-vars|--bisect-all|--all|-z|--reflog|--single-worktree|--ignore-missing|--indexed-objects|--alternate-refs|--unpacked|--disk-usage|--disk-usage=*|--maximal-only|--exclude-hidden=*|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*%G*|email|mboxrd)|--format=!(*%G*|email|mboxrd)|--encoding=*|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
+# rgit shortlog and check-mailmap (rgit #127): every call.
+shortlog
+check-mailmap
+rev-list @(--all|--cherry-pick|--cherry-mark|--cherry|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*describe*|email|mboxrd)|--format=!(*describe*|email|mboxrd)|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
+log @(--show-signature|--no-show-signature|--all|--cherry-pick|--cherry-mark|--cherry|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--pretty|--pretty=!(*describe*|email|mboxrd)|--format=!(*describe*|email|mboxrd)|--date=*|--no-decorate|--decorate|--decorate=@(short|full|auto|no)|--decorate-refs=*|--decorate-refs-exclude=*|--clear-decorations|-z|--no-notes|--color|--color=@(always|never|auto)|--no-color|--mailmap|--no-mailmap|--use-mailmap|--no-use-mailmap|!(-*|*@{*))...
+# formats with %(describe) (rgit #131) and %(is-base).
+for-each-ref !(*%\(?(\*)@(describe|is-base)*)...
+# formats, --pathspec-from-file, -S (rgit #51). Not yet: -p, --interactive.
+commit @(-S|-S?*|--gpg-sign|--gpg-sign=*|-p|--patch|-U|-U?*|--unified|--unified=*|--inter-hunk-context|--inter-hunk-context=*|--interactive|-q|--quiet|-m|-m?*|--message|--message=*|-F|-F?*|--file|--file=*|--author|--author=*|--date|--date=*|--reset-author|-e|--edit|--no-edit|--cleanup|--cleanup=*|--status|--no-status|-a|--all|-i|--include|-o|--only|-n|--no-verify|--verify|--amend|--no-post-rewrite|--post-rewrite|-u|-u@(no|normal|all)|--untracked-files|--untracked-files=*|--allow-empty|--allow-empty-message|-v|--verbose|--no-verbose|-c|-c?*|--reedit-message|--reedit-message=*|-C|-C?*|--reuse-message|--reuse-message=*|--fixup|--fixup=*|--squash|--squash=*|--trailer|--trailer=*|-s|--signoff|--no-signoff|-t|-t?*|--template|--template=*|--dry-run|--short|--porcelain|--long|-z|--null|--branch|--no-branch|--ahead-behind|--no-ahead-behind|--no-gpg-sign|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|-+([qaeinovsz])?([mFcCt])|--|-|!(-*))...
+# (rgit #108), -m/--merge and --conflict for paths and branches (rgit #402).
+# Not yet: -p/--patch
+# rgit restore (rgit #108), -m/--merge and --conflict (rgit #402). Not yet:
+restore !(-p|--patch|--recurse-submodules|--recurse-submodules=*)...
+# rgit merge (rgit #57) on the merge engine (rgit #55), signing and
+# --verify-signatures (rgit #51). Not yet: --autostash, rerere (rgit #156), the
+merge !(--autostash|--rerere-autoupdate|-s@(octopus|resolve|subtree)|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
+# rgit tag (rgit #130): creating, deleting and listing tags, signing and
+# verifying (-s, -u, -v; rgit #51). Not yet: --column, and
+# --format with %(describe) or %(is-base) (rgit #102).
+tag !(--column|--column=*|--format|--format=*%\(?(\*)@(describe|is-base)*)...
+# rgit cherry-pick and revert on the sequencer (rgit #58), -S (rgit #51).
+# Not yet: rerere (rgit #156), the strategies resolve, octopus and
+cherry-pick !(--rerere-autoupdate|--no-rerere-autoupdate|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
+revert !(--rerere-autoupdate|--no-rerere-autoupdate|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*)...
+# fetch), --recurse-submodules (rgit #121) and the
+pull !(-v|--verbose|--all|--recurse-submodules|--recurse-submodules=*|-s@(octopus|resolve|subtree)|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*|--rebase=@(i|interactive|m|merges)|--autostash)...
+pull @(-r|--rebase|--rebase=@(true|yes|on|1)) !(-v|--verbose|--all|--recurse-submodules|--recurse-submodules=*|-s@(octopus|resolve|subtree)|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*|--rebase=@(i|interactive|m|merges)|--no-rebase|--rebase=@(false|no|off|0))...
+pull !(-v|--verbose|--all|--recurse-submodules|--recurse-submodules=*|-s@(octopus|resolve|subtree)|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*|--rebase=@(i|interactive|m|merges)|--no-rebase|--rebase=@(false|no|off|0)|-r|--rebase|--rebase=@(true|yes|on|1))... @(-r|--rebase|--rebase=@(true|yes|on|1)) !(-v|--verbose|--all|--recurse-submodules|--recurse-submodules=*|-s@(octopus|resolve|subtree)|--strategy=@(octopus|resolve|subtree)|octopus|resolve|subtree|-X@(ignore-*|renormalize|no-renormalize|subtree*)|--strategy-option=@(ignore-*|renormalize|no-renormalize|subtree*)|ignore-*|renormalize|no-renormalize|subtree=*|--rebase=@(i|interactive|m|merges)|--no-rebase|--rebase=@(false|no|off|0))...
+switch !(--recurse-submodules|--recurse-submodules=*)...
+checkout !(-p|--patch|-2|-3|--ours|--theirs|--no-overlay|--pathspec-from-file|--pathspec-from-file|--pathspec-from-file=*|--pathspec-file-nul|--recurse-submodules|--recurse-submodules=*)...
+checkout !(-p|--patch|--recurse-submodules|--recurse-submodules=*)...
+rev-list @(--bisect|--bisect-vars|--bisect-all|--all|--branches|--branches=*|--tags|--tags=*|--remotes|--remotes=*|--glob=*|--exclude=*|--not|--stdin|--end-of-options|--no-walk|--no-walk=@(sorted|unsorted)|--do-walk|--topo-order|--date-order|--author-date-order|--reverse|--first-parent|--parents|--children|--boundary|--left-right|--left-only|--right-only|--ancestry-path|--ancestry-path=*|--merges|--no-merges|--min-parents=*|--max-parents=*|--no-min-parents|--no-max-parents|--since=*|--after=*|--until=*|--before=*|--author=*|--committer=*|--grep=*|-i|--regexp-ignore-case|-E|--extended-regexp|-F|--fixed-strings|--basic-regexp|--all-match|--invert-grep|--abbrev-commit|--no-abbrev-commit|--abbrev|--abbrev=+([0-9])|--no-abbrev|--oneline|-n|-n+([0-9])|-+([0-9])|--max-count|--max-count=+([0-9])|--skip|--skip=+([0-9])|--max-age=*|--min-age=*|--timestamp|--header|--quiet|--count|--objects|--objects-edge|--objects-edge-aggressive|--in-commit-order|--object-names|--no-object-names|--pretty|--pretty=!(*describe*|email|mboxrd)|--format=!(*describe*|email|mboxrd)|--date=*|--no-commit-header|--commit-header|--color|--color=@(always|never|auto)|--no-color|!(-*|*@{*))...
+# rgit signing (rgit #51): verify-commit, verify-tag.
+verify-commit
+verify-tag
