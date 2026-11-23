@@ -25,3 +25,5 @@ rgit-config = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
 tempfile = "3"
 rgit-remote = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
 rgit-trailer = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
+rgit-revwalk = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
+rgit-messages = { git = "https://github.com/BaamStudios/rgit", branch = "main" }

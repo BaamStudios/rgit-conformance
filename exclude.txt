@@ -108,4 +108,3 @@ t7424-submodule-mixed-ref-formats.sh 2 3 5 6 7  # create reftable repositories; 
 t4069-remerge-diff.sh 3 5 6  # log/show do not limit commits by --diff-filter, -S or --find-object (rgit #410)
 t7810-grep.sh 39 97 217 220  # "... errors without PCRE": the reference git is built without PCRE, so -P fails there; rgit always supports -P (rgit #134)
 t7300-clean.sh 54  # "avoid traversing into ignored directories" counts the directories-visited data of the read_directory region in GIT_TRACE2_PERF output, which rgit does not log yet (rgit #180)
-t5505-remote.sh 43  # 43 "add --mirror setting HEAD": a fetch from a mirror remote updates HEAD, which rgit fetch does not do yet (rgit #164)
