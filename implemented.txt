@@ -45,14 +45,14 @@ update-index
 # rgit-config (rgit #28, #99), including --blob (rgit #252).
 config
 # rgit-refs (rgit #29, #102, #103): update-ref without --batch-updates,
-# show-ref, pack-refs, git refs, and for-each-ref: every call except
-# formats with %(is-base) (rgit #401) and %(signature) (rgit #51).
+# show-ref, pack-refs, git refs (not migrate, rgit #31), and for-each-ref:
+# every call except formats with %(signature) (rgit #51).
 update-ref !(--batch-updates|-0)...
 show-ref
 pack-refs
-refs list !(*%\(?(\*)@(is-base|signature)*)...
-refs @(exists|optimize|create|update|delete|rename) ...
-for-each-ref !(*%\(?(\*)@(is-base|signature)*)...
+refs list !(*%\(?(\*)signature*)...
+refs @(exists|optimize|create|update|delete|rename|verify) ...
+for-each-ref !(*%\(?(\*)signature*)...
 # rgit commit (rgit #45, #128): -m/-F/editor, -a, paths with -o/-i,
 # --amend, --author, --date, cleanup and status options, -t/commit.template,
 # -s, --trailer, -C/-c, --fixup, --squash, -v, --dry-run and the status
@@ -76,11 +76,11 @@ remote
 # rgit hook (rgit #76): `hook run` and `hook list`.
 hook
 # rgit #75: colour of branch listings and diffs.
-# rgit branch (rgit #330, #401): listing with filters, sorting, formats
-# and columns, --edit-description, --create-reflog, deletion.
-branch @(--color|--color=@(always|never|auto)|--no-color|-a|--all|-r|--remotes|-v|-vv|--verbose|-i|--ignore-case|--omit-empty|--contains=*|--no-contains=*|--merged=*|--no-merged=*|--points-at=*|--sort=*|--no-sort|--format=*|--abbrev|--abbrev=*|--no-abbrev|--column|--column=*|--no-column)...
-branch @(-l|--list|--contains|--no-contains|--merged|--no-merged|--points-at) ...
-branch @(-d|-D|--delete|--edit-description|--create-reflog) ...
+# rgit branch (rgit #330, #401, #507): every call except --forked,
+# --delete-merged/--dry-run and --recurse-submodules; a call without
+# arguments cannot be matched without routing every call. The names t5510
+# creates in reftable repositories stay forwarded (reftable: rgit #31).
+branch !(--forked|--forked=*|--delete-merged|--delete-merged=*|--dry-run|--recurse-submodules|--no-recurse-submodules|branch1|bRanch1|foo|foo/bar|Foo|Foo/bar)...
 diff @(--color|--color=@(always|never|auto)|--no-color)
 # rgit #53: diff algorithms (--patience, --histogram, --minimal, --anchored,
 # --diff-algorithm) for two files; not yet per-driver diff.<driver>.algorithm
@@ -112,8 +112,8 @@ help *...
 # only t4117 calls --3way (with --reject, which both refuse alike).
 apply
 # signing and verifying signatures (-s, -u, -v; rgit #51) and
-# --format with %(is-base) or %(signature) (rgit #401, #51).
-tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--format|--format=*%\(?(\*)@(is-base|signature)*)...
+# --format with %(signature) (rgit #51).
+tag !(-*([!-])[suv]*|--sign|--local-user|--local-user=*|--verify|--format|--format=*%\(?(\*)signature*)...
 # rgit describe and name-rev (rgit #131): every call.
 describe
 name-rev
