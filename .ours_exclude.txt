@@ -16,6 +16,7 @@ t7300-clean.sh 54  # "avoid traversing into ignored directories" counts read_dir
 t5505-remote.sh 43 68  # 43 "add --mirror setting HEAD": a fetch from a mirror remote updates HEAD, which rgit fetch does not do yet (rgit #164); 68 "rename a remote" checks the trace2 progress region "Renaming remote references" (rgit #180)
 t1800-hook.sh 77 78 79  # "hook.jobs=-1 / hook.<event>.jobs=-1 / -j-1 resolves to online_cpus()" read the hook region from GIT_TRACE2_EVENT, which rgit does not write (rgit #180); without the trace file test_grep aborts the script
 t2070-restore.sh 13  # "restore --merge to unresolve after (mistaken) resolution": restore --merge (rgit #158) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
+t6135-pathspec-with-attrs.sh 23 24 25 26 27  # attr: pathspec magic in git add (rgit #360)
 t4114-apply-typechange.sh 9 10  # binary patches (GIT binary patch) are rgit #150
 t4116-apply-reverse.sh 2 3 5 6  # apply --binary of binary files is rgit #150
 t4141-apply-too-large.sh 4  # decoding of binary patches ("corrupt binary patch") is rgit #150
@@ -89,25 +90,15 @@ t4053-diff-no-index.sh 17 22  # external diff (GIT_EXTERNAL_DIFF, diff.external,
 t4056-diff-order.sh 16 17  # combined diff with -O (rgit #148)
 t4013-diff-various.sh 85 122 124 129 136  # log/show diffs of merges and path-limited log --patch-with-stat (rgit #126, #124)
 t5300-pack-object.sh 57  # pushing from a partial clone needs the missing blobs fetched lazily (rgit #24)
-t5510-fetch.sh 35  # fetch --prune must fail when packed-refs.new is in the way (rgit #164)
-t5510-fetch.sh 41 42 43  # fetch --atomic does not run the reference-transaction hook (rgit #164)
 t5510-fetch.sh 57  # fetching from a bundle (rgit #172)
 t5510-fetch.sh 83 84  # fetch.writeCommitGraph (rgit #22)
-t5510-fetch.sh 221  # --negotiation-include sends a have twice when the negotiator also reaches it (rgit #164)
-t5516-fetch-push.sh 10 11 12 14 15 16  # push.negotiate (rgit #165)
-t5516-fetch-push.sh 68 69 70  # deleting a ref the remote does not have (rgit #165)
-t5516-fetch-push.sh 81 83  # remotes from $GIT_DIR/branches use the remote's HEAD (rgit #168)
-t5516-fetch-push.sh 99 106  # the message for an unadvertised object in a want (rgit #164)
-t5516-fetch-push.sh 109  # push.default=upstream mapping through remote.<name>.fetch (rgit #165)
+t5510-fetch.sh 41  # fetch --atomic: git also prepares a create-only transaction for refs/remotes/origin/HEAD that the hook sees in its "preparing" state; rgit skips it when the symref exists (rgit #164)
+t5510-fetch.sh 221  # --negotiation-include: git sends "done" in the first request when the negotiator runs out, rgit waits for the ACKs and sends the common commit again (rgit #164)
+t5516-fetch-push.sh 10 11 12 14 15 16  # push.negotiate (rgit #165); the cases count rounds and packed objects in GIT_TRACE2_EVENT (rgit #180)
 t5516-fetch-push.sh 125 126  # push.useBitmaps and pack.usePathWalk (rgit #19)
-t5541-http-push-smart.sh 28 41  # HTTP push: progress to a non-tty and coloured errors/hints (rgit #181)
+t5500-fetch-pack.sh 44  # "in_vain reset upon ACK" counts negotiation rounds in GIT_TRACE2_EVENT (rgit #180)
+t5703-upload-pack-ref-in-want.sh 9  # "fetching with exact OID" counts negotiation rounds in GIT_TRACE2_EVENT (rgit #180)
+t5541-http-push-smart.sh 4 18 28 39 41  # HTTP push: GIT_CURL_VERBOSE trace, chunked POST, progress, reflog URL scrubbing, colours (rgit #162, #181)
+t5551-http-fetch-smart.sh 13 17 26 27 30 31 39 40 41 50 51 53 54  # HTTP client: askpass, redirects, dumb http-backend, cookies, chunked requests, http.curloptResolve, credentials in URLs (rgit #162)
 t5601-clone.sh 99  # shallow clone of a local path (rgit #94)
 t5601-clone.sh 113 114 115  # bundle URIs (rgit #172)
-t0090-cache-tree.sh 23  # "cache-tree is used by write-tree when valid" reads the cache_tree region from GIT_TRACE2_PERF, which rgit does not write (rgit #180)
-t5551-http-fetch-smart.sh 13  # "credential.interactive=false skips askpass" checks the trace2 region "credential interactive"; rgit has no trace2 (rgit #180)
-t5551-http-fetch-smart.sh 26  # "dumb clone via http-backend respects namespace": rgit has no dumb HTTP (rgit #186)
-t5559-http-fetch-smart-http2.sh 13  # trace2 region "credential interactive" (rgit #180)
-t5559-http-fetch-smart-http2.sh 26  # dumb HTTP (rgit #186)
-t5559-http-fetch-smart-http2.sh 47 48 49  # 47 creates a SHA-256 repository with git init (rgit #12); 48 and 49 clone it
-t5563-simple-http-auth.sh 18  # "http.emptyAuth=auto attempts Negotiate": rgit has no GSS-Negotiate (docs/http-config.md)
-t5549-fetch-push-http.sh 1 2 3  # read the push negotiation from GIT_TRACE2_EVENT (rgit #180); push.negotiate is rgit #165
