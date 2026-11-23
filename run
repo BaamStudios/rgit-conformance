@@ -670,10 +670,14 @@ check_baseline() {
 			# t1517 generates two cases per command from the strict list of
 			# commands, so every new rgit command shifts the numbers. A known
 			# breakage (todo) landing on a formerly passing number is that
-			# shift, not a regression (#42).
-			if test "$script" = t1517-outside-repo.sh && test "$st" = todo
+			# shift, not a regression (#42). The same holds for a known
+			# breakage rgit passes (fixed): it was never a passing case
+			# under that number before (e.g. `submodule --help-all`, which
+			# fails in git and passes since rgit implements submodule).
+			if test "$script" = t1517-outside-repo.sh &&
+				{ test "$st" = todo || test "$st" = fixed; }
 			then
-				echo "renumbered (ignored): $mode $script case $n: todo (was pass)" >&2
+				echo "renumbered (ignored): $mode $script case $n: $st (was pass)" >&2
 				continue
 			fi
 			if test "$st" != pass
