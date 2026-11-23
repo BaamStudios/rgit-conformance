@@ -33,6 +33,9 @@ t3701-add-interactive.sh 77 78  # diff-files does not show gitlink changes yet (
 t5351-unpack-large-objects.sh 3 6  # 3 needs GIT_ALLOC_LIMIT and streaming of large objects (rgit #89); 6 counts fsync events in GIT_TRACE2_EVENT (rgit #180)
 t7506-status-submodule.sh 32  # "diff --submodule with merge conflict in .gitmodules" needs the combined diff of the conflicted .gitmodules (rgit #148)
 t5700-protocol-v1.sh 18 19 21  # SHA-256 repositories: rgit init refuses --object-format=sha256 until rgit #12
+t5702-protocol-v2.sh 20  # SHA-256 repositories: rgit init refuses --object-format=sha256 until rgit #12
+t5702-protocol-v2.sh 37  # dynamic fetch of a missing object needs partial clone (rgit #24); without it the script stops with an error
+t5702-protocol-v2.sh 77 79 80 81 82 83 84 85 86  # packfile URIs in protocol v2 fetch responses (rgit #538)
 t4205-log-pretty-formats.sh 43  # "%>|(<n>)" column alignment with --graph: user formats do not count the graph width yet (rgit #47)
 t4215-log-skewed-merges.sh 11 12 13 14  # --graph-lane-limit is not implemented yet (rgit #47)
 t1006-cat-file.sh 205  # "%(deltabase) reports packed delta bases": rgit repack writes no deltas until the delta search lands (rgit #19)
@@ -51,13 +54,11 @@ t4013-diff-various.sh 102 103 104 105  # log --decorate shows notes (rgit #138)
 t4045-diff-relative.sh 35  # external diff (GIT_EXTERNAL_DIFF, rgit #147)
 t4052-stat-output.sh 33 39 45 53 54 68 74 80  # format-patch --graph (rgit #135)
 t4053-diff-no-index.sh 17 22  # external diff (GIT_EXTERNAL_DIFF, diff.external, rgit #147)
-t4013-diff-various.sh 122 124 136  # log/show diffs of merges and path-limited log --patch-with-stat (rgit #126, #124)
 t5300-pack-object.sh 57  # pushing from a partial clone needs the missing blobs fetched lazily (rgit #24)
 t5510-fetch.sh 57  # fetching from a bundle (rgit #172)
 t5510-fetch.sh 83 84  # fetch.writeCommitGraph (rgit #22)
 t5516-fetch-push.sh 125 126  # push.useBitmaps and pack.usePathWalk (rgit #19)
 t5541-http-push-smart.sh 28 41  # HTTP push: progress to a non-tty and coloured errors/hints (rgit #181)
-t5601-clone.sh 99  # shallow clone of a local path (rgit #94)
 t5601-clone.sh 113 114 115  # bundle URIs (rgit #172)
 t0090-cache-tree.sh 23  # "cache-tree is used by write-tree when valid" reads the cache_tree region from GIT_TRACE2_PERF, which rgit does not write (rgit #180)
 t5551-http-fetch-smart.sh 13  # "credential.interactive=false skips askpass" checks the trace2 region "credential interactive"; rgit has no trace2 (rgit #180)
