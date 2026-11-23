@@ -24,3 +24,4 @@ rgit-pathspec = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
 rgit-config = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
 tempfile = "3"
 rgit-remote = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
+rgit-trailer = { git = "https://github.com/BaamStudios/rgit", branch = "main" }
