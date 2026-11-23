@@ -269,8 +269,10 @@ column
 # rgit fsck (rgit #95): objects, connectivity, refs, reflogs, indexes.
 fsck
 # rgit #19: pack-objects with delta search, thin packs and <base-name>
-# output, except the options rgit does not implement yet.
-pack-objects !(--include-tag|--incremental|--local|--unpacked|--unpacked=*|--max-pack-size=*|--stdin-packs|--stdin-packs=*|--shallow|--keep-true-parents|--honor-pack-keep|--keep-pack=*|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--cruft|--cruft-expiration=*|--reflog|--indexed-objects|--write-bitmap-index|--filter=*|--missing=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
+# output, --include-tag, --reflog, --indexed-objects, --local,
+# --incremental, --unpacked, --honor-pack-keep, --keep-pack, --max-pack-size
+# (rgit #19), except the options rgit does not implement yet.
+pack-objects !(--unpacked=*|--stdin-packs|--stdin-packs=*|--shallow|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--cruft|--cruft-expiration=*|--write-bitmap-index|--filter=*|--missing=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
 # push and send-pack, with push certificates (rgit #165). Not the
 # remote-helper modes --stateless-rpc / --helper-status (rgit #171).
 push !(--recurse-submodules|--recurse-submodules=*)...
