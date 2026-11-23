@@ -36,7 +36,6 @@ t5300-pack-object.sh 57  # pushing from a partial clone needs the missing blobs 
 t5510-fetch.sh 57  # fetching from a bundle (rgit #172)
 t5510-fetch.sh 83 84  # fetch.writeCommitGraph (rgit #22)
 t5516-fetch-push.sh 125 126  # push.useBitmaps and pack.usePathWalk (rgit #19)
-t5541-http-push-smart.sh 28 41  # HTTP push: progress to a non-tty and coloured errors/hints (rgit #181)
 t5601-clone.sh 113 114 115  # bundle URIs (rgit #172)
 t5551-http-fetch-smart.sh 13  # "credential.interactive=false skips askpass" checks the trace2 region "credential interactive"; rgit has no trace2 (rgit #180)
 t5551-http-fetch-smart.sh 26  # "dumb clone via http-backend respects namespace": rgit has no dumb HTTP (rgit #186)
@@ -60,7 +59,6 @@ t7406-submodule-update.sh 12  # clone does not apply url.<base>.insteadOf (rgit 
 t7406-submodule-update.sh 54 55 61  # shallow submodule clones need clone --depth (rgit #94)
 t7406-submodule-update.sh 63  # --filter needs partial clone (rgit #24)
 t7424-submodule-mixed-ref-formats.sh 2 3 5 6 7  # create reftable repositories; rgit init refuses them until rgit #31
-t4069-remerge-diff.sh 3 5 6  # log/show do not limit commits by --diff-filter, -S or --find-object (rgit #410)
 t7810-grep.sh 39 97 217 220  # "... errors without PCRE": the reference git is built without PCRE, so -P fails there; rgit always supports -P (rgit #134)
 t7300-clean.sh 54  # "avoid traversing into ignored directories" counts the directories-visited data of the read_directory region in GIT_TRACE2_PERF output, which rgit does not log yet (rgit #180)
 t4013-diff-various.sh 139 140 141 142 143 144 145 146 147 148 149 150 151 152 154 155  # format-patch: the signature and the --attach/--inline boundary hold rgit's version string (by design; the cases pass with the version replaced)
