@@ -28,7 +28,6 @@ t4150-am.sh 76  # "apply binary blob in partial clone": rgit apply does not fetc
 t4252-am-options.sh 2  # "interrupted am --whitespace=fix": rgit apply ignores --whitespace=fix (rgit #150)
 t4204-patch-id.sh 9 10 13 14 15 16 17 18 19 22  # the patches come from format-patch -O<orderfile> (format-patch routed to rgit), which needs -O from rgit #54
 t3500-cherry.sh 5  # "cherry in partial clone does bulk prefetch" needs a partial clone (rgit #24) and trace2 events (rgit #180)
-t3404-rebase-interactive.sh 53 54  # "rebase -i continue with only/unstaged submodule": rgit add of a conflicted submodule entry leaves the rebase stopped, so the following cases fail as well (rgit #155)
 t3701-add-interactive.sh 62  # diff.wsErrorHighlight in diff output (rgit #146)
 t3701-add-interactive.sh 77 78  # diff-files does not show gitlink changes yet (rgit #114)
 t5351-unpack-large-objects.sh 3 6  # 3 needs GIT_ALLOC_LIMIT and streaming of large objects (rgit #89); 6 counts fsync events in GIT_TRACE2_EVENT (rgit #180)
@@ -97,3 +96,4 @@ t4069-remerge-diff.sh 3 5 6  # log/show do not limit commits by --diff-filter, -
 t7810-grep.sh 39 97 217 220  # "... errors without PCRE": the reference git is built without PCRE, so -P fails there; rgit always supports -P (rgit #134)
 t7300-clean.sh 54  # "avoid traversing into ignored directories" counts the directories-visited data of the read_directory region in GIT_TRACE2_PERF output, which rgit does not log yet (rgit #180)
 t4013-diff-various.sh 139 140 141 142 143 144 145 146 147 148 149 150 151 152 154 155  # format-patch: the signature and the --attach/--inline boundary hold rgit's version string (by design; the cases pass with the version replaced)
+t3400-rebase.sh 27  # rebase --apply can copy notes: notes rewriting is rgit #138 (M4)
