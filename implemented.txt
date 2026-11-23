@@ -246,10 +246,9 @@ fetch @(-q|--quiet|-v|--verbose|-p|--prune|-n|--no-tags|-t|--tags|--dry-run|--pr
 # rgit fetch, clone, push, ls-remote (rgit #164, #166, #165, #314, #328,
 # #334, #318). Without arguments fetch and push stay with the reference
 # git. Not yet: fetch/clone --recurse-submodules (rgit #115), --filter
-# (rgit #24), --negotiate-only and --prefetch (rgit #164), clone
-# --sparse/--bundle-uri (rgit #172), clone --ref-format=reftable (rgit #31),
+# (rgit #24), clone --sparse/--bundle-uri (rgit #172), clone --ref-format=reftable (rgit #31),
 ls-remote
-fetch !(--recurse-submodules|--recurse-submodules=*|--no-recurse-submodules|--filter|--filter=*|--negotiate-only|--prefetch|--bundle-uri|--bundle-uri=*)...
+fetch !(--recurse-submodules|--recurse-submodules=*|--no-recurse-submodules|--filter|--filter=*|--bundle-uri|--bundle-uri=*)...
 clone !(--ref-format=reftable|--recurse-submodules|--recurse-submodules=*|--recursive|--recursive=*|--filter|--filter=*|--sparse|--bundle-uri|--bundle-uri=*|--shallow-submodules|--also-filter-submodules)...
 # rgit write-tree and commit-tree (rgit #123, #319): every call.
 write-tree
@@ -271,11 +270,10 @@ fsck
 # rgit #19: pack-objects with delta search, thin packs and <base-name>
 # output, except the options rgit does not implement yet.
 pack-objects !(--include-tag|--incremental|--local|--unpacked|--unpacked=*|--max-pack-size=*|--stdin-packs|--stdin-packs=*|--shallow|--keep-true-parents|--honor-pack-keep|--keep-pack=*|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--cruft|--cruft-expiration=*|--reflog|--indexed-objects|--write-bitmap-index|--filter=*|--missing=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
-# push --signed (rgit #165, #51).
-push !(--signed|--signed=*|--recurse-submodules|--recurse-submodules=*)...
-# send-pack without push certificates (rgit #51) and the remote-helper
-# modes --stateless-rpc / --helper-status (rgit #165).
-send-pack !(--signed|--signed=*|--stateless-rpc|--helper-status)...
+# push and send-pack, with push certificates (rgit #165). Not the
+# remote-helper modes --stateless-rpc / --helper-status (rgit #171).
+push !(--recurse-submodules|--recurse-submodules=*)...
+send-pack !(--stateless-rpc|--helper-status)...
 # rgit does not implement yet (--filter: rgit #24; --textconv in batch
 # mode: rgit #147). --textconv of single objects (rgit #147).
 cat-file --textconv !(-*)
