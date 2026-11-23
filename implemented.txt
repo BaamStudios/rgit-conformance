@@ -228,7 +228,7 @@ show @(--merge|--graph|--no-graph|--graph-indent|--no-graph-indent|--max-count-o
 verify-pack
 show-index
 count-objects
-# rgit #90: unpack-objects (-r recovery and big-object streaming #89 not yet).
+# rgit #90: unpack-objects (big-object streaming #89 not yet).
 unpack-objects
 # rgit #20, #92: housekeeping.
 prune
