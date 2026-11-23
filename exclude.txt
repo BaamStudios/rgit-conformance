@@ -20,7 +20,7 @@ t4141-apply-too-large.sh 4  # decoding of binary patches ("corrupt binary patch"
 t6000-rev-list-misc.sh 4 10 11  # 4 "rev-list --objects with pathspecs and copied files" passes a path without "--"; rev-list (routed to rgit) has no path limiting until rgit #124. 10 and 11 build on the history case 4 creates
 t6017-rev-list-stdin.sh 8 10 12 16 26  # the paths come through --stdin, so rev-list --stdin is routed to rgit, which has no path limiting until rgit #124
 t7600-merge.sh 82  # "merge --quit" checks the rerere state, which rgit merge does not record (rgit #156)
-t7610-mergetool.sh 12  # rerere (rgit #156)
+t7610-mergetool.sh 8 12  # rerere: merge does not reuse recorded resolutions (rgit #156)
 t6428-merge-conflicts-sparse.sh 2  # SKIP_WORKTREE entries in a merge (sparse checkout) are not handled by rgit merge
 t6120-describe.sh 75 76 77  # describe --dirty/--broken with a broken submodule gitfile: diff-index does not check submodules yet (rgit #114)
 t6120-describe.sh 95  # name-rev with a commit-graph and non-monotonic commit dates needs commit-graph generation numbers (rgit #22)
@@ -65,12 +65,11 @@ t7700-repack.sh 40  # --name-hash-version is checked in the trace2 output of pac
 t7700-repack.sh 47  # fails before repack runs: rgit add refuses the sparse index (rgit #119)
 t4013-diff-various.sh 102 103 104 105  # log --decorate shows notes (rgit #138)
 t4013-diff-various.sh 139 140 141 142 143 144 145 146 147 148 149 150 151 152 154 155  # format-patch: signature with rgit's version string, --attach/--inline (rgit #135)
-t4013-diff-various.sh 174  # combined diff with --line-prefix (rgit #148)
 t4045-diff-relative.sh 35  # external diff (GIT_EXTERNAL_DIFF, rgit #147)
 t4052-stat-output.sh 33 39 45 53 54 68 74 80  # format-patch --graph (rgit #135)
 t4053-diff-no-index.sh 17 22  # external diff (GIT_EXTERNAL_DIFF, diff.external, rgit #147)
 t4056-diff-order.sh 16 17  # combined diff with -O (rgit #148)
-t4013-diff-various.sh 85 122 124 129 136  # log/show diffs of merges and path-limited log --patch-with-stat (rgit #126, #124)
+t4013-diff-various.sh 122 124 136  # log/show diffs of merges and path-limited log --patch-with-stat (rgit #126, #124)
 t5300-pack-object.sh 57  # pushing from a partial clone needs the missing blobs fetched lazily (rgit #24)
 t5510-fetch.sh 57  # fetching from a bundle (rgit #172)
 t5510-fetch.sh 83 84  # fetch.writeCommitGraph (rgit #22)
@@ -86,8 +85,6 @@ t5559-http-fetch-smart-http2.sh 26  # dumb HTTP (rgit #186)
 t5559-http-fetch-smart-http2.sh 47 48 49  # 47 creates a SHA-256 repository with git init (rgit #12); 48 and 49 clone it
 t5563-simple-http-auth.sh 18  # "http.emptyAuth=auto attempts Negotiate": rgit has no GSS-Negotiate (docs/http-config.md)
 t5549-fetch-push-http.sh 1 2 3  # read the push negotiation from GIT_TRACE2_EVENT (rgit #180); push.negotiate is rgit #165
-t7610-mergetool.sh 8  # submodule conflicts: rgit-merge does not suggest resolutions from merge commits in the submodule (rgit #396)
-t6437-submodule-merge.sh 6 7 8  # submodule conflicts: suggested resolutions from merge commits in the submodule and the backwards/ambiguous cases (rgit #396)
 t4301-merge-tree-write-tree.sh 19  # a directory rename combined with rename/delete, modify/delete and a directory/file conflict is reported differently by rgit-merge's rename detection (rgit #151)
 t6200-fmt-merge-msg.sh 6 7 8 9 12  # the message for a signed tag shows the signature check, which needs GPG/SSH signature support (rgit #51)
 t2003-checkout-cache-mkdir.sh 9  # checkout-index --prefix with filter.<driver>.smudge: clean/smudge filter drivers are rgit #112
@@ -108,9 +105,9 @@ t7400-submodule-basic.sh 38  # creates a SHA-256 repository; rgit init refuses i
 t7400-submodule-basic.sh 65 107  # 65 format-patch/apply of a gitlink change (rgit #411); 107 needs the submodule commit 65 creates
 t7400-submodule-basic.sh 69 70  # add/reset/ls-files of a submodule path with a trailing slash (rgit #114)
 t7400-submodule-basic.sh 111  # submodule add --depth needs clone --depth (rgit #94)
-t7402-submodule-rebase.sh 6  # submodule conflicts in the merge engine (rgit #396)
 t7406-submodule-update.sh 12  # clone does not apply url.<base>.insteadOf (rgit #166)
 t7406-submodule-update.sh 54 55 61  # shallow submodule clones need clone --depth (rgit #94)
 t7406-submodule-update.sh 63  # --filter needs partial clone (rgit #24)
 t7408-submodule-reference.sh 11 15  # submodule.alternateLocation/alternateErrorStrategy are not implemented yet (rgit #115)
 t7424-submodule-mixed-ref-formats.sh 2 3 5 6 7  # create reftable repositories; rgit init refuses them until rgit #31
+t4069-remerge-diff.sh 3 5 6  # log/show do not limit commits by --diff-filter, -S or --find-object (rgit #410)
