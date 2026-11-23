@@ -125,7 +125,9 @@ jobs:
             echo
             if grep -q '^new passes' run.log
             then
-              echo '```'; grep '^new passes' run.log | sed 's/ (run --update-baseline)//'; echo '```'
+              n=$(grep -c '^new passes' run.log)
+              echo '```'; grep '^new passes' run.log | sed 's/ (run --update-baseline)//' | head -n 150; echo '```'
+              if test "$n" -gt 150; then echo "… and $((n - 150)) more lines (see run.log in the workflow artifacts)."; fi
             else
               echo "None."
             fi
