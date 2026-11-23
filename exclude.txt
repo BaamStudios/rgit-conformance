@@ -36,7 +36,6 @@ t5300-pack-object.sh 57  # pushing from a partial clone needs the missing blobs 
 t5510-fetch.sh 57  # fetching from a bundle (rgit #172)
 t5510-fetch.sh 83 84  # fetch.writeCommitGraph (rgit #22)
 t5516-fetch-push.sh 125 126  # push.useBitmaps and pack.usePathWalk (rgit #19)
-t5541-http-push-smart.sh 28 41  # HTTP push: progress to a non-tty and coloured errors/hints (rgit #181)
 t5601-clone.sh 113 114 115  # bundle URIs (rgit #172)
 t5551-http-fetch-smart.sh 13  # "credential.interactive=false skips askpass" checks the trace2 region "credential interactive"; rgit has no trace2 (rgit #180)
 t5551-http-fetch-smart.sh 26  # "dumb clone via http-backend respects namespace": rgit has no dumb HTTP (rgit #186)
@@ -44,12 +43,10 @@ t5559-http-fetch-smart-http2.sh 13  # trace2 region "credential interactive" (rg
 t5559-http-fetch-smart-http2.sh 26  # dumb HTTP (rgit #186)
 t5559-http-fetch-smart-http2.sh 47 48 49  # 47 creates a SHA-256 repository with git init (rgit #12); 48 and 49 clone it
 t5563-simple-http-auth.sh 18  # "http.emptyAuth=auto attempts Negotiate": rgit has no GSS-Negotiate (docs/http-config.md)
-t5549-fetch-push-http.sh 1 2 3  # read the push negotiation from GIT_TRACE2_EVENT (rgit #180); push.negotiate is rgit #165
 t5504-fetch-receive-strict.sh 6 7 8 9  # rgit refuses to send corrupt objects; the server reports an unpacker error instead of missing objects (intentional, rgit #528)
 t5300-pack-object.sh 2 3  # read the write_pack_file/wrote_bytes value from GIT_TRACE2_EVENT, which rgit does not write (rgit #180)
 t5510-fetch.sh 41  # fetch --atomic: git also prepares a create-only transaction for refs/remotes/origin/HEAD that the hook sees in its "preparing" state; rgit skips it when the symref exists (rgit #164)
 t5510-fetch.sh 221  # --negotiation-include: git sends "done" in the first request when the negotiator runs out, rgit waits for the ACKs and sends the common commit again (rgit #164)
-t5516-fetch-push.sh 10 11 12 14 15 16  # push.negotiate (rgit #165); the cases count rounds and packed objects in GIT_TRACE2_EVENT (rgit #180)
 t2070-restore.sh 14  # "restore --merge to unresolve after (mistaken) resolution": restore --merge (rgit #402) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
 t7201-co.sh 36  # "checkout -m works after (mistaken) resolution": checkout -m after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
 t2023-checkout-m.sh 3 4  # checkout -m after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
@@ -61,9 +58,7 @@ t7400-submodule-basic.sh 111  # submodule add --depth needs clone --depth (rgit 
 t7406-submodule-update.sh 12  # clone does not apply url.<base>.insteadOf (rgit #166)
 t7406-submodule-update.sh 54 55 61  # shallow submodule clones need clone --depth (rgit #94)
 t7406-submodule-update.sh 63  # --filter needs partial clone (rgit #24)
-t7408-submodule-reference.sh 11 15  # submodule.alternateLocation/alternateErrorStrategy are not implemented yet (rgit #115)
 t7424-submodule-mixed-ref-formats.sh 2 3 5 6 7  # create reftable repositories; rgit init refuses them until rgit #31
-t4069-remerge-diff.sh 3 5 6  # log/show do not limit commits by --diff-filter, -S or --find-object (rgit #410)
 t7810-grep.sh 39 97 217 220  # "... errors without PCRE": the reference git is built without PCRE, so -P fails there; rgit always supports -P (rgit #134)
 t7300-clean.sh 54  # "avoid traversing into ignored directories" counts the directories-visited data of the read_directory region in GIT_TRACE2_PERF output, which rgit does not log yet (rgit #180)
 t4013-diff-various.sh 139 140 141 142 143 144 145 146 147 148 149 150 151 152 154 155  # format-patch: the signature and the --attach/--inline boundary hold rgit's version string (by design; the cases pass with the version replaced)
