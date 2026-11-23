@@ -96,4 +96,3 @@ t7810-grep.sh 39 97 217 220  # "... errors without PCRE": the reference git is b
 t7300-clean.sh 54  # "avoid traversing into ignored directories" counts the directories-visited data of the read_directory region in GIT_TRACE2_PERF output, which rgit does not log yet (rgit #180)
 t4013-diff-various.sh 139 140 141 142 143 144 145 146 147 148 149 150 151 152 154 155  # format-patch: the signature and the --attach/--inline boundary hold rgit's version string (by design; the cases pass with the version replaced)
 t3400-rebase.sh 27  # rebase --apply can copy notes: notes rewriting is rgit #138 (M4)
-t3420-rebase-autostash.sh 6  # rebase --apply: restore autostash when the branch checkout fails: fixed by rgit #554 (drop this line after it is merged)
