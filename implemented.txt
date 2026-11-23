@@ -297,3 +297,13 @@ ls-remote
 fetch !(--recurse-submodules|--recurse-submodules=*|--no-recurse-submodules|--filter|--filter=*|--negotiate-only|--prefetch|--bundle-uri|--bundle-uri=*)...
 clone !(--ref-format=reftable|--recurse-submodules|--recurse-submodules=*|--recursive|--recursive=*|--filter|--filter=*|--sparse|--bundle-uri|--bundle-uri=*|--shallow-submodules|--also-filter-submodules)...
 push !(--force-with-lease|--force-with-lease=*|--force-if-includes|--signed|--signed=*|--recurse-submodules|--recurse-submodules=*)...
+# rgit write-tree and commit-tree (rgit #123, #319): every call. read-tree
+# (rgit #107, #319) with one or two trees; not yet three-way
+# merges (rgit #107).
+write-tree
+commit-tree
+read-tree @(-m|--reset|-u|-i|-n|--dry-run|-v|--trivial|--aggressive|--index-output=*|--prefix=*|--empty|-q|--quiet|--no-sparse-checkout)...
+read-tree @(-m|--reset|-u|-i|-n|--dry-run|-v|--trivial|--aggressive|--index-output=*|--prefix=*|--empty|-q|--quiet|--no-sparse-checkout)... !(-*)
+read-tree @(-m|--reset|-u|-i|-n|--dry-run|-v|--trivial|--aggressive|--index-output=*|--prefix=*|--empty|-q|--quiet|--no-sparse-checkout)... !(-*) !(-*)
+read-tree !(-*)
+read-tree !(-*) !(-*)
