@@ -36,7 +36,6 @@ t5300-pack-object.sh 57  # pushing from a partial clone needs the missing blobs 
 t5510-fetch.sh 57  # fetching from a bundle (rgit #172)
 t5510-fetch.sh 83 84  # fetch.writeCommitGraph (rgit #22)
 t5516-fetch-push.sh 125 126  # push.useBitmaps and pack.usePathWalk (rgit #19)
-t5541-http-push-smart.sh 28 41  # HTTP push: progress to a non-tty and coloured errors/hints (rgit #181)
 t5601-clone.sh 113 114 115  # bundle URIs (rgit #172)
 t5551-http-fetch-smart.sh 13  # "credential.interactive=false skips askpass" checks the trace2 region "credential interactive"; rgit has no trace2 (rgit #180)
 t5551-http-fetch-smart.sh 26  # "dumb clone via http-backend respects namespace": rgit has no dumb HTTP (rgit #186)
