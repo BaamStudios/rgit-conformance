@@ -5,13 +5,21 @@
 # naming the upstream path and version (binary files: byte-identical, listed
 # in t/BINARY-FILES).
 #
-# usage: import <git checkout> <path relative to t/>...
+# usage: import [--raw] <git checkout> <path relative to t/>...
 #   e.g. ./import ~/src/git t1006-cat-file.sh lib-loose.sh
-# The checkout must be at the version in REFERENCE_VERSION.
+# The checkout must be at the version in REFERENCE_VERSION. --raw copies
+# text data files byte-identical like binary files (no header; listed in
+# t/BINARY-FILES), for data a script reads whole (e.g. t0450/*).
 set -euo pipefail
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 version=$(tr -d ' \n' <"$ROOT/REFERENCE_VERSION")
-test $# -ge 2 || { sed -n '4,10p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
+raw=
+if test "${1:-}" = --raw
+then
+	raw=1
+	shift
+fi
+test $# -ge 2 || { sed -n '4,13p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 2; }
 src=$1; shift
 have=$(git -C "$src" describe --tags --exact-match 2>/dev/null || echo unknown)
 test "$have" = "$version" || { echo "import: $src is at $have, expected $version" >&2; exit 1; }
@@ -23,7 +31,7 @@ do
 	mkdir -p "$(dirname "$out")"
 	header="# rgit-conformance: copied unchanged from git $version, path t/$f
 # (https://github.com/git/git/blob/$version/t/$f). GPL-2.0, see LICENSE."
-	if ! grep -qI . "$in"
+	if test -n "$raw" || ! grep -qI . "$in"
 	then
 		# Binary data (e.g. t0013/shattered-1.pdf) must stay byte-identical;
 		# its origin is recorded in t/BINARY-FILES instead of a header.
