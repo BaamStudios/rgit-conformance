@@ -42,14 +42,14 @@ cargo update && cargo test # pick up the latest rgit main
 | `u-oidtree.c` | `tests/u_oidtree.rs` | `rgit-odb` (`ObjectDatabase::contains`, `resolve_prefix`); `insert_overwrites_data` not ported: rgit keeps no payload per id | #8, #32 |
 | `u-urlmatch-normalization.c` | `tests/u_urlmatch_normalization.rs` | `rgit-config` (`urlmatch::Url::parse`), `rgit-remote` (`url::parse_connect_url`); `length` not ported (rgit builds no normalized string); 45 checks rgit does not pass yet are listed in `KNOWN_GAPS` and skipped | #8, #159 |
 | `u-trailer.c` | `tests/u_trailer.rs` | `rgit-trailer` (`parse` without divider); the raw text of trailer lines is not checked (rgit keeps none) | #129, #407 |
+| `u-prio-queue.c` | `tests/u_prio_queue.rs` | `rgit-revwalk` (`PrioQueue`; LIFO mode from the start instead of clearing the compare function) | #266 |
+| `u-utf8-width.c` | `tests/u_utf8_width.rs` | `rgit-messages` (`width::display_width`, `display_width_raw`, `align`) | #266 |
 | `u-dir.c` (part) | `tests/u_dir.rs` | `rgit-pathspec` (`Pathspec::common_prefix`); `within_depth` pending, see below | #8, #106 |
 
 ### Pending: ported once the rgit type exists
 
 | Upstream file | What it tests | Needs | Issue |
 |---|---|---|---|
-| `u-prio-queue.c` | priority queue order, LIFO mode, replace | commit queue of the revision walk (not on rgit main yet; `BinaryHeap` uses in rgit-pack/-protocol are private) | #46 |
-| `u-utf8-width.c` | display width of CJK text, ANSI escapes, alignment | UTF-8 width helpers (not on rgit main yet) | #75 |
 | `u-list-objects-filter-options.c` | `--filter=` spec parsing | partial clone filters | #24 |
 | `u-dir.c` (`within_depth`) | path depth limit of the directory walk | directory walk (`--max-depth`) | #37 |
 | `u-reftable-basics.c` | reftable helpers (binary search, prefix compression, varints) | reftable | #31 |
