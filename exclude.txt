@@ -68,7 +68,6 @@ t4013-diff-various.sh 139 140 141 142 143 144 145 146 147 148 149 150 151 152 15
 t4045-diff-relative.sh 35  # external diff (GIT_EXTERNAL_DIFF, rgit #147)
 t4052-stat-output.sh 33 39 45 53 54 68 74 80  # format-patch --graph (rgit #135)
 t4053-diff-no-index.sh 17 22  # external diff (GIT_EXTERNAL_DIFF, diff.external, rgit #147)
-t4056-diff-order.sh 16 17  # combined diff with -O (rgit #148)
 t4013-diff-various.sh 122 124 136  # log/show diffs of merges and path-limited log --patch-with-stat (rgit #126, #124)
 t5300-pack-object.sh 57  # pushing from a partial clone needs the missing blobs fetched lazily (rgit #24)
 t5510-fetch.sh 57  # fetching from a bundle (rgit #172)
