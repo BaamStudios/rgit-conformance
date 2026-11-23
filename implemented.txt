@@ -98,8 +98,7 @@ merge !(-S*|--gpg-sign|--gpg-sign=*|--verify-signatures|--rerere-autoupdate)...
 # completion variants, from the variable list rgit builds from the
 # documentation). `git help` without arguments stays with the reference git.
 help *...
-# rgit apply (rgit #149): every call. --3way and binary patches are rgit #150;
-# only t4117 calls --3way (with --reject, which both refuse alike).
+# rgit apply (rgit #149, #150): every call.
 apply
 # signing and verifying signatures (-s, -u, -v; rgit #51) and
 # rgit describe and name-rev (rgit #131): every call.
