@@ -108,3 +108,4 @@ t6437-submodule-merge.sh 6 7 8  # submodule conflicts: suggested resolutions fro
 t4301-merge-tree-write-tree.sh 19  # a directory rename combined with rename/delete, modify/delete and a directory/file conflict is reported differently by rgit-merge's rename detection (rgit #151)
 t6200-fmt-merge-msg.sh 6 7 8 9 12  # the message for a signed tag shows the signature check, which needs GPG/SSH signature support (rgit #51)
 t2003-checkout-cache-mkdir.sh 9  # checkout-index --prefix with filter.<driver>.smudge: clean/smudge filter drivers are rgit #112
+t5504-fetch-receive-strict.sh 6 7 8 9  # rgit push hangs when an object to send is corrupt instead of failing like git (rgit #528)
