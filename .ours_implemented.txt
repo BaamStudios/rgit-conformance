@@ -315,7 +315,5 @@ checkout-index
 merge-base
 # rgit column (rgit #399).
 column
-# rgit #115: git submodule, every subcommand, and submodule--helper
-# get-default-remote.
-submodule
-submodule--helper get-default-remote ...
+# rgit fsck (rgit #95): objects, connectivity, refs, reflogs, indexes.
+fsck
