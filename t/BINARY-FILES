@@ -2,6 +2,8 @@
 # <path relative to t/> <git version>
 lib-gpg/gpgsm_cert.p12 v2.56.1
 t0013/shattered-1.pdf v2.56.1
+t0450/adoc-help-mismatches v2.56.1
+t0450/adoc-missing v2.56.1
 t1502/optionspec-neg v2.56.1
 t1502/optionspec-neg.help v2.56.1
 t1502/optionspec.help v2.56.1

@@ -107,3 +107,4 @@ t7610-mergetool.sh 8  # submodule conflicts: rgit-merge does not suggest resolut
 t6437-submodule-merge.sh 6 7 8  # submodule conflicts: suggested resolutions from merge commits in the submodule and the backwards/ambiguous cases (rgit #396)
 t4301-merge-tree-write-tree.sh 19  # a directory rename combined with rename/delete, modify/delete and a directory/file conflict is reported differently by rgit-merge's rename detection (rgit #151)
 t6200-fmt-merge-msg.sh 6 7 8 9 12  # the message for a signed tag shows the signature check, which needs GPG/SSH signature support (rgit #51)
+t2003-checkout-cache-mkdir.sh 9  # checkout-index --prefix with filter.<driver>.smudge: clean/smudge filter drivers are rgit #112
