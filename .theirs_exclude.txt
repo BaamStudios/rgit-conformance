@@ -3,6 +3,8 @@ t0001-init.sh 52 53 54 56 57 60  # creates SHA-256 repositories; rgit init refus
 t0001-init.sh 73 74 75 76 78 79 80 85 86  # creates reftable repositories; rgit init refuses them until rgit #31
 t1500-rev-parse.sh 72  # creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
 t5300-pack-object.sh 50 60 61  # create SHA-256 repositories with git init; rgit init refuses them until rgit #12
+t5300-pack-object.sh 2 3  # read the write_pack_file/wrote_bytes value from GIT_TRACE2_EVENT, which rgit does not write (rgit #180)
+t5316-pack-delta-depth.sh 1 2 3  # 1 counts the progress regions of index-pack in GIT_TRACE2_EVENT; index-pack is routed to rgit, which writes no trace2 (rgit #180). 2 and 3 use the packs 1 creates
 t1060-object-corruption.sh 16  # "internal tree objects are not missing" runs rev-list --objects (rgit #46) and needs the empty tree (rgit #261)
 t6101-rev-parse-parents.sh 17  # "large graft octopus" needs info/grafts (rgit #105)
 t0005-signals.sh 1  # "sigchain works" tests the C signal-handler chain of git itself through the reference test-tool sigchain; rgit has no such API (rgit #98, #192)
@@ -14,7 +16,6 @@ t2060-switch.sh 16  # "switch back when temporarily detached and checked out els
 t7300-clean.sh 54  # "avoid traversing into ignored directories" counts read_directory visits in GIT_TRACE2_PERF output; rgit has no trace2 (rgit #180)
 t5505-remote.sh 43 68  # 43 "add --mirror setting HEAD": a fetch from a mirror remote updates HEAD, which rgit fetch does not do yet (rgit #164); 68 "rename a remote" checks the trace2 progress region "Renaming remote references" (rgit #180)
 t1800-hook.sh 77 78 79  # "hook.jobs=-1 / hook.<event>.jobs=-1 / -j-1 resolves to online_cpus()" read the hook region from GIT_TRACE2_EVENT, which rgit does not write (rgit #180); without the trace file test_grep aborts the script
-t2070-restore.sh 14  # "restore --merge to unresolve after (mistaken) resolution": restore --merge (rgit #402) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
 t4114-apply-typechange.sh 9 10  # binary patches (GIT binary patch) are rgit #150
 t4116-apply-reverse.sh 2 3 5 6  # apply --binary of binary files is rgit #150
 t4141-apply-too-large.sh 4  # decoding of binary patches ("corrupt binary patch") is rgit #150
@@ -29,9 +30,6 @@ t6120-describe.sh 107  # describe --contains with misleading tagger dates: name-
 t3504-cherry-pick-rerere.sh 4 5 6 7 8  # rerere and --rerere-autoupdate (rgit #156)
 t3908-stash-in-worktree.sh 2  # reset --hard inside a linked worktree updates the main HEAD: per-worktree refs are rgit #104
 t4202-log.sh 17 18 21 113  # log --format with path arguments (log.follow, pathspec magic, ".."): the routed log has no path limiting yet (rgit #124)
-t7201-co.sh 36 37  # "checkout -m works after (mistaken) resolution" (and "... to remove"): checkout -m after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
-t7201-co.sh 11  # "checkout -m creates a recoverable stash on conflict" checks the stash with log -g, the reflog walk of rgit log (rgit #47); in strict mode a failure leaves the stash behind for case 17
-t2023-checkout-m.sh 3 4  # checkout -m after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
 t7201-co.sh 48  # "custom merge driver with checkout -m": merge (routed to rgit) does not run merge.<driver>.driver from gitattributes yet (rgit #153)
 t4150-am.sh 70  # "am -3 works with rerere": rgit has no rerere yet (rgit #136)
 t4150-am.sh 75  # "am and .gitattibutes": rgit apply does not run filter.<driver>.smudge when it writes files yet (rgit #150)
@@ -43,9 +41,9 @@ t4204-patch-id.sh 21  # format-patch --attach (format-patch routed to rgit) is r
 t3500-cherry.sh 5  # "cherry in partial clone does bulk prefetch" needs a partial clone (rgit #24) and trace2 events (rgit #180)
 t3404-rebase-interactive.sh 53 54  # "rebase -i continue with only/unstaged submodule": rgit add of a conflicted submodule entry leaves the rebase stopped, so the following cases fail as well (rgit #155)
 t6030-bisect-porcelain.sh 63 64  # bisecting with pathspecs: start goes to the reference git, rgit bad/good stop with "pathspecs are not supported yet" (rgit #132)
-t5351-unpack-large-objects.sh 3 6  # 3 needs GIT_ALLOC_LIMIT and streaming of large objects (rgit #89); 6 counts fsync events in GIT_TRACE2_EVENT (rgit #180)
 t3701-add-interactive.sh 62  # diff.wsErrorHighlight in diff output (rgit #146)
 t3701-add-interactive.sh 77 78  # diff-files does not show gitlink changes yet (rgit #114)
+t5351-unpack-large-objects.sh 3 6  # 3 needs GIT_ALLOC_LIMIT and streaming of large objects (rgit #89); 6 counts fsync events in GIT_TRACE2_EVENT (rgit #180)
 t6422-merge-rename-corner-cases.sh 25 27  # rename/rename(1to2) of a binary file, duplicate tree entries in a merge input (rgit #151)
 t6423-merge-rename-directories.sh 4 26 59 66 67 70 82  # directory rename corner cases 1d, 7e, 12f, 12l, 12n2, 13e (rgit #151)
 t4152-am-subjects.sh 13  # "multiline subject preserved (format-patch -k | am -k)": rgit format-patch -k joins the lines of a multi-line subject instead of encoding the newlines (rgit #135)
@@ -70,27 +68,28 @@ t7700-repack.sh 47  # fails before repack runs: rgit add refuses the sparse inde
 t4013-diff-various.sh 102 103 104 105  # log --decorate shows notes (rgit #138)
 t4013-diff-various.sh 139 140 141 142 143 144 145 146 147 148 149 150 151 152 154 155  # format-patch: signature with rgit's version string, --attach/--inline (rgit #135)
 t4013-diff-various.sh 174  # combined diff with --line-prefix (rgit #148)
-t4034-diff-words.sh 53 54  # php: the word alignment of --word-diff differs (rgit #146)
 t4045-diff-relative.sh 35  # external diff (GIT_EXTERNAL_DIFF, rgit #147)
 t4052-stat-output.sh 33 39 45 53 54 68 74 80  # format-patch --graph (rgit #135)
 t4053-diff-no-index.sh 17 22  # external diff (GIT_EXTERNAL_DIFF, diff.external, rgit #147)
 t4056-diff-order.sh 16 17  # combined diff with -O (rgit #148)
 t4013-diff-various.sh 85 122 124 129 136  # log/show diffs of merges and path-limited log --patch-with-stat (rgit #126, #124)
 t5300-pack-object.sh 57  # pushing from a partial clone needs the missing blobs fetched lazily (rgit #24)
-t5510-fetch.sh 35  # fetch --prune must fail when packed-refs.new is in the way (rgit #164)
-t5510-fetch.sh 41 42 43  # fetch --atomic does not run the reference-transaction hook (rgit #164)
 t5510-fetch.sh 57  # fetching from a bundle (rgit #172)
 t5510-fetch.sh 83 84  # fetch.writeCommitGraph (rgit #22)
-t5510-fetch.sh 221  # --negotiation-include sends a have twice when the negotiator also reaches it (rgit #164)
-t5516-fetch-push.sh 10 11 12 14 15 16  # push.negotiate (rgit #165)
-t5516-fetch-push.sh 68 69 70  # deleting a ref the remote does not have (rgit #165)
-t5516-fetch-push.sh 81 83  # remotes from $GIT_DIR/branches use the remote's HEAD (rgit #168)
-t5516-fetch-push.sh 99 106  # the message for an unadvertised object in a want (rgit #164)
-t5516-fetch-push.sh 109  # push.default=upstream mapping through remote.<name>.fetch (rgit #165)
+t5510-fetch.sh 41  # fetch --atomic: git also prepares a create-only transaction for refs/remotes/origin/HEAD that the hook sees in its "preparing" state; rgit skips it when the symref exists (rgit #164)
+t5510-fetch.sh 221  # --negotiation-include: git sends "done" in the first request when the negotiator runs out, rgit waits for the ACKs and sends the common commit again (rgit #164)
+t5516-fetch-push.sh 10 11 12 14 15 16  # push.negotiate (rgit #165); the cases count rounds and packed objects in GIT_TRACE2_EVENT (rgit #180)
 t5516-fetch-push.sh 125 126  # push.useBitmaps and pack.usePathWalk (rgit #19)
-t5541-http-push-smart.sh 28 41  # HTTP push: progress to a non-tty and coloured errors/hints (rgit #181)
+t5500-fetch-pack.sh 44  # "in_vain reset upon ACK" counts negotiation rounds in GIT_TRACE2_EVENT (rgit #180)
+t5703-upload-pack-ref-in-want.sh 9  # "fetching with exact OID" counts negotiation rounds in GIT_TRACE2_EVENT (rgit #180)
 t5601-clone.sh 99  # shallow clone of a local path (rgit #94)
 t5601-clone.sh 113 114 115  # bundle URIs (rgit #172)
+t2070-restore.sh 14  # "restore --merge to unresolve after (mistaken) resolution": restore --merge (rgit #402) after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
+t7201-co.sh 36 37  # "checkout -m works after (mistaken) resolution" (and "... to remove"): checkout -m after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
+t7201-co.sh 11  # "checkout -m creates a recoverable stash on conflict" checks the stash with log -g, the reflog walk of rgit log (rgit #47); in strict mode a failure leaves the stash behind for case 17
+t2023-checkout-m.sh 3 4  # checkout -m after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
+t4034-diff-words.sh 53 54  # php: the word alignment of --word-diff differs (rgit #146)
+t5541-http-push-smart.sh 28 41  # HTTP push: progress to a non-tty and coloured errors/hints (rgit #181)
 t0090-cache-tree.sh 23  # "cache-tree is used by write-tree when valid" reads the cache_tree region from GIT_TRACE2_PERF, which rgit does not write (rgit #180)
 t5551-http-fetch-smart.sh 13  # "credential.interactive=false skips askpass" checks the trace2 region "credential interactive"; rgit has no trace2 (rgit #180)
 t5551-http-fetch-smart.sh 26  # "dumb clone via http-backend respects namespace": rgit has no dumb HTTP (rgit #186)
