@@ -134,7 +134,7 @@ jobs:
             echo
             echo "### baseline.txt"
             echo
-            echo '```diff'; git diff -- baseline.txt | tail -n +5; echo '```'
+            echo '```diff'; git diff -- baseline.txt | tail -n +5 | head -n 300; echo '```'
           } >pr-body.md
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
