@@ -28,7 +28,10 @@ symbolic-ref @(-q|--quiet|--short|--recurse|--no-recurse)... !(-*)
 # rgit-ident (rgit #122): git var.
 var
 # rgit #15: plumbing on rgit-object/rgit-odb. cat-file without the options
-# rgit does not implement yet (--textconv, --filters, --path: rgit #112, #147;
+# rgit does not implement yet (--filter: rgit #24; --textconv in batch
+# mode: rgit #147). --textconv of single objects (rgit #147).
+cat-file --textconv !(-*)
+cat-file !(--filter|--filter=*|--no-filter|--textconv)...
 # hash-object: line endings, ident and working-tree-encoding (rgit #111); filter drivers do not run (rgit #112).
 hash-object
 mktag
@@ -301,8 +304,6 @@ column
 # get-default-remote.
 submodule
 submodule--helper get-default-remote ...
-# --filter: rgit #24).
-cat-file !(--filter|--filter=*|--no-filter|--textconv)...
 # format options, --cherry-pick/--cherry-mark/--cherry (rgit #137) and the
 # sources and output options of rgit #394 (--reflog, --exclude-hidden,
 # --disk-usage, -z, ...); no %-formats; log
