@@ -216,11 +216,8 @@ worktree
 am
 mailinfo
 mailsplit
-# rgit grep (rgit #134). Not yet: --recurse-submodules (rgit #121), -P
-# look-around and atomic groups, \Q...\E, backreferences in any syntax, and
-# -o together with context options (two lines: no -o, or no context).
-grep !(--recurse-submodules|--recurse-submodules=*|*\(\?[=!<>]*|*\\Q*|*\\[1-9]*|-*([!-])o*|--only-matching)...
-grep !(--recurse-submodules|--recurse-submodules=*|*\(\?[=!<>]*|*\\Q*|*\\[1-9]*|-*([!-])@(A|B|C|W|[0-9])*|--after-context|--after-context=*|--before-context|--before-context=*|--context|--context=*|--function-context)...
+# rgit grep (rgit #134): every call.
+grep
 # rgit patch-id and cherry (rgit #137): every call.
 patch-id
 cherry
