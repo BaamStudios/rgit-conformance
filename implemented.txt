@@ -115,10 +115,9 @@ revert !(-S*|--gpg-sign|--gpg-sign=*|--rerere-autoupdate|--no-rerere-autoupdate|
 # octopus and subtree and the whitespace -X options (rgit #153). Without
 # arguments it stays with the reference git: a line without tokens would
 # route the unsupported options as well.
-# rgit blame and annotate (rgit #133). Not yet: -M/-C move and copy
-# detection, --reverse, --ignore-rev/--ignore-revs-file and -S.
-blame !(-M*|-C*|--reverse|--ignore-rev|--ignore-rev=*|--ignore-revs-file|--ignore-revs-file=*|-S)...
-annotate !(-M*|-C*|--reverse|--ignore-rev|--ignore-rev=*|--ignore-revs-file|--ignore-revs-file=*|-S)...
+# rgit blame and annotate (rgit #133): every call.
+blame
+annotate
 # rgit stash (rgit #113): every call; -p/--patch is rgit #109 (cases excluded).
 stash
 # rgit pull (rgit #167): fetch and merge or rebase run as children of rgit.
