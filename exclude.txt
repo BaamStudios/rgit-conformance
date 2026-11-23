@@ -3,47 +3,36 @@ t0001-init.sh 52 53 54 56 57 60  # creates SHA-256 repositories; rgit init refus
 t0001-init.sh 73 74 75 76 78 79 80 85 86  # creates reftable repositories; rgit init refuses them until rgit #31
 t1500-rev-parse.sh 72  # creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
 t5300-pack-object.sh 50 60 61  # create SHA-256 repositories with git init; rgit init refuses them until rgit #12
-t1060-object-corruption.sh 16  # "internal tree objects are not missing" runs rev-list --objects (rgit #46) and needs the empty tree (rgit #261)
 t6101-rev-parse-parents.sh 17  # "large graft octopus" needs info/grafts (rgit #105)
-t0005-signals.sh 1  # "sigchain works" tests the C signal-handler chain of git itself through the reference test-tool sigchain; rgit has no such API (rgit #98, #192)
 t5510-fetch.sh 228 231  # create reftable repositories with git init; rgit init refuses them until rgit #31
 t5551-http-fetch-smart.sh 47 48 49  # 47 creates a SHA-256 repository with git init (rgit #12); 48 and 49 clone it
 t5601-clone.sh 104  # "clone with GIT_DEFAULT_HASH" creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
 t5601-clone.sh 108  # "batch missing blob request during checkout": checkout (routed to rgit) in a partial clone must fetch the missing blobs from the promisor remote (rgit #24)
-t2060-switch.sh 16  # "switch back when temporarily detached and checked out elsewhere" needs worktrees and the refusal to check out a branch used by another worktree (--ignore-other-worktrees, rgit #104)
 t4114-apply-typechange.sh 9 10  # binary patches (GIT binary patch) are rgit #150
 t4116-apply-reverse.sh 2 3 5 6  # apply --binary of binary files is rgit #150
 t4141-apply-too-large.sh 4  # decoding of binary patches ("corrupt binary patch") is rgit #150
 t7600-merge.sh 82  # "merge --quit" checks the rerere state, which rgit merge does not record (rgit #156)
 t7610-mergetool.sh 8 12  # rerere: merge does not reuse recorded resolutions (rgit #156)
 t6428-merge-conflicts-sparse.sh 2  # SKIP_WORKTREE entries in a merge (sparse checkout) are not handled by rgit merge
-t6120-describe.sh 75 76 77  # describe --dirty/--broken with a broken submodule gitfile: diff-index does not check submodules yet (rgit #114)
 t6120-describe.sh 95  # name-rev with a commit-graph and non-monotonic commit dates needs commit-graph generation numbers (rgit #22)
 t3504-cherry-pick-rerere.sh 4 5 6 7 8  # rerere and --rerere-autoupdate (rgit #156)
-t3908-stash-in-worktree.sh 2  # reset --hard inside a linked worktree updates the main HEAD: per-worktree refs are rgit #104
 t7201-co.sh 48  # "custom merge driver with checkout -m": merge (routed to rgit) does not run merge.<driver>.driver from gitattributes yet (rgit #153)
 t4150-am.sh 70  # "am -3 works with rerere": rgit has no rerere yet (rgit #136)
 t4150-am.sh 75  # "am and .gitattibutes": rgit apply does not run filter.<driver>.smudge when it writes files yet (rgit #150)
 t4150-am.sh 76  # "apply binary blob in partial clone": rgit apply does not fetch missing blobs from the promisor remote (rgit #24)
 t4252-am-options.sh 2  # "interrupted am --whitespace=fix": rgit apply ignores --whitespace=fix (rgit #150)
-t4204-patch-id.sh 9 10 13 14 15 16 17 18 19 22  # the patches come from format-patch -O<orderfile> (format-patch routed to rgit), which needs -O from rgit #54
 t3500-cherry.sh 5  # "cherry in partial clone does bulk prefetch" needs a partial clone (rgit #24) and trace2 events (rgit #180)
-t3701-add-interactive.sh 62  # diff.wsErrorHighlight in diff output (rgit #146)
-t3701-add-interactive.sh 77 78  # diff-files does not show gitlink changes yet (rgit #114)
 t5351-unpack-large-objects.sh 3 6  # 3 needs GIT_ALLOC_LIMIT and streaming of large objects (rgit #89); 6 counts fsync events in GIT_TRACE2_EVENT (rgit #180)
 t7506-status-submodule.sh 32  # "diff --submodule with merge conflict in .gitmodules" needs the combined diff of the conflicted .gitmodules (rgit #148)
 t5700-protocol-v1.sh 18 19 21  # SHA-256 repositories: rgit init refuses --object-format=sha256 until rgit #12
 t5702-protocol-v2.sh 20  # SHA-256 repositories: rgit init refuses --object-format=sha256 until rgit #12
 t5702-protocol-v2.sh 37  # dynamic fetch of a missing object needs partial clone (rgit #24); without it the script stops with an error
 t5702-protocol-v2.sh 77 79 80 81 82 83 84 85 86  # packfile URIs in protocol v2 fetch responses (rgit #538)
-t4205-log-pretty-formats.sh 43  # "%>|(<n>)" column alignment with --graph: user formats do not count the graph width yet (rgit #47)
 t4215-log-skewed-merges.sh 11 12 13 14  # --graph-lane-limit is not implemented yet (rgit #47)
 t1006-cat-file.sh 205  # "%(deltabase) reports packed delta bases": rgit repack writes no deltas until the delta search lands (rgit #19)
-t5304-prune.sh 29 30  # repack -adb: rgit writes no reachability bitmaps (rgit #23)
 t6500-gc.sh 10 35  # check the commit-graph progress of gc; rgit gc writes no commit-graph (rgit #22)
 t6500-gc.sh 15 16  # gc.repackFilter / gc.repackFilterTo (rgit #24)
-t6500-gc.sh 17 18 19 23 26 27 28 29 30 31  # cruft packs, --max-cruft-size, --expire-to (rgit #96)
-t6501-freshen-objects.sh 30  # repack -adb: rgit writes no reachability bitmaps (rgit #23)
+t6500-gc.sh 17 18 19 23 26 27 28 29  # cruft packs, --max-cruft-size, --expire-to (rgit #96)
 t7700-repack.sh 2 3 6 15  # reachability bitmaps (rgit #23)
 t7700-repack.sh 13 14  # repack --cruft (rgit #96)
 t7700-repack.sh 20 22 23 24 25 26  # repack --filter (rgit #24)
@@ -60,7 +49,6 @@ t5510-fetch.sh 83 84  # fetch.writeCommitGraph (rgit #22)
 t5516-fetch-push.sh 125 126  # push.useBitmaps and pack.usePathWalk (rgit #19)
 t5541-http-push-smart.sh 28 41  # HTTP push: progress to a non-tty and coloured errors/hints (rgit #181)
 t5601-clone.sh 113 114 115  # bundle URIs (rgit #172)
-t0090-cache-tree.sh 23  # "cache-tree is used by write-tree when valid" reads the cache_tree region from GIT_TRACE2_PERF, which rgit does not write (rgit #180)
 t5551-http-fetch-smart.sh 13  # "credential.interactive=false skips askpass" checks the trace2 region "credential interactive"; rgit has no trace2 (rgit #180)
 t5551-http-fetch-smart.sh 26  # "dumb clone via http-backend respects namespace": rgit has no dumb HTTP (rgit #186)
 t5559-http-fetch-smart-http2.sh 13  # trace2 region "credential interactive" (rgit #180)
@@ -69,7 +57,6 @@ t5559-http-fetch-smart-http2.sh 47 48 49  # 47 creates a SHA-256 repository with
 t5563-simple-http-auth.sh 18  # "http.emptyAuth=auto attempts Negotiate": rgit has no GSS-Negotiate (docs/http-config.md)
 t5549-fetch-push-http.sh 1 2 3  # read the push negotiation from GIT_TRACE2_EVENT (rgit #180); push.negotiate is rgit #165
 t6200-fmt-merge-msg.sh 6 7 8 9 12  # the message for a signed tag shows the signature check, which needs GPG/SSH signature support (rgit #51)
-t2003-checkout-cache-mkdir.sh 9  # checkout-index --prefix with filter.<driver>.smudge: clean/smudge filter drivers are rgit #112
 t5504-fetch-receive-strict.sh 6 7 8 9  # rgit push hangs when an object to send is corrupt instead of failing like git (rgit #528)
 t5300-pack-object.sh 2 3  # read the write_pack_file/wrote_bytes value from GIT_TRACE2_EVENT, which rgit does not write (rgit #180)
 t5316-pack-delta-depth.sh 1 2 3  # 1 counts the progress regions of index-pack in GIT_TRACE2_EVENT; index-pack is routed to rgit, which writes no trace2 (rgit #180). 2 and 3 use the packs 1 creates
