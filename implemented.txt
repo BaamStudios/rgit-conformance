@@ -249,6 +249,8 @@ unpack-objects
 # rgit #20, #92: housekeeping.
 prune
 prune-packed
+# rgit #71: update-server-info (Gitea runs it after every repository creation).
+update-server-info
 repack
 gc
 rev-parse !(--local-env-vars|--git-path|--resolve-git-dir|--path-format=*|--show-superproject-working-tree|--shared-index-path|--prefix|--exclude-hidden=*|--output-object-format=*)...
@@ -301,6 +303,9 @@ push *...
 send-pack !(--stateless-rpc|--helper-status)...
 # rgit #69, #175: receive-pack with its policies, hooks and proc-receive.
 receive-pack
+# rgit #581: fetch-pack, not the remote-helper mode --stateless-rpc and not
+# --filter (partial clone, rgit #24).
+fetch-pack !(--stateless-rpc|--filter=*)...
 # rgit does not implement yet (--filter: rgit #24; --textconv in batch
 # mode: rgit #147). --textconv of single objects (rgit #147).
 cat-file --textconv !(-*)
@@ -414,3 +419,45 @@ get-tar-commit-id
 # rgit #97: maintenance (all subcommands and schedulers) and for-each-repo.
 maintenance
 for-each-repo
+# rgit #70: http-backend (the CGI; its services run as rgit upload-pack /
+# receive-pack, or the reference programs where rgit hands them over).
+http-backend
+# rgit #158: legacy merge plumbing and the strategy programs.
+merge-index
+merge-one-file
+unpack-file
+merge-ours
+merge-resolve
+merge-octopus
+merge-subtree
+merge-recursive
+# rgit #184: bugreport and diagnose.
+bugreport
+diagnose
+# rgit #143: newer inspection plumbing.
+url-parse
+repo
+last-modified
+diff-pairs
+format-rev
+# rgit #142: `replay` is not routed yet: t6429 (cases 2-9) replays a commit
+# and its revert across a rename, which needs the renames git carries from
+# one replayed commit to the next (and counts its `diffcore_rename` trace2
+# regions). rgit's replay merges every commit on its own. t3650 runs rgit's
+# replay in strict mode.
+# rgit #157: mergetool and difftool.
+difftool
+difftool--helper
+# rgit #176: git daemon (one `daemon --serve` process per connection, which
+# runs rgit's own upload-pack, protocol v0, v1 and v2: rgit #68, #174) and
+# git shell, every call.
+daemon
+shell
+# upload-pack (rgit #68, #174): only the call `upload-pack .`, whose output
+# t9850 compares with what `git shell` runs. Every other form stays with the
+# reference git for now: t5702 case 60 needs `packfile-uris` (rgit #629), and
+# t5701 compares the advertised `agent=` with `git version`, which fallback
+# mode answers with the reference git.
+upload-pack .
+# rgit #142: git history (reword, split, fixup, drop).
+history

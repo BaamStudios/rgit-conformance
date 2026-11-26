@@ -134,13 +134,13 @@ Transport scripts need servers (rgit #87). They come from upstream unchanged:
 | Fixture | Server | Needs |
 |---|---|---|
 | `t/lib-httpd.sh`, `t/lib-httpd/` | Apache httpd with the reference `git http-backend` as CGI | Apache 2.4 with its modules (`apache2` on Debian/Ubuntu, `apache` on Arch), not running as root |
-| `t/lib-git-daemon.sh` | reference `git daemon` on a local port | FIFOs |
+| `t/lib-git-daemon.sh` | `git daemon` of the git under test on a local port: rgit's daemon in the rgit passes (rgit #176; `daemon` is in `implemented.txt`), which serves with rgit's `upload-pack` | FIFOs |
 | fake ssh | `t/helper/test-fake-ssh` of the reference build, copied by the scripts (e.g. `t5601-clone.sh`) | nothing |
 | `t/lib-credential.sh` | credential helper checks (e.g. `t0302-credential-store.sh`) | nothing |
 
-The server side is always the reference git (until rgit #70); these scripts
-test the git under test as a client against real git. In the rgit passes the
-reference `--exec-path` (fallback) provides `git-http-backend` to Apache.
+Over HTTP the server side is always the reference git (until rgit #70); those
+scripts test the git under test as a client against real git. In the rgit passes
+the reference `--exec-path` (fallback) provides `git-http-backend` to Apache.
 
 Without a web server `lib-httpd.sh` skips the script (or, in `t5601` and
 `t5510`, which source it halfway, the rest of it). `run` records the reason
