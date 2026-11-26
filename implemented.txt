@@ -175,6 +175,10 @@ reset @(-p|--patch) ...
 checkout @(-p|--patch) ...
 # rgit #104: linked worktrees.
 worktree
+# rgit #43: sparse-checkout (`--sparse-index` only sets index.sparse; the
+# sparse index itself is rgit #119).
+sparse-checkout
+
 # rgit #136: am, mailinfo, mailsplit.
 am
 mailinfo
@@ -247,10 +251,10 @@ fetch @(-q|--quiet|-v|--verbose|-p|--prune|-n|--no-tags|-t|--tags|--dry-run|--pr
 # rgit fetch, clone, push, ls-remote (rgit #164, #166, #165, #314, #328,
 # #334, #318). Without arguments fetch and push stay with the reference
 # git. Not yet: fetch/clone --recurse-submodules (rgit #115), --filter
-# (rgit #24), clone --sparse/--bundle-uri (rgit #172).
+# (rgit #24), clone --bundle-uri (rgit #172).
 ls-remote
 fetch !(--recurse-submodules|--recurse-submodules=*|--no-recurse-submodules|--filter|--filter=*|--bundle-uri|--bundle-uri=*)...
-clone !(--recurse-submodules|--recurse-submodules=*|--recursive|--recursive=*|--filter|--filter=*|--sparse|--bundle-uri|--bundle-uri=*|--shallow-submodules|--also-filter-submodules)...
+clone !(--recurse-submodules|--recurse-submodules=*|--recursive|--recursive=*|--filter|--filter=*|--bundle-uri|--bundle-uri=*|--shallow-submodules|--also-filter-submodules)...
 # rgit write-tree and commit-tree (rgit #123, #319): every call.
 write-tree
 commit-tree
