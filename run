@@ -674,8 +674,13 @@ check_baseline() {
 			# breakage rgit passes (fixed): it was never a passing case
 			# under that number before (e.g. `submodule --help-all`, which
 			# fails in git and passes since rgit implements submodule).
-			if test "$script" = t1517-outside-repo.sh &&
-				{ test "$st" = todo || test "$st" = fixed; }
+			# t0450 numbers its cases by rgit's --list-cmds=builtins in the
+			# same way: a new builtin moves known breakages (todo/fixed) and
+			# skipped helpers (skip) onto formerly passing numbers.
+			if { test "$script" = t1517-outside-repo.sh &&
+				{ test "$st" = todo || test "$st" = fixed; }; } ||
+				{ test "$script" = t0450-txt-doc-vs-help.sh &&
+				{ test "$st" = todo || test "$st" = fixed || test "$st" = skip; }; }
 			then
 				echo "renumbered (ignored): $mode $script case $n: $st (was pass)" >&2
 				continue
