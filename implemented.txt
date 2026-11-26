@@ -174,9 +174,10 @@ credential
 credential-store
 credential-cache
 credential-cache--daemon
-# rgit #135: format-patch without --range-diff (rgit #140); --notes since rgit #138.
+# rgit #135: format-patch (--notes: rgit #138; --range-diff: rgit #140).
 format-patch
-format-patch !(--range-diff|--range-diff=*|--creation-factor|--creation-factor=*)...
+# rgit #140: range-diff (notes in the compared patches: rgit #138).
+range-diff
 # rgit #138: git notes (all subcommands).
 notes
 # (rgit #109).
