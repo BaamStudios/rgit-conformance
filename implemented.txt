@@ -472,3 +472,6 @@ imap-send
 subtree
 # rgit #640: git backfill (blobless partial clones), every call.
 backfill
+# rgit #752: show-branch (every form) and the deprecated pack-redundant.
+show-branch
+pack-redundant
