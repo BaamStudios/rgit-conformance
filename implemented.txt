@@ -440,11 +440,9 @@ repo
 last-modified
 diff-pairs
 format-rev
-# rgit #142: `replay` is not routed yet: t6429 (cases 2-9) replays a commit
-# and its revert across a rename, which needs the renames git carries from
-# one replayed commit to the next (and counts its `diffcore_rename` trace2
-# regions). rgit's replay merges every commit on its own. t3650 runs rgit's
-# replay in strict mode.
+# rgit #142, #744: replay, every call (renames carried from one replayed
+# commit to the next, t6429).
+replay
 # rgit #157: mergetool and difftool.
 difftool
 difftool--helper
