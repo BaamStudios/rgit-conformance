@@ -438,3 +438,5 @@ repo
 last-modified
 diff-pairs
 format-rev
+# rgit #142: replay.
+replay
