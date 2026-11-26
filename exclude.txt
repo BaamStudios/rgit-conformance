@@ -1,10 +1,5 @@
 # Cases skipped on purpose in all passes: <script> <case numbers>  # reason
-t0001-init.sh 52 53 54 56 57 60  # creates SHA-256 repositories; rgit init refuses them until rgit #12
-t1500-rev-parse.sh 72  # creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
-t5300-pack-object.sh 50 60 61  # create SHA-256 repositories with git init; rgit init refuses them until rgit #12
 t6101-rev-parse-parents.sh 17  # "large graft octopus" needs info/grafts (rgit #105)
-t5551-http-fetch-smart.sh 47 48 49  # 47 creates a SHA-256 repository with git init (rgit #12); 48 and 49 clone it
-t5601-clone.sh 104  # "clone with GIT_DEFAULT_HASH" creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
 t5601-clone.sh 108  # "batch missing blob request during checkout": checkout (routed to rgit) in a partial clone must fetch the missing blobs from the promisor remote (rgit #24)
 t7600-merge.sh 82  # "merge --quit" checks the rerere state, which rgit merge does not record (rgit #156)
 t7610-mergetool.sh 8 12  # rerere: merge does not reuse recorded resolutions (rgit #156)
@@ -16,8 +11,6 @@ t4150-am.sh 76  # "apply binary blob in partial clone": rgit apply does not fetc
 t3500-cherry.sh 5  # "cherry in partial clone does bulk prefetch" needs a partial clone (rgit #24) and trace2 events (rgit #180)
 t5351-unpack-large-objects.sh 3 6  # 3 needs GIT_ALLOC_LIMIT and streaming of large objects (rgit #89); 6 counts fsync events in GIT_TRACE2_EVENT (rgit #180)
 t7506-status-submodule.sh 32  # "diff --submodule with merge conflict in .gitmodules" needs the combined diff of the conflicted .gitmodules (rgit #148)
-t5700-protocol-v1.sh 18 19 21  # SHA-256 repositories: rgit init refuses --object-format=sha256 until rgit #12
-t5702-protocol-v2.sh 20  # SHA-256 repositories: rgit init refuses --object-format=sha256 until rgit #12
 t5702-protocol-v2.sh 37  # dynamic fetch of a missing object needs partial clone (rgit #24); without it the script stops with an error
 t5702-protocol-v2.sh 77 79 80 81 82 83 84 85 86  # packfile URIs in protocol v2 fetch responses (rgit #538)
 t6500-gc.sh 10 35  # check the commit-graph progress of gc; rgit gc writes no commit-graph (rgit #22)
@@ -39,7 +32,6 @@ t5551-http-fetch-smart.sh 13  # "credential.interactive=false skips askpass" che
 t5551-http-fetch-smart.sh 26  # "dumb clone via http-backend respects namespace": rgit has no dumb HTTP (rgit #186)
 t5559-http-fetch-smart-http2.sh 13  # trace2 region "credential interactive" (rgit #180)
 t5559-http-fetch-smart-http2.sh 26  # dumb HTTP (rgit #186)
-t5559-http-fetch-smart-http2.sh 47 48 49  # 47 creates a SHA-256 repository with git init (rgit #12); 48 and 49 clone it
 t5563-simple-http-auth.sh 18  # "http.emptyAuth=auto attempts Negotiate": rgit has no GSS-Negotiate (docs/http-config.md)
 t5504-fetch-receive-strict.sh 6 7 8 9  # rgit refuses to send corrupt objects; the server reports an unpacker error instead of missing objects (intentional, rgit #528)
 t5300-pack-object.sh 2 3  # read the write_pack_file/wrote_bytes value from GIT_TRACE2_EVENT, which rgit does not write (rgit #180)
@@ -49,7 +41,6 @@ t2070-restore.sh 14  # "restore --merge to unresolve after (mistaken) resolution
 t7201-co.sh 36  # "checkout -m works after (mistaken) resolution": checkout -m after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
 t2023-checkout-m.sh 3 4  # checkout -m after rgit add resolved the conflict needs the resolve-undo record, which add does not write yet (rgit #35)
 t4034-diff-words.sh 53 54  # php: the word alignment of --word-diff differs (rgit #146)
-t7400-submodule-basic.sh 38  # creates a SHA-256 repository; rgit init refuses it until rgit #12
 t7400-submodule-basic.sh 107  # needs the submodule commit case 65 creates; it failed against the reference git too in the local run of 2026-11-23 (re-check)
 t7400-submodule-basic.sh 69 70  # add/reset/ls-files of a submodule path with a trailing slash (rgit #114)
 t7400-submodule-basic.sh 111  # submodule add --depth needs clone --depth (rgit #94)
