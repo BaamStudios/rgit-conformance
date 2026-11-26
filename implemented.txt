@@ -253,7 +253,7 @@ prune-packed
 update-server-info
 repack
 gc
-rev-parse !(--local-env-vars|--git-path|--resolve-git-dir|--path-format=*|--show-superproject-working-tree|--shared-index-path|--prefix|--exclude-hidden=*|--output-object-format=*)...
+rev-parse !(--git-path|--resolve-git-dir|--path-format=*|--show-superproject-working-tree|--shared-index-path|--prefix|--exclude-hidden=*|--output-object-format=*)...
 # rgit #93, #94: clone with alternates or shallow options, shallow fetches.
 clone @(-s|--shared|--reference=*|--reference-if-able=*|--dissociate|--depth=*|--shallow-since=*|--shallow-exclude=*|--reject-shallow|--no-reject-shallow) ...
 clone @(--reference|--reference-if-able|--depth|--shallow-since|--shallow-exclude) ...
@@ -297,9 +297,9 @@ fsck
 # --incremental, --unpacked, --honor-pack-keep, --keep-pack, --max-pack-size
 # (rgit #19), --cruft and --cruft-expiration (rgit #96), --write-bitmap-index
 # (rgit #23), --stdin-packs (rgit #580), --filter and --shallow (rgit #24,
-# #94), except the options rgit does not implement yet (--missing,
-# --exclude-promisor-objects: rgit #639; --path-walk: rgit #558).
-pack-objects !(--unpacked=*|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--missing=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
+# #94), --missing (rgit #640), except the options rgit does not implement
+# yet (--exclude-promisor-objects: rgit #639; --path-walk: rgit #558).
+pack-objects !(--unpacked=*|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
 # push and send-pack, with push certificates (rgit #165). Not the
 # remote-helper modes --stateless-rpc / --helper-status (rgit #171).
 # --recurse-submodules (rgit #121).
@@ -445,11 +445,9 @@ repo
 last-modified
 diff-pairs
 format-rev
-# rgit #142: `replay` is not routed yet: t6429 (cases 2-9) replays a commit
-# and its revert across a rename, which needs the renames git carries from
-# one replayed commit to the next (and counts its `diffcore_rename` trace2
-# regions). rgit's replay merges every commit on its own. t3650 runs rgit's
-# replay in strict mode.
+# rgit #142, #744: replay, every call (renames carried from one replayed
+# commit to the next, t6429).
+replay
 # rgit #157: mergetool and difftool.
 difftool
 difftool--helper
@@ -466,3 +464,11 @@ shell
 upload-pack .
 # rgit #142: git history (reword, split, fixup, drop).
 history
+# rgit #715: the mail workflow (send-email, request-pull, imap-send).
+send-email
+request-pull
+imap-send
+# rgit #716: subtree (add, merge, pull, push, split): every call.
+subtree
+# rgit #640: git backfill (blobless partial clones), every call.
+backfill

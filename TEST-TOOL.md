@@ -218,9 +218,16 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | Subcommand | Calls | Scripts | Also in | Milestones | Class | Owner | Note |
 |---|---:|---:|---|---|---|---|---|
 | `advise` | 3 | 1 | - | M2 | C | #178 | advice output (t0018) |
-| `bitmap list-commits` | 2 | 1 | - | - | B |  | reads bitmaps |
+| `bitmap list-commits` | 18 | 4 | - | - | B |  | reads bitmaps |
+| `bitmap dump-hashes` | 2 | 1 | - | - | B |  | reads bitmaps |
+| `bitmap write` | 2 | 1 | - | - | B |  | reads bitmaps |
+| `bitmap list-commits-with-offset` | 1 | 1 | - | - | B |  | reads bitmaps |
+| `bloom` | 11 | 1 | - | - | C | #22 | changed-path Bloom filters (t0095) |
+| `bundle-uri parse-config` | 8 | 1 | - | - | C |  | bundle-uri parsing |
+| `bundle-uri parse-key-values` | 6 | 1 | - | - | C |  | bundle-uri parsing |
+| `bundle-uri ls-remote` | 0 | 0 | lib-bundle-uri-protocol.sh | - | C |  | bundle-uri parsing |
 | `cache-entry` | 2 | 1 | - | - | C |  | cache entry allocation limits of the index API (t1600) |
-| `chmtime` | 152 | 31 | - | M2 | A |  | file mtimes |
+| `chmtime` | 186 | 39 | - | M2 | A |  | file mtimes |
 | `config read_early_config` | 8 | 2 | - | M1 | C | #28 | config reader API (t1305, t1308, t1309) |
 | `config configset_get_value` | 6 | 1 | - | M1 | C | #28 | config reader API (t1305, t1308, t1309) |
 | `config get` | 5 | 1 | - | M1 | C | #28 | config reader API (t1305, t1308, t1309) |
@@ -229,6 +236,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | `config get_string` | 1 | 1 | - | M1 | C | #28 | config reader API (t1305, t1308, t1309) |
 | `config get_value` | 1 | 1 | - | M1 | C | #28 | config reader API (t1305, t1308, t1309) |
 | `config iterate` | 1 | 1 | - | M1 | C | #28 | config reader API (t1305, t1308, t1309) |
+| `crontab` | 5 | 1 | - | - | A |  | fake crontab |
 | `date getnanos` | 18 | 1 | - | - | C | #74 | date parsing/formatting (t0006) |
 | `date show:<format>` | 4 | 2 | - | M1 | C | #74 | date parsing/formatting (t0006) |
 | `date timestamp` | 4 | 2 | - | M1 | C | #74 | date parsing/formatting (t0006) |
@@ -243,11 +251,12 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | `dump-untracked-cache` | 36 | 1 | - | M2 | B |  | reads the untracked-cache extension |
 | `env-helper` | 14 | 2 | lib-git-daemon.sh, lib-httpd.sh | M1, M2 | A |  | reads an environment variable as bool/ulong |
 | `find-pack` | 27 | 1 | - | - | B |  | finds the pack that holds an object |
-| `genrandom` | 45 | 19 | - | M1, M2 | A |  | deterministic pseudo-random bytes |
-| `genzeros` | 17 | 9 | - | M1, M2 | A |  | zero bytes |
+| `genrandom` | 70 | 30 | - | M1, M2 | A |  | deterministic pseudo-random bytes |
+| `genzeros` | 19 | 11 | - | M1, M2 | A |  | zero bytes |
 | `getcwd` | 1 | 1 | - | M1 | A |  | prints the working directory |
 | `hexdump` | 5 | 2 | - | - | A |  | hex dump of stdin |
 | `mktemp` | 2 | 1 | - | - | C |  | git's mktemp wrapper and its error messages (t0070); library internals, likely excluded for rgit |
+| `name-hash` | 1 | 1 | - | - | C |  | pack name hashes, versions 1 and 2 (t5310) |
 | `online-cpus` | 3 | 1 | - | - | A |  | expected value: number of CPUs that hook.jobs=-1 resolves to (t1800) |
 | `pack-deltas` | 1 | 1 | - | M2 | B |  | writes a crafted pack (fixture) that rgit must read |
 | `pack-mtimes` | 28 | 2 | - | - | B |  | reads .mtimes |
@@ -255,21 +264,35 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | `parse-options-flags` | 7 | 1 | - | M1 | C | #73 | option parser flags (t0040) |
 | `parse-pathspec-file` | 8 | 1 | - | M2 | C | #106 | --pathspec-from-file parsing (t0067) |
 | `parse-subcommand` | 22 | 1 | - | M1 | C | #73 | subcommand parser (t0040) |
-| `path-utils file-size` | 29 | 9 | - | M1, M2 | A |  | file size |
-| `path-utils real_path` | 10 | 4 | - | M1, M2 | A |  | expected path for comparisons |
+| `partial-clone` | 1 | 1 | - | - | C |  | object lookup with lazy fetch in a repository other than the main one (t0410) |
+| `path-utils file-size` | 35 | 11 | - | M1, M2 | A |  | file size |
+| `path-utils real_path` | 27 | 6 | - | M1, M2 | A |  | expected path for comparisons |
+| `path-utils normalize_path_copy` | 6 | 2 | - | M2 | A |  | expected path for comparisons (t0007); t0060 itself would be C |
 | `path-utils readlink` | 5 | 2 | - | M1 | A |  | symlink target |
-| `path-utils normalize_path_copy` | 4 | 1 | - | M2 | A |  | expected path for comparisons (t0007); t0060 itself would be C |
-| `path-utils absolute_path` | 2 | 1 | - | M1 | A |  | expected path for comparisons |
+| `path-utils absolute_path` | 4 | 2 | - | M1 | A |  | expected path for comparisons |
+| `path-utils prefix_path` | 4 | 1 | - | - | C |  | path functions (t0060) |
+| `path-utils print_path` | 3 | 1 | - | - | C |  | path functions (t0060) |
+| `path-utils basename` | 1 | 1 | - | - | C |  | path functions (t0060) |
+| `path-utils dirname` | 1 | 1 | - | - | C |  | path functions (t0060) |
+| `path-utils is_dotgitattributes` | 1 | 1 | - | - | C |  | .gitattributes name variants, NTFS and HFS+ (t0060) |
+| `path-utils is_dotgitignore` | 1 | 1 | - | - | C |  | .gitignore name variants, NTFS and HFS+ (t0060) |
+| `path-utils is_dotgitmodules` | 1 | 1 | - | - | C |  | .gitmodules name variants, NTFS and HFS+ (t0060) |
+| `path-utils is_dotmailmap` | 1 | 1 | - | - | C |  | .mailmap name variants, NTFS and HFS+ (t0060) |
+| `path-utils is_valid_path` | 1 | 1 | - | - | C |  | path validation (t0060) |
+| `path-utils longest_ancestor_length` | 1 | 1 | - | - | C |  | path functions (t0060) |
+| `path-utils relative_path` | 1 | 1 | - | - | C |  | path functions (t0060) |
+| `path-utils strip_path_suffix` | 1 | 1 | - | - | C |  | path functions (t0060) |
 | `pcre2-config` | 1 | 1 | - | - | A |  | prerequisite probe of the PCRE2 library (t7812) |
-| `pkt-line pack` | 48 | 6 | - | M1, M2 | B |  | encodes request input; the git under test decodes it |
-| `pkt-line unpack` | 27 | 4 | - | M2 | B |  | decodes the output of the git under test |
+| `pkt-line pack` | 56 | 8 | - | M1, M2 | B |  | encodes request input; the git under test decodes it |
+| `pkt-line unpack` | 30 | 6 | - | M2 | B |  | decodes the output of the git under test |
 | `pkt-line send-split-sideband` | 5 | 1 | - | - | C | #60 | sideband actions (send-split-sideband, receive-sideband, unpack-sideband) |
 | `pkt-line unpack-sideband` | 5 | 2 | - | - | C | #60 | sideband actions (send-split-sideband, receive-sideband, unpack-sideband) |
+| `pkt-line pack-raw-stdin` | 3 | 3 | - | - | B |  | encodes request input; the git under test decodes it |
 | `pkt-line receive-sideband` | 3 | 1 | - | - | C | #60 | sideband actions (send-split-sideband, receive-sideband, unpack-sideband) |
-| `pkt-line pack-raw-stdin` | 2 | 2 | - | - | B |  | encodes request input; the git under test decodes it |
 | `progress` | 16 | 1 | - | - | C |  | progress display |
 | `reach` | 1 | 1 | - | M2 | C | #50 | reachability queries (t6600) |
-| `read-midx` | 6 | 2 | lib-bitmap.sh, lib-midx.sh | - | B |  | reads multi-pack-index |
+| `read-graph` | 9 | 2 | lib-commit-graph.sh | - | B |  | reads commit-graph |
+| `read-midx` | 33 | 6 | lib-bitmap.sh, lib-midx.sh | - | B |  | reads multi-pack-index |
 | `ref-store delete-refs` | 33 | 6 | - | M1, M2 | C | #29 | ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30 |
 | `ref-store for-each-reflog-ent` | 30 | 8 | - | M1, M2 | C | #30 | reflog reader |
 | `ref-store update-ref` | 25 | 9 | - | M1, M2 | C | #29 | ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30 |
@@ -280,15 +303,16 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | `ref-store for-each-ref` | 4 | 2 | - | M1 | C | #29 | ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30 |
 | `ref-store create-reflog` | 3 | 3 | - | M1, M2 | C | #30 | reflog writer |
 | `ref-store for-each-reflog-ent-reverse` | 2 | 2 | - | M1 | C | #30 | reflog reader |
+| `ref-store resolve-ref` | 2 | 2 | - | M1 | C | #29 | ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30 |
 | `ref-store delete-ref` | 1 | 1 | - | M1 | C | #29 | ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30 |
 | `ref-store rename-ref` | 1 | 1 | - | M1 | C | #29 | ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30 |
-| `ref-store resolve-ref` | 1 | 1 | - | M1 | C | #29 | ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30 |
 | `ref-store verify-ref` | 1 | 1 | - | M1 | C | #29 | ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30 |
 | `regex` | 5 | 4 | - | - | A |  | prerequisite probe of the platform regex/locale (t4210, t7810, t7812); `--bug` in t0070 checks the reference build's regex compat |
+| `repository` | 4 | 1 | - | - | C |  | repository API: commit and tree lookup through the commit-graph (t5318) |
 | `revision-walking` | 2 | 2 | - | - | C |  | revision walk API: run-twice (t0062), line-log-peek (t4211) |
-| `rot13-filter` | 17 | 1 | - | - | A |  | clean/smudge filter process |
+| `rot13-filter` | 19 | 3 | - | - | A |  | clean/smudge filter process |
 | `scrap-cache-tree` | 4 | 1 | - | M2 | B |  | rewrites the index without cache-tree; rgit must read the result |
-| `serve-v2` | 45 | 3 | - | M1, M2 | C | M5 | protocol v2 server (t5701, t5702); server side is not part of M1/M2 |
+| `serve-v2` | 45 | 3 | - | M1, M2 | C | #68 | protocol v2 server (t5701, t5702, t5703); substitute runs `git upload-pack` of the git under test |
 | `sha1` | 1 | 1 | - | M1 | C | #11 | collision-detecting SHA-1 (t0013) |
 | `sha1-is-sha1dc` | 1 | 1 | - | M1 | C | #11 | prerequisite: SHA-1 is collision detecting |
 | `sha1/sha256 (via $algo)` | 0 | 0 | lib-loose.sh, lib-pack.sh | - | A |  | hash of stdin, used by lib-loose.sh/lib-pack.sh to craft objects |
@@ -300,28 +324,29 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | `submodule check-name` | 1 | 1 | - | - | C |  | submodule name validation (t7450) |
 | `submodule check-url` | 1 | 1 | - | - | C |  | submodule URL validation (t7450) |
 | `submodule config-unset` | 1 | 1 | - | - | C |  | .gitmodules config writer (t7411) |
+| `submodule resolve-relative-url` | 1 | 1 | - | - | C |  | submodule API |
 | `submodule-config` | 8 | 1 | - | - | C |  | .gitmodules parsing |
 | `submodule-nested-repo-config` | 2 | 1 | - | - | C |  | .gitmodules parsing of a nested repository (t7411) |
 | `subprocess` | 1 | 1 | - | M1 | C | #26 | repository setup before running a command (t1501) |
 | `synthesize` | 1 | 1 | - | - | B |  | writes a synthetic >4GB pack (fixture) that rgit must index and clone (t5608) |
-| `trace2 001return` | 13 | 3 | - | - | C |  | trace2 API |
-| `trace2 004child` | 5 | 3 | - | - | C |  | trace2 API |
-| `trace2 003error` | 4 | 3 | - | - | C |  | trace2 API |
-| `trace2 400ancestry` | 4 | 1 | - | - | C |  | trace2 API |
-| `trace2 002exit` | 2 | 1 | - | - | C |  | trace2 API |
-| `trace2 006data` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 007bug` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 008bug` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 009bug_BUG` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 010bug_BUG` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 100timer` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 101timer` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 200counter` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 201counter` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 300redact_start` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 301redact_child_start` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 302redact_exec` | 1 | 1 | - | - | C |  | trace2 API |
-| `trace2 303redact_def_param` | 1 | 1 | - | - | C |  | trace2 API |
+| `trace2 001return` | 13 | 3 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 004child` | 5 | 3 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 003error` | 4 | 3 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 400ancestry` | 4 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 002exit` | 2 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 006data` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 007bug` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 008bug` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 009bug_BUG` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 010bug_BUG` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 100timer` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 101timer` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 200counter` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 201counter` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 300redact_start` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 301redact_child_start` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 302redact_exec` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
+| `trace2 303redact_def_param` | 1 | 1 | - | - | C | #695 | trace2 API (t0210, t0211, t0212, t0213) |
 | `truncate` | 4 | 2 | - | M2 | A |  | truncates a file |
 | `userdiff` | 3 | 1 | - | - | C |  | userdiff drivers |
 | `wildmatch` | 3 | 1 | - | M2 | C | #106 | wildmatch (t3070) |
@@ -355,6 +380,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t0021-conversion.sh | imported | `genrandom` 2, `path-utils file-size` 16, `rot13-filter` 17 |
 | t0022-crlf-rename.sh | imported | - |
 | t0023-crlf-am.sh | imported | - |
+| t0024-crlf-archive.sh | imported | - |
 | t0025-crlf-renormalize.sh | imported | - |
 | t0026-eol-config.sh | imported | - |
 | t0027-auto-crlf.sh | imported | - |
@@ -365,12 +391,18 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t0034-root-safe-directory.sh | M1 #26 | - |
 | t0035-safe-bare-repository.sh | M1 #26 | - |
 | t0040-parse-options.sh | M1 #6, M1 #73 | `parse-options` 61, `parse-options-flags` 7, `parse-subcommand` 22 |
+| t0050-filesystem.sh | imported | - |
 | t0055-beyond-symlinks.sh | M2 #39 | - |
 | t0056-git-C.sh | M1 #73 | - |
+| t0060-path-utils.sh | imported | `path-utils absolute_path` 2, `path-utils basename` 1, `path-utils dirname` 1, `path-utils is_dotgitattributes` 1, `path-utils is_dotgitignore` 1, `path-utils is_dotgitmodules` 1, `path-utils is_dotmailmap` 1, `path-utils is_valid_path` 1, `path-utils longest_ancestor_length` 1, `path-utils normalize_path_copy` 2, `path-utils prefix_path` 4, `path-utils print_path` 3, `path-utils real_path` 15, `path-utils relative_path` 1, `path-utils strip_path_suffix` 1, `submodule resolve-relative-url` 1 |
 | t0062-revision-walking.sh | imported | `revision-walking` 1 |
 | t0067-parse_pathspec_file.sh | M2 #106 | `parse-pathspec-file` 8 |
+| t0068-for-each-repo.sh | imported | - |
 | t0070-fundamental.sh | imported | `mktemp` 2, `pkt-line receive-sideband` 3, `pkt-line send-split-sideband` 5, `pkt-line unpack-sideband` 4, `regex` 1 |
 | t0090-cache-tree.sh | M2 #79, M2 #123 | `dump-cache-tree` 2, `dump-split-index` 2, `scrap-cache-tree` 4 |
+| t0091-bugreport.sh | imported | - |
+| t0092-diagnose.sh | imported | - |
+| t0095-bloom.sh | imported | `bloom` 11 |
 | t0100-previous.sh | M2 #30 | - |
 | t0101-at-syntax.sh | imported | - |
 | t0210-trace2-normal.sh | imported | `trace2 001return` 5, `trace2 002exit` 2, `trace2 003error` 1, `trace2 007bug` 1, `trace2 008bug` 1, `trace2 009bug_BUG` 1, `trace2 010bug_BUG` 1 |
@@ -381,6 +413,8 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t0301-credential-cache.sh | imported | - |
 | t0302-credential-store.sh | imported | - |
 | t0303-credential-external.sh | M2 #161 | - |
+| t0410-partial-clone.sh | imported | `partial-clone` 1 |
+| t0411-clone-from-partial.sh | imported | - |
 | t0450-txt-doc-vs-help.sh | M1 #73 | - |
 | t0500-progress-display.sh | imported | `progress` 16 |
 | t0600-reffiles-backend.sh | M1 #29 | `path-utils readlink` 2, `ref-store create-symref` 1, `ref-store for-each-reflog` 2 |
@@ -401,6 +435,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t1008-read-tree-overlay.sh | M2 #107 | - |
 | t1009-read-tree-new-index.sh | M2 #107 | - |
 | t1010-mktree.sh | M1 #15 | - |
+| t1011-read-tree-sparse-checkout.sh | imported | - |
 | t1012-read-tree-df.sh | M2 #107 | - |
 | t1013-read-tree-submodule.sh | imported | - |
 | t1014-read-tree-confusing.sh | M2 #107 | - |
@@ -409,6 +444,9 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t1050-large.sh | imported | `genrandom` 3, `path-utils file-size` 1 |
 | t1051-large-conversion.sh | imported | `genzeros` 2, `path-utils file-size` 3 |
 | t1060-object-corruption.sh | M1 #14 | - |
+| t1090-sparse-checkout-scope.sh | imported | - |
+| t1091-sparse-checkout-builtin.sh | imported | - |
+| t1092-sparse-checkout-compatibility.sh | imported | - |
 | t1100-commit-tree-options.sh | M2 #123 | - |
 | t1300-config.sh | M1 #28, M1 #99 | `date timestamp` 1, `path-utils real_path` 1 |
 | t1301-shared-repo.sh | M1 #27 | - |
@@ -476,6 +514,8 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t1700-split-index.sh | imported | `chmtime` 7, `dump-cache-tree` 1, `dump-split-index` 24 |
 | t1701-racy-split-index.sh | imported | `chmtime` 1 |
 | t1800-hook.sh | imported | `online-cpus` 3 |
+| t1900-repo-info.sh | imported | `path-utils real_path` 2 |
+| t1901-repo-structure.sh | imported | - |
 | t2000-conflict-when-checking-files-out.sh | M2 #107 | - |
 | t2002-checkout-cache-u.sh | M2 #107 | - |
 | t2003-checkout-cache-mkdir.sh | M2 #107 | - |
@@ -508,6 +548,9 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t2070-restore.sh | imported | - |
 | t2071-restore-patch.sh | imported | - |
 | t2072-restore-pathspec-file.sh | imported | - |
+| t2080-parallel-checkout-basics.sh | imported | `rot13-filter` 1 |
+| t2081-parallel-checkout-collisions.sh | imported | - |
+| t2082-parallel-checkout-attributes.sh | imported | `rot13-filter` 1 |
 | t2100-update-cache-badpath.sh | M2 #39 | - |
 | t2101-update-index-reupdate.sh | M2 #39 | - |
 | t2102-update-index-symlinks.sh | M2 #39 | - |
@@ -559,8 +602,21 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t3203-branch-output.sh | imported | - |
 | t3204-branch-name-interpretation.sh | M2 #48 | - |
 | t3205-branch-color.sh | imported | - |
+| t3206-range-diff.sh | imported | - |
 | t3207-branch-submodule.sh | imported | - |
 | t3211-peel-ref.sh | M1 #29 | - |
+| t3301-notes.sh | imported | - |
+| t3303-notes-subtrees.sh | imported | - |
+| t3304-notes-mixed.sh | imported | - |
+| t3305-notes-fanout.sh | imported | - |
+| t3306-notes-prune.sh | imported | `chmtime` 1 |
+| t3307-notes-man.sh | imported | - |
+| t3308-notes-merge.sh | imported | - |
+| t3309-notes-merge-auto-resolve.sh | imported | - |
+| t3310-notes-merge-manual-resolve.sh | imported | - |
+| t3311-notes-merge-fanout.sh | imported | - |
+| t3320-notes-merge-worktrees.sh | imported | - |
+| t3321-notes-stripspace.sh | imported | - |
 | t3400-rebase.sh | imported | - |
 | t3401-rebase-and-am-rename.sh | imported | - |
 | t3402-rebase-merge.sh | imported | - |
@@ -597,6 +653,11 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t3437-rebase-fixup-options.sh | imported | - |
 | t3438-rebase-broken-files.sh | imported | - |
 | t3440-rebase-trailer.sh | imported | - |
+| t3450-history.sh | imported | - |
+| t3451-history-reword.sh | imported | - |
+| t3452-history-split.sh | imported | - |
+| t3453-history-fixup.sh | imported | - |
+| t3454-history-drop.sh | imported | - |
 | t3500-cherry.sh | imported | - |
 | t3501-revert-cherry-pick.sh | imported | `chmtime` 1 |
 | t3502-cherry-pick-merge.sh | imported | - |
@@ -614,11 +675,14 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t3514-cherry-pick-revert-gpg.sh | imported | - |
 | t3600-rm.sh | M2 #41 | `chmtime` 1 |
 | t3601-rm-pathspec-file.sh | M2 #41 | - |
+| t3602-rm-sparse-checkout.sh | imported | - |
+| t3650-replay-basics.sh | imported | - |
 | t3700-add.sh | M2 #41 | `chmtime` 1 |
 | t3701-add-interactive.sh | imported | - |
 | t3702-add-edit.sh | imported | - |
 | t3703-add-magic-pathspec.sh | M2 #106 | - |
 | t3704-add-pathspec-file.sh | M2 #106 | - |
+| t3705-add-sparse-checkout.sh | imported | `chmtime` 1 |
 | t3800-mktag.sh | M1 #15 | `ref-store delete-refs` 2, `ref-store update-ref` 2 |
 | t3900-i18n-commit.sh | imported | - |
 | t3901-i18n-patch.sh | imported | - |
@@ -630,6 +694,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t3907-stash-show-config.sh | imported | - |
 | t3908-stash-in-worktree.sh | imported | - |
 | t3909-stash-pathspec-file.sh | imported | - |
+| t3910-mac-os-precompose.sh | imported | - |
 | t4000-diff-format.sh | M2 #144 | - |
 | t4001-diff-rename.sh | imported | - |
 | t4002-diff-basic.sh | M2 #144 | - |
@@ -697,8 +762,10 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t4064-diff-oidfind.sh | imported | - |
 | t4065-diff-anchored.sh | imported | - |
 | t4066-diff-emit-delay.sh | imported | - |
+| t4067-diff-partial-clone.sh | imported | - |
 | t4068-diff-symmetric-merge-base.sh | M2 #144 | - |
 | t4069-remerge-diff.sh | imported | - |
+| t4070-diff-pairs.sh | imported | - |
 | t4071-diff-minimal.sh | imported | - |
 | t4072-diff-max-depth.sh | imported | - |
 | t4073-diff-stat-name-width.sh | imported | - |
@@ -748,6 +815,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t4151-am-abort.sh | imported | `chmtime` 2 |
 | t4152-am-subjects.sh | imported | - |
 | t4153-am-resume-override-opts.sh | imported | - |
+| t4200-rerere.sh | imported | `chmtime` 11 |
 | t4201-shortlog.sh | imported | - |
 | t4202-log.sh | M1 #78 | - |
 | t4203-mailmap.sh | imported | - |
@@ -761,6 +829,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t4211-line-log.sh | imported | `revision-walking` 1 |
 | t4214-log-graph-octopus.sh | imported | - |
 | t4215-log-skewed-merges.sh | imported | - |
+| t4216-log-bloom.sh | imported | `read-graph` 4 |
 | t4217-log-limit.sh | imported | - |
 | t4218-log-graph-indentation.sh | imported | - |
 | t4219-log-follow-merge.sh | imported | - |
@@ -773,7 +842,14 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t4258-am-quoted-cr.sh | imported | - |
 | t4300-merge-tree.sh | imported | - |
 | t4301-merge-tree-write-tree.sh | imported | - |
+| t5000-tar-tree.sh | imported | `chmtime` 1, `genrandom` 1 |
+| t5001-archive-attr.sh | imported | - |
+| t5002-archive-attr-pattern.sh | imported | - |
+| t5003-archive-zip.sh | imported | `genrandom` 1 |
+| t5004-archive-corner-cases.sh | imported | - |
 | t5100-mailinfo.sh | imported | - |
+| t5150-request-pull.sh | imported | - |
+| t5200-update-server-info.sh | imported | `chmtime` 7 |
 | t5300-pack-object.sh | M1 #17, M2 #18, M2 #80 | `genrandom` 2, `genzeros` 3, `path-utils file-size` 2 |
 | t5301-sliding-window.sh | imported | `genrandom` 1 |
 | t5302-pack-index.sh | M1 #17, M2 #18 | `genrandom` 7, `path-utils file-size` 1 |
@@ -784,23 +860,37 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5307-pack-missing-commit.sh | imported | - |
 | t5308-pack-detect-duplicates.sh | M2 #18 | - |
 | t5309-pack-delta-cycles.sh | M2 #18 | `pack-deltas` 1 |
+| t5310-pack-bitmaps.sh | imported | `bitmap list-commits` 6, `bitmap list-commits-with-offset` 1, `bitmap write` 2, `genrandom` 3, `name-hash` 1 |
 | t5311-pack-bitmaps-shallow.sh | imported | - |
 | t5312-prune-corruption.sh | imported | `ref-store delete-refs` 1, `ref-store update-ref` 1 |
 | t5313-pack-bounds-checks.sh | M1 #17 | `genrandom` 2 |
 | t5314-pack-cycle-detection.sh | imported | `genrandom` 1 |
 | t5315-pack-objects-compression.sh | imported | `path-utils file-size` 1 |
 | t5316-pack-delta-depth.sh | imported | `genrandom` 1 |
+| t5317-pack-objects-filter-objects.sh | imported | - |
+| t5318-commit-graph.sh | imported | `genzeros` 1, `repository` 4 |
+| t5319-multi-pack-index.sh | imported | `bitmap list-commits` 3, `chmtime` 7, `genrandom` 8, `path-utils file-size` 4, `read-midx` 17 |
 | t5321-pack-large-objects.sh | imported | - |
 | t5322-pack-objects-sparse.sh | imported | - |
+| t5324-split-commit-graph.sh | imported | `chmtime` 2, `read-graph` 5 |
+| t5325-reverse-index.sh | imported | - |
+| t5326-multi-pack-bitmaps.sh | imported | `bitmap dump-hashes` 2, `bitmap list-commits` 7 |
+| t5327-multi-pack-bitmaps-rev.sh | imported | - |
+| t5328-commit-graph-64bit-time.sh | imported | - |
 | t5329-pack-objects-cruft.sh | imported | `chmtime` 23, `genrandom` 2, `pack-mtimes` 14 |
+| t5331-pack-objects-stdin.sh | imported | - |
+| t5334-incremental-multi-pack-index.sh | imported | `read-midx` 1 |
+| t5335-compact-multi-pack-index.sh | imported | `read-midx` 7 |
 | t5351-unpack-large-objects.sh | imported | `genrandom` 2 |
 | t5400-send-pack.sh | imported | `chmtime` 1 |
+| t5401-update-hooks.sh | imported | - |
 | t5403-post-checkout-hook.sh | imported | - |
 | t5404-tracking-branches.sh | M2 #65 | - |
 | t5405-send-pack-rewind.sh | imported | - |
 | t5406-remote-rejects.sh | M2 #65 | - |
 | t5408-send-pack-stdin.sh | imported | - |
 | t5409-colorize-remote-messages.sh | imported | - |
+| t5410-receive-pack.sh | imported | `pkt-line unpack` 1 |
 | t5411-proc-receive-hook.sh | M2 #60 | - |
 | t5500-fetch-pack.sh | M2 #62 | `pkt-line pack` 1 |
 | t5501-fetch-push-alternates.sh | imported | - |
@@ -810,6 +900,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5505-remote.sh | imported | `ref-store for-each-reflog` 2, `ref-store for-each-reflog-ent` 2 |
 | t5506-remote-groups.sh | imported | - |
 | t5507-remote-environment.sh | M2 #160 | - |
+| t5509-fetch-push-namespaces.sh | imported | - |
 | t5510-fetch.sh | M2 #62, M2 #66 | - |
 | t5511-refspec.sh | M2 #159 | - |
 | t5512-ls-remote.sh | M2 #63 | `pkt-line pack` 2 |
@@ -830,6 +921,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5527-fetch-odd-refs.sh | M2 #62 | - |
 | t5528-push-default.sh | M2 #65 | - |
 | t5529-push-errors.sh | M2 #65 | - |
+| t5530-upload-pack-error.sh | imported | `pkt-line pack` 5, `pkt-line unpack` 2 |
 | t5531-deep-submodule-push.sh | imported | - |
 | t5532-fetch-proxy.sh | imported | - |
 | t5533-push-cas.sh | imported | - |
@@ -842,7 +934,10 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5541-http-push-smart.sh | M2 #65, M2 #66, M2 #87, M2 #162 | - |
 | t5542-push-http-shallow.sh | imported | - |
 | t5543-atomic-push.sh | imported | - |
+| t5544-pack-objects-hook.sh | imported | - |
 | t5545-push-options.sh | imported | - |
+| t5546-receive-limits.sh | imported | `genrandom` 1 |
+| t5547-push-quarantine.sh | imported | `genrandom` 1 |
 | t5548-push-porcelain.sh | imported | - |
 | t5549-fetch-push-http.sh | M2 #162 | - |
 | t5551-http-fetch-smart.sh | M2 #66, M2 #87, M2 #162 | - |
@@ -851,7 +946,11 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5554-noop-fetch-negotiator.sh | imported | - |
 | t5555-http-smart-common.sh | M2 #162 | `pkt-line unpack` 10 |
 | t5557-http-get.sh | imported | - |
+| t5558-clone-bundle-uri.sh | imported | - |
 | t5559-http-fetch-smart-http2.sh | imported | - |
+| t5560-http-backend-noserver.sh | imported | - |
+| t5561-http-backend.sh | imported | - |
+| t5562-http-backend-content-length.sh | imported | `pkt-line pack` 3, `pkt-line pack-raw-stdin` 1 |
 | t5563-simple-http-auth.sh | M2 #162 | - |
 | t5564-http-proxy.sh | imported | - |
 | t5565-push-multiple.sh | imported | - |
@@ -860,6 +959,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5571-pre-push-hook.sh | imported | - |
 | t5572-pull-submodule.sh | imported | - |
 | t5574-fetch-output.sh | M2 #62 | `path-utils real_path` 4 |
+| t5580-unc-paths.sh | imported | - |
 | t5581-http-curl-verbose.sh | M2 #162 | - |
 | t5582-fetch-negative-refspec.sh | M2 #62 | - |
 | t5583-push-branches.sh | M2 #65 | - |
@@ -871,6 +971,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5604-clone-reference.sh | imported | - |
 | t5605-clone-local.sh | imported | - |
 | t5606-clone-options.sh | imported | - |
+| t5607-clone-bundle.sh | imported | - |
 | t5608-clone-2gb.sh | imported | `env-helper` 1, `synthesize` 1 |
 | t5609-clone-branch.sh | M2 #64 | - |
 | t5610-clone-detached.sh | M2 #64 | - |
@@ -879,9 +980,11 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5613-info-alternate.sh | imported | - |
 | t5614-clone-submodules-shallow.sh | imported | - |
 | t5615-alternate-env.sh | imported | - |
+| t5616-partial-clone.sh | imported | - |
 | t5617-clone-submodules-remote.sh | imported | - |
 | t5618-alternate-refs.sh | imported | - |
 | t5619-clone-local-ambiguous-transport.sh | imported | - |
+| t5620-backfill.sh | imported | - |
 | t5621-clone-revision.sh | imported | - |
 | t5700-protocol-v1.sh | imported | - |
 | t5701-git-serve.sh | M2 #60 | `path-utils file-size` 2, `pkt-line pack` 25, `pkt-line unpack` 15, `serve-v2` 29 |
@@ -889,12 +992,21 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5703-upload-pack-ref-in-want.sh | imported | `pkt-line pack` 11, `pkt-line unpack` 1, `pkt-line unpack-sideband` 1, `serve-v2` 14 |
 | t5704-protocol-violations.sh | imported | `pkt-line pack` 4, `pkt-line pack-raw-stdin` 1 |
 | t5705-session-id-in-capabilities.sh | imported | - |
+| t5710-promisor-remote-capability.sh | imported | `genrandom` 2 |
+| t5730-protocol-v2-bundle-uri-file.sh | imported | - |
+| t5731-protocol-v2-bundle-uri-git.sh | imported | - |
+| t5732-protocol-v2-bundle-uri-http.sh | imported | - |
+| t5750-bundle-uri-parse.sh | imported | `bundle-uri parse-config` 8, `bundle-uri parse-key-values` 6 |
+| t5801-remote-helpers.sh | imported | - |
+| t5802-connect-helper.sh | imported | - |
 | t5810-proto-disable-local.sh | imported | - |
 | t5811-proto-disable-git.sh | imported | - |
 | t5812-proto-disable-http.sh | imported | - |
 | t5813-proto-disable-ssh.sh | imported | - |
+| t5814-proto-disable-ext.sh | imported | - |
 | t5815-submodule-protos.sh | imported | - |
 | t6000-rev-list-misc.sh | M1 #78 | - |
+| t6001-rev-list-graft.sh | imported | - |
 | t6002-rev-list-bisect.sh | imported | - |
 | t6003-rev-list-topo-order.sh | imported | - |
 | t6004-rev-list-path-optim.sh | imported | - |
@@ -911,16 +1023,21 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t6017-rev-list-stdin.sh | imported | - |
 | t6018-rev-list-glob.sh | imported | - |
 | t6019-rev-list-ancestry-path.sh | imported | - |
+| t6020-bundle-misc.sh | imported | - |
 | t6021-rev-list-exclude-hidden.sh | imported | - |
+| t6022-rev-list-missing.sh | imported | - |
 | t6030-bisect-porcelain.sh | imported | - |
 | t6040-tracking-info.sh | M2 #40, M2 #48 | - |
 | t6041-bisect-submodule.sh | imported | - |
+| t6050-replace.sh | imported | - |
 | t6060-merge-index.sh | imported | - |
 | t6099-merge-base-side-exhaustion.sh | M2 #50 | - |
 | t6100-rev-list-in-order.sh | imported | - |
 | t6101-rev-parse-parents.sh | M1 #32 | - |
 | t6102-rev-list-unexpected-objects.sh | imported | - |
 | t6111-rev-list-treesame.sh | imported | - |
+| t6112-rev-list-filters-objects.sh | imported | - |
+| t6113-rev-list-bitmap-filters.sh | imported | - |
 | t6114-keep-packs.sh | imported | - |
 | t6115-rev-list-du.sh | imported | - |
 | t6120-describe.sh | imported | `chmtime` 2 |
@@ -976,14 +1093,18 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t6501-freshen-objects.sh | imported | `chmtime` 2 |
 | t6600-test-reach.sh | M2 #50 | `reach` 1 |
 | t7001-mv.sh | M2 #41 | - |
+| t7002-mv-sparse-checkout.sh | imported | - |
 | t7004-tag.sh | imported | `ref-store for-each-reflog-ent` 2 |
 | t7005-editor.sh | M2 #122 | - |
 | t7006-pager.sh | imported | `genzeros` 1, `sigchain` 1 |
 | t7007-show.sh | imported | - |
+| t7011-skip-worktree-reading.sh | imported | - |
+| t7012-skip-worktree-writing.sh | imported | - |
 | t7030-verify-tag.sh | imported | - |
 | t7031-verify-tag-signed-ssh.sh | imported | - |
 | t7060-wtstatus.sh | M2 #40 | - |
 | t7061-wtstatus-ignore.sh | M2 #37, M2 #40 | - |
+| t7062-wtstatus-ignorecase.sh | imported | - |
 | t7063-status-untracked-cache.sh | M2 #40 | `chmtime` 7, `dump-untracked-cache` 36 |
 | t7064-wtstatus-pv2.sh | M2 #40 | - |
 | t7101-reset-empty-subdirs.sh | M2 #49 | - |
@@ -1067,6 +1188,9 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t7702-repack-cyclic-alternate.sh | imported | - |
 | t7703-repack-geometric.sh | imported | `chmtime` 6, `genrandom` 2, `path-utils real_path` 1, `read-midx` 2 |
 | t7704-repack-cruft.sh | imported | `chmtime` 16, `genrandom` 1, `pack-mtimes` 14, `read-midx` 4 |
+| t7705-repack-incremental-midx.sh | imported | `genrandom` 2, `read-midx` 2 |
+| t7706-repack-drop-filtered.sh | imported | `genrandom` 3 |
+| t7800-difftool.sh | imported | - |
 | t7810-grep.sh | imported | `regex` 1 |
 | t7811-grep-open.sh | imported | - |
 | t7812-grep-icase-non-ascii.sh | imported | `pcre2-config` 1, `regex` 2 |
@@ -1074,6 +1198,9 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t7814-grep-recurse-submodules.sh | imported | - |
 | t7815-grep-binary.sh | imported | - |
 | t7816-grep-binary-pattern.sh | imported | - |
+| t7817-grep-sparse-checkout.sh | imported | - |
+| t7900-maintenance.sh | imported | `chmtime` 4, `crontab` 5, `genrandom` 2 |
+| t7999-subtree.sh | imported | - |
 | t8001-annotate.sh | imported | - |
 | t8002-blame.sh | imported | - |
 | t8003-blame-corner-cases.sh | imported | - |
@@ -1089,18 +1216,33 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t8013-blame-ignore-revs.sh | imported | - |
 | t8014-blame-ignore-fuzzy.sh | imported | - |
 | t8015-blame-diff-algorithm.sh | imported | - |
+| t8020-last-modified.sh | imported | - |
+| t9001-send-email.sh | imported | - |
 | t9002-column.sh | imported | - |
 | t9003-help-autocorrect.sh | imported | - |
+| t9300-fast-import.sh | imported | `genrandom` 1, `ref-store resolve-ref` 1 |
+| t9301-fast-import-notes.sh | imported | - |
+| t9302-fast-import-unpack-limit.sh | imported | - |
+| t9303-fast-import-compression.sh | imported | `path-utils file-size` 2 |
+| t9304-fast-import-marks.sh | imported | - |
+| t9305-fast-import-signatures.sh | imported | - |
+| t9306-fast-import-signed-tags.sh | imported | - |
+| t9350-fast-export.sh | imported | - |
+| t9351-fast-export-anonymize.sh | imported | - |
+| t9850-shell.sh | imported | `genzeros` 1 |
+| t9904-url-parse.sh | imported | - |
 
 ### Sourced libraries
 
 | Library | Used by | Subcommands (calls) |
 |---|---:|---|
-| lib-bitmap.sh | 1 | `read-midx` 1 |
-| lib-git-daemon.sh | 5 | `env-helper` 1 |
-| lib-httpd.sh | 24 | `env-helper` 1 |
+| lib-bitmap.sh | 5 | `read-midx` 1 |
+| lib-bundle-uri-protocol.sh | 3 | `bundle-uri ls-remote` 4 |
+| lib-commit-graph.sh | 2 | `read-graph` 1 |
+| lib-git-daemon.sh | 8 | `env-helper` 1 |
+| lib-httpd.sh | 33 | `env-helper` 1 |
 | lib-loose.sh | 3 | `sha1/sha256 (via $algo)` 1, `zlib` 1 |
-| lib-midx.sh | 1 | `read-midx` 2 |
+| lib-midx.sh | 7 | `read-midx` 2 |
 | lib-pack.sh | 4 | `sha1/sha256 (via $algo)` 1 |
 
 ### Framework
