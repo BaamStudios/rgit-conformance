@@ -414,3 +414,6 @@ get-tar-commit-id
 # rgit #97: maintenance (all subcommands and schedulers) and for-each-repo.
 maintenance
 for-each-repo
+# rgit #70: http-backend (the CGI; its services run as rgit upload-pack /
+# receive-pack, or the reference programs where rgit hands them over).
+http-backend
