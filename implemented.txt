@@ -281,6 +281,8 @@ pack-objects !(--unpacked=*|--stdin-packs|--stdin-packs=*|--shallow|--keep-unrea
 # --recurse-submodules (rgit #121).
 push *...
 send-pack !(--stateless-rpc|--helper-status)...
+# rgit #69, #175: receive-pack with its policies, hooks and proc-receive.
+receive-pack
 # rgit does not implement yet (--filter: rgit #24; --textconv in batch
 # mode: rgit #147). --textconv of single objects (rgit #147).
 cat-file --textconv !(-*)
