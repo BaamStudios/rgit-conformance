@@ -414,3 +414,7 @@ get-tar-commit-id
 # rgit #97: maintenance (all subcommands and schedulers) and for-each-repo.
 maintenance
 for-each-repo
+# rgit #715: the mail workflow (send-email, request-pull, imap-send).
+send-email
+request-pull
+imap-send
