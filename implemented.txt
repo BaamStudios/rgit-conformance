@@ -291,8 +291,9 @@ fsck
 # output, --include-tag, --reflog, --indexed-objects, --local,
 # --incremental, --unpacked, --honor-pack-keep, --keep-pack, --max-pack-size
 # (rgit #19), --cruft and --cruft-expiration (rgit #96), --write-bitmap-index
-# (rgit #23), except the options rgit does not implement yet.
-pack-objects !(--unpacked=*|--stdin-packs|--stdin-packs=*|--shallow|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--filter=*|--missing=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
+# (rgit #23), --stdin-packs (rgit #580), except the options rgit does not
+# implement yet.
+pack-objects !(--unpacked=*|--shallow|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--filter=*|--missing=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
 # push and send-pack, with push certificates (rgit #165). Not the
 # remote-helper modes --stateless-rpc / --helper-status (rgit #171).
 # --recurse-submodules (rgit #121).
