@@ -249,6 +249,8 @@ unpack-objects
 # rgit #20, #92: housekeeping.
 prune
 prune-packed
+# rgit #71: update-server-info (Gitea runs it after every repository creation).
+update-server-info
 repack
 gc
 rev-parse !(--local-env-vars|--git-path|--resolve-git-dir|--path-format=*|--show-superproject-working-tree|--shared-index-path|--prefix|--exclude-hidden=*|--output-object-format=*)...
