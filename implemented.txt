@@ -417,3 +417,12 @@ for-each-repo
 # rgit #70: http-backend (the CGI; its services run as rgit upload-pack /
 # receive-pack, or the reference programs where rgit hands them over).
 http-backend
+# rgit #158: legacy merge plumbing and the strategy programs.
+merge-index
+merge-one-file
+unpack-file
+merge-ours
+merge-resolve
+merge-octopus
+merge-subtree
+merge-recursive
