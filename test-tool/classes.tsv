@@ -74,7 +74,7 @@ progress	C		progress display
 json-writer	C		JSON writer used by trace2
 run-command	C		child process handling
 path-walk	C		path-walk API
-bloom	C		changed-path Bloom filters
+bloom	C	#22	changed-path Bloom filters (t0095)
 userdiff	C		userdiff drivers
 submodule-config	C		.gitmodules parsing
 dir-iterator	C		directory iterator
