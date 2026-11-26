@@ -380,3 +380,9 @@ diff-index !(-c|--cc|--binary)...
 diff-tree !(--binary|--find-object=*|--notes|--notes=*|--show-notes|--show-notes=*|--format=*%N*|--pretty=*%N*)...
 diff !(-c|--cc|--binary|--base|--ours|--theirs|-0|-1|-2|-3)...
 whatchanged
+# rgit #143: newer inspection plumbing.
+url-parse
+repo
+last-modified
+diff-pairs
+format-rev
