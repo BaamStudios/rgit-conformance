@@ -167,9 +167,10 @@ credential
 credential-store
 credential-cache
 credential-cache--daemon
-# rgit #135: format-patch without --notes (rgit #138) and --range-diff (rgit #140).
+# rgit #135: format-patch (--notes: rgit #138; --range-diff: rgit #140).
 format-patch
-format-patch !(--notes|--notes=*|--no-notes|--range-diff|--range-diff=*|--creation-factor|--creation-factor=*)...
+# rgit #140: range-diff (notes in the compared patches: rgit #138).
+range-diff
 # (rgit #109), --recurse-submodules (rgit #121).
 reset @(-p|--patch) ...
 checkout @(-p|--patch) ...
