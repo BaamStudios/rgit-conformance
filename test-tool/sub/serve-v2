@@ -1,0 +1,52 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Substitute for `test-tool serve-v2 [--stateless-rpc]
+# [--advertise-capabilities]` (t5701, t5702, t5703): the protocol v2 server
+# loop on standard input and output, in the repository of the current
+# directory.
+#
+# The git under test serves protocol v2 through `git upload-pack` (rgit
+# #68), so the substitute runs
+#
+#     GIT_PROTOCOL=version=2 git upload-pack \
+#         [--stateless-rpc] [--advertise-refs] <git dir>
+#
+# In strict mode that is rgit. In fallback mode `upload-pack` is not in
+# implemented.txt and the call reaches the reference git: t5701 compares
+# the advertised `agent=` with `git version`, which fallback mode answers
+# with the reference git, so client and server must be the same git there.
+#
+# Unknown options go to the reference test-tool (or fail with 127 under
+# RGIT_TEST_TOOL_STRICT=1), like the other substitutes.
+
+git=${RGIT:-git}
+
+forward () {
+	if test "$RGIT_TEST_TOOL_STRICT" = 1
+	then
+		echo "test-tool (rgit): serve-v2 $* has no rgit substitute" >&2
+		exit 127
+	fi
+	if test -n "$RGIT_TEST_TOOL_FORWARD_LOG"
+	then
+		echo "serve-v2 ${1:-}" >>"$RGIT_TEST_TOOL_FORWARD_LOG"
+	fi
+	exec "${REF_TEST_TOOL:?REF_TEST_TOOL not set}" serve-v2 "$@"
+}
+
+stateless=
+advertise=
+for arg
+do
+	case $arg in
+	--stateless-rpc) stateless=--stateless-rpc ;;
+	--advertise-capabilities) advertise=--advertise-refs ;;
+	*) forward "$@" ;;
+	esac
+done
+
+git_dir=$("$git" rev-parse --absolute-git-dir) || exit 128
+GIT_PROTOCOL=version=2
+export GIT_PROTOCOL
+exec "$git" upload-pack $stateless $advertise "$git_dir"

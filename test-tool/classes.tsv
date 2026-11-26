@@ -63,7 +63,7 @@ wildmatch	C	#106	wildmatch (t3070)
 parse-pathspec-file	C	#106	--pathspec-from-file parsing (t0067)
 reach	C	#50	reachability queries (t6600)
 advise	C	#178	advice output (t0018)
-serve-v2	C	M5	protocol v2 server (t5701, t5702); server side is not part of M1/M2
+serve-v2	C	#68	protocol v2 server (t5701, t5702, t5703); substitute runs `git upload-pack` of the git under test
 sigchain	C	#98	signal handler chain (t0005); library internals, likely excluded for rgit
 pkt-line	C	#60	sideband actions (send-split-sideband, receive-sideband, unpack-sideband)
 # Not used by M1/M2 scripts yet; class fixed in advance (rgit issue #6)

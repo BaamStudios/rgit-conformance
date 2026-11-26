@@ -61,6 +61,7 @@ substitute exists and otherwise execs the reference binary (the next
 | `date` | `parse`, `approxidate`, `timestamp`; `show:<format>`, `relative`, `human`, `is64bit`, `time_t-is64bit`, `getnanos` | `GIT_AUTHOR_DATE=<d> git var GIT_AUTHOR_IDENT`; `git rev-parse --since=<d>` in a scratch repository; the formatting actions and `getnanos` through `rgit-test-tool date` (rgit #192) | the `rgit-test-tool` actions when no `rgit-test-tool` is found | `test-tool/check-date.sh`, `test-tool/check-rgit-test-tool.sh` |
 | `ref-store` | `create-symref`, `delete-refs`, `rename-ref`, `for-each-ref`, `resolve-ref`, `verify-ref`, `for-each-reflog`, `for-each-reflog-ent`, `for-each-reflog-ent-reverse`, `reflog-exists`, `create-reflog`, `delete-reflog`, `update-ref`, `delete-ref` on the stores `main`, `worktree:main`, `worktree:<id>` | `rgit-test-tool ref-store` (rgit #192 on rgit-refs #29 and its reflogs #30), via `sub/ref-store` | the other functions; everything when no `rgit-test-tool` is found | `test-tool/check-rgit-test-tool.sh` |
 | `pkt-line` | `unpack-sideband` (`--[no-]reader-use-sideband`, `--[no-]chomp-newline`), `send-split-sideband`, `receive-sideband` | `rgit-test-tool pkt-line` (rgit #310, on rgit-protocol's side-band code), via `sub/pkt-line` | `pack`, `pack-raw-stdin`, `unpack` (class B on purpose); everything when no `rgit-test-tool` is found | rgit `crates/rgit-test-tool/tests/pkt_line.rs` |
+| `serve-v2` | `--stateless-rpc`, `--advertise-capabilities` | `GIT_PROTOCOL=version=2 git upload-pack [--stateless-rpc] [--advertise-refs] <git dir>` (rgit #68), via `sub/serve-v2`; rgit in strict mode, the reference git in fallback mode (`upload-pack` is not in `implemented.txt`: t5701 compares `agent=` with `git version`) | other options | `t5701-git-serve.sh`, `t5703-upload-pack-ref-in-want.sh` in strict mode |
 | `sha1`, `sha256`, `sha1-is-sha1dc`, `parse-options`, `parse-options-flags`, `parse-subcommand`, `config`, `wildmatch`, `progress` | all | `rgit-test-tool <subcommand>` (rgit `crates/rgit-test-tool`, rgit #192), via `sub/rgit-test-tool.sh` | everything when no `rgit-test-tool` is found | `test-tool/check-rgit-test-tool.sh` |
 
 `check-date.sh REF_TEST_TOOL GIT` runs every `parse`, `approxidate` and
@@ -159,8 +160,9 @@ binaries.
    still works in the child. Needs `rgit-test-tool subprocess` using rgit's
    setup code.
 8. **`serve-v2`** (2 call sites in `t5702-protocol-v2.sh`, 29 in
-   `t5701-git-serve.sh`). The protocol v2 server is rgit M5; until then the
-   reference binary serves the client tests.
+   `t5701-git-serve.sh`, more in `t5703-upload-pack-ref-in-want.sh`). Done:
+   `sub/serve-v2` runs `git upload-pack` of the git under test with
+   `GIT_PROTOCOL=version=2` (rgit #68).
 9. **`sigchain`** (`t0005-signals.sh`, owner #98) tests git's signal handler
    chain, a C library detail without an rgit equivalent. Proposal: exclude
    these cases for rgit (open question for a maintainer).
