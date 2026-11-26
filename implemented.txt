@@ -297,9 +297,9 @@ fsck
 # --incremental, --unpacked, --honor-pack-keep, --keep-pack, --max-pack-size
 # (rgit #19), --cruft and --cruft-expiration (rgit #96), --write-bitmap-index
 # (rgit #23), --stdin-packs (rgit #580), --filter and --shallow (rgit #24,
-# #94), except the options rgit does not implement yet (--missing,
-# --exclude-promisor-objects: rgit #639; --path-walk: rgit #558).
-pack-objects !(--unpacked=*|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--missing=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
+# #94), --missing (rgit #640), except the options rgit does not implement
+# yet (--exclude-promisor-objects: rgit #639; --path-walk: rgit #558).
+pack-objects !(--unpacked=*|--keep-unreachable|--pack-loose-unreachable|--unpack-unreachable|--unpack-unreachable=*|--exclude-promisor-objects|--exclude-promisor-objects-best-effort|--delta-islands|--uri-protocol=*|--path-walk|--name-hash-version=*)...
 # push and send-pack, with push certificates (rgit #165). Not the
 # remote-helper modes --stateless-rpc / --helper-status (rgit #171).
 # --recurse-submodules (rgit #121).
@@ -470,3 +470,5 @@ request-pull
 imap-send
 # rgit #716: subtree (add, merge, pull, push, split): every call.
 subtree
+# rgit #640: git backfill (blobless partial clones), every call.
+backfill
