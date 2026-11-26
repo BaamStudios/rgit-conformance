@@ -62,6 +62,21 @@ substitute exists and otherwise execs the reference binary (the next
 | `ref-store` | `create-symref`, `delete-refs`, `rename-ref`, `for-each-ref`, `resolve-ref`, `verify-ref`, `for-each-reflog`, `for-each-reflog-ent`, `for-each-reflog-ent-reverse`, `reflog-exists`, `create-reflog`, `delete-reflog`, `update-ref`, `delete-ref` on the stores `main`, `worktree:main`, `worktree:<id>` | `rgit-test-tool ref-store` (rgit #192 on rgit-refs #29 and its reflogs #30), via `sub/ref-store` | the other functions; everything when no `rgit-test-tool` is found | `test-tool/check-rgit-test-tool.sh` |
 | `pkt-line` | `unpack-sideband` (`--[no-]reader-use-sideband`, `--[no-]chomp-newline`), `send-split-sideband`, `receive-sideband` | `rgit-test-tool pkt-line` (rgit #310, on rgit-protocol's side-band code), via `sub/pkt-line` | `pack`, `pack-raw-stdin`, `unpack` (class B on purpose); everything when no `rgit-test-tool` is found | rgit `crates/rgit-test-tool/tests/pkt_line.rs` |
 | `sha1`, `sha256`, `sha1-is-sha1dc`, `parse-options`, `parse-options-flags`, `parse-subcommand`, `config`, `wildmatch`, `progress` | all | `rgit-test-tool <subcommand>` (rgit `crates/rgit-test-tool`, rgit #192), via `sub/rgit-test-tool.sh` | everything when no `rgit-test-tool` is found | `test-tool/check-rgit-test-tool.sh` |
+| `trace2` | all verbs (`001return` ... `400ancestry`) | `rgit-test-tool trace2` on rgit-trace (rgit #695), via `sub/rgit-test-tool.sh` | everything when no `rgit-test-tool` is found | rgit `crates/rgit-test-tool/tests/trace2.rs` |
+
+`t0210`-`t0213` put `$GIT_BUILD_DIR/t/helper` in front of `PATH` themselves
+(for nested `test-tool` calls), so with `GIT_BUILD_DIR` set to the reference
+build they reach the reference `test-tool` and never this dispatcher: their
+`test-tool trace2` cases keep comparing the reference's `version 2.56.1`
+with the `$(git version)` of rgit. The substitute takes effect only when
+`GIT_BUILD_DIR` is an overlay of the reference build whose
+`t/helper/test-tool` is this dispatcher (with `REF_TEST_TOOL` pointing at the
+real one). Checked that way on 2026-11-26 (rgit #695): strict t0210 13/14,
+t0211 12/17, t0212 11/11, t0213 1/5; the rest needs rgit work (clone with
+`url.*.insteadOf` on a URL with a password, git aliases as `git_alias` child
+processes, `remote-http` / `http-fetch` def_params). In the fallback pass
+`git version` goes to the reference, so there the substitute has to be
+switched off (`RGIT_TEST_TOOL_DISABLE=trace2`) or `version` routed to rgit.
 
 `check-date.sh REF_TEST_TOOL GIT` runs every `parse`, `approxidate` and
 `timestamp` case of `t0006-date.sh` (with its `TZ` and `GIT_TEST_DATE_NOW`

@@ -69,7 +69,7 @@ pkt-line	C	#60	sideband actions (send-split-sideband, receive-sideband, unpack-s
 # Not used by M1/M2 scripts yet; class fixed in advance (rgit issue #6)
 read-cache	B		reads the index
 write-cache	B		writes an index for rgit to read
-trace2	C		trace2 API
+trace2	C	#695	trace2 API (t0210, t0211, t0212, t0213)
 progress	C		progress display
 json-writer	C		JSON writer used by trace2
 run-command	C		child process handling
