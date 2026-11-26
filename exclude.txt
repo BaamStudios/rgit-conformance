@@ -1,6 +1,5 @@
 # Cases skipped on purpose in all passes: <script> <case numbers>  # reason
 t5601-clone.sh 108  # "batch missing blob request during checkout": checkout (routed to rgit) in a partial clone must fetch the missing blobs from the promisor remote (rgit #24)
-t6428-merge-conflicts-sparse.sh 2  # SKIP_WORKTREE entries in a merge (sparse checkout) are not handled by rgit merge
 t6120-describe.sh 95  # name-rev with a commit-graph and non-monotonic commit dates needs commit-graph generation numbers (rgit #22)
 t4150-am.sh 76  # "apply binary blob in partial clone": rgit apply does not fetch missing blobs from the promisor remote (rgit #24)
 t3500-cherry.sh 5  # "cherry in partial clone does bulk prefetch" needs a partial clone (rgit #24) and trace2 events (rgit #180)
