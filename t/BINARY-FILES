@@ -7,6 +7,7 @@ t0450/adoc-missing v2.56.1
 t1502/optionspec-neg v2.56.1
 t1502/optionspec-neg.help v2.56.1
 t1502/optionspec.help v2.56.1
+t3206/history.export v2.56.1
 t3434/ISO8859-1.txt v2.56.1
 t3434/eucJP.txt v2.56.1
 t3437/expected-combined-message v2.56.1
@@ -583,6 +584,13 @@ t4256/1/mailinfo.c v2.56.1
 t4256/1/mailinfo.c.orig v2.56.1
 t4256/1/patch v2.56.1
 t4258/mbox v2.56.1
+t5000/huge-and-future.tar v2.56.1
+t5000/huge-object v2.56.1
+t5000/pax.tar v2.56.1
+t5003/infozip-symlinks.zip v2.56.1
+t5004/big-pack.zip v2.56.1
+t5004/empty-with-pax-header.tar v2.56.1
+t5004/empty.zip v2.56.1
 t5100/0001mboxrd v2.56.1
 t5100/0002mboxrd v2.56.1
 t5100/comment.expect v2.56.1
@@ -686,6 +694,7 @@ t5100/rfc2047-info-0011 v2.56.1
 t5100/rfc2047-samples.mbox v2.56.1
 t5100/sample.mbox v2.56.1
 t5100/sample.mboxrd v2.56.1
+t5319/no-objects.midx v2.56.1
 t5515/fetch.br-branches-default v2.56.1
 t5515/fetch.br-branches-default-merge v2.56.1
 t5515/fetch.br-branches-default-merge_branches-default v2.56.1
@@ -817,5 +826,7 @@ t5515/refs.main_remote-glob v2.56.1
 t7615/base.c v2.56.1
 t7615/ours.c v2.56.1
 t7615/theirs.c v2.56.1
+t9350/broken-iso-8859-7-commit-message.txt v2.56.1
+t9350/simple-iso-8859-7-commit-message.txt v2.56.1
 test-binary-1.png v2.56.1
 test-binary-2.png v2.56.1
