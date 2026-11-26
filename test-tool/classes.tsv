@@ -25,6 +25,9 @@ crontab	A		fake crontab
 proc-receive	A		fake proc-receive hook
 test-fake-ssh	A		fake ssh
 xml-encode	A		junit output only
+online-cpus	A		expected value: number of CPUs that hook.jobs=-1 resolves to (t1800)
+pcre2-config	A		prerequisite probe of the PCRE2 library (t7812)
+regex	A		prerequisite probe of the platform regex/locale (t4210, t7810, t7812); `--bug` in t0070 checks the reference build's regex compat
 # Class B: data readers/writers, git's own reader checks what rgit wrote
 dump-cache-tree	B		reads the index cache-tree extension
 dump-split-index	B		reads split index
@@ -38,6 +41,7 @@ pack-mtimes	B		reads .mtimes
 find-pack	B		finds the pack that holds an object
 bitmap	B		reads bitmaps
 pack-deltas	B		writes a crafted pack (fixture) that rgit must read
+synthesize	B		writes a synthetic >4GB pack (fixture) that rgit must index and clone (t5608)
 pkt-line pack	B		encodes request input; the git under test decodes it
 pkt-line pack-raw-stdin	B		encodes request input; the git under test decodes it
 pkt-line unpack	B		decodes the output of the git under test
@@ -66,6 +70,18 @@ advise	C	#178	advice output (t0018)
 serve-v2	C	M5	protocol v2 server (t5701, t5702); server side is not part of M1/M2
 sigchain	C	#98	signal handler chain (t0005); library internals, likely excluded for rgit
 pkt-line	C	#60	sideband actions (send-split-sideband, receive-sideband, unpack-sideband)
+cache-entry	C		cache entry allocation limits of the index API (t1600)
+mktemp	C		git's mktemp wrapper and its error messages (t0070); library internals, likely excluded for rgit
+revision-walking	C		revision walk API: run-twice (t0062), line-log-peek (t4211)
+submodule	C		submodule API
+submodule check-name	C		submodule name validation (t7450)
+submodule check-url	C		submodule URL validation (t7450)
+submodule is-active	C		submodule activity rules (t7413)
+submodule config-list	C		.gitmodules config reader (t7411)
+submodule config-set	C		.gitmodules config writer (t7411)
+submodule config-unset	C		.gitmodules config writer (t7411)
+submodule config-writeable	C		whether .gitmodules may be written (t7411)
+submodule-nested-repo-config	C		.gitmodules parsing of a nested repository (t7411)
 # Not used by M1/M2 scripts yet; class fixed in advance (rgit issue #6)
 read-cache	B		reads the index
 write-cache	B		writes an index for rgit to read
