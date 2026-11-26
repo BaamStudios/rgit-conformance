@@ -395,8 +395,9 @@ fallback t4207-log-decoration-colors.sh 1-4
 fallback t4208-log-magic-pathspec.sh 1-21
 fallback t4209-log-pickaxe.sh 1-48
 fallback t4210-log-i18n.sh 1-6,10,14
+fallback t4211-line-log.sh 1-96
 fallback t4214-log-graph-octopus.sh 1-17
-fallback t4215-log-skewed-merges.sh 1-10,15
+fallback t4215-log-skewed-merges.sh 1-15
 fallback t4217-log-limit.sh 1-3
 fallback t4218-log-graph-indentation.sh 1-32
 fallback t4219-log-follow-merge.sh 1-3,5-6
@@ -612,7 +613,7 @@ fallback t7113-post-index-change-hook.sh 1-4
 fallback t7201-co.sh 1-35,37-49
 fallback t7300-clean.sh 1-35,38-51,53,55
 fallback t7301-clean-interactive.sh 1-22
-fallback t7400-submodule-basic.sh 1-37,39-68,71-93,95,97-98,112-124
+fallback t7400-submodule-basic.sh 1-37,39-68,71-93,95,97-106,108-110,112-124
 fallback t7401-submodule-summary.sh 1-25
 fallback t7402-submodule-rebase.sh 1-6
 fallback t7403-submodule-sync.sh 1-18
@@ -1087,8 +1088,9 @@ strict t4205-log-pretty-formats.sh 1-15,17-120
 strict t4206-log-follow-harder-copies.sh 1-7
 strict t4208-log-magic-pathspec.sh 1-20
 strict t4209-log-pickaxe.sh 1-48
+strict t4211-line-log.sh 21,31-32,38,44-60,62-73,75-78,80,82-96
 strict t4214-log-graph-octopus.sh 1-17
-strict t4215-log-skewed-merges.sh 1-10,15
+strict t4215-log-skewed-merges.sh 1-15
 strict t4217-log-limit.sh 1-3
 strict t4218-log-graph-indentation.sh 1-32
 strict t4219-log-follow-merge.sh 5-6
@@ -1105,7 +1107,7 @@ strict t5300-pack-object.sh 1,4-8,10-49,53-56,58-59
 strict t5302-pack-index.sh 1-36
 strict t5303-pack-corruption-resilience.sh 1-36
 strict t5304-prune.sh 1,3-18,20-23,25-32
-strict t5305-include-tag.sh 1-4,8-11
+strict t5305-include-tag.sh 1-14
 strict t5306-pack-nobase.sh 1-2,4
 strict t5307-pack-missing-commit.sh 1-5
 strict t5308-pack-detect-duplicates.sh 1-6
@@ -1275,7 +1277,7 @@ strict t7113-post-index-change-hook.sh 1-4
 strict t7201-co.sh 1-35,37-49
 strict t7300-clean.sh 1-31,33-34,38-51,53,55
 strict t7301-clean-interactive.sh 1-22
-strict t7400-submodule-basic.sh 1-18,21,24,26,28,37,39-42,44-53,59,64,68,71-72,74-75,77-92,98
+strict t7400-submodule-basic.sh 1-18,21,24,26,28,37,39-42,44-53,59,64,68,71-72,74-75,77-92,98,110
 strict t7401-submodule-summary.sh 1-25
 strict t7402-submodule-rebase.sh 4
 strict t7406-submodule-update.sh 69-71
