@@ -443,3 +443,14 @@ replay
 # rgit #157: mergetool and difftool.
 difftool
 difftool--helper
+# rgit #176: git daemon (one `daemon --serve` process per connection, which
+# runs rgit's own upload-pack, protocol v0, v1 and v2: rgit #68, #174) and
+# git shell, every call.
+daemon
+shell
+# upload-pack (rgit #68, #174): only the call `upload-pack .`, whose output
+# t9850 compares with what `git shell` runs. Every other form stays with the
+# reference git for now: t5702 case 60 needs `packfile-uris` (rgit #629), and
+# t5701 compares the advertised `agent=` with `git version`, which fallback
+# mode answers with the reference git.
+upload-pack .
