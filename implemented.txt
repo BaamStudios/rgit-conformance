@@ -454,3 +454,5 @@ shell
 # t5701 compares the advertised `agent=` with `git version`, which fallback
 # mode answers with the reference git.
 upload-pack .
+# rgit #142: git history (reword, split, fixup, drop).
+history
