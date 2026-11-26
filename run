@@ -674,8 +674,14 @@ check_baseline() {
 			# breakage rgit passes (fixed): it was never a passing case
 			# under that number before (e.g. `submodule --help-all`, which
 			# fails in git and passes since rgit implements submodule).
-			if test "$script" = t1517-outside-repo.sh &&
-				{ test "$st" = todo || test "$st" = fixed; }
+			# t0450 does the same with one group of cases per built-in
+			# (rgit #69 added receive-pack): a known breakage (todo), its
+			# fix, or a prerequisite skip landing on a formerly passing
+			# number is that shift too.
+			if { test "$script" = t1517-outside-repo.sh &&
+				{ test "$st" = todo || test "$st" = fixed; }; } ||
+				{ test "$script" = t0450-txt-doc-vs-help.sh &&
+				{ test "$st" = todo || test "$st" = fixed || test "$st" = skip; }; }
 			then
 				echo "renumbered (ignored): $mode $script case $n: $st (was pass)" >&2
 				continue
