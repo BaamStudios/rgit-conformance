@@ -440,3 +440,6 @@ diff-pairs
 format-rev
 # rgit #142: replay.
 replay
+# rgit #157: mergetool and difftool.
+difftool
+difftool--helper
