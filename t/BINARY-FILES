@@ -817,5 +817,7 @@ t5515/refs.main_remote-glob v2.56.1
 t7615/base.c v2.56.1
 t7615/ours.c v2.56.1
 t7615/theirs.c v2.56.1
+t9350/broken-iso-8859-7-commit-message.txt v2.56.1
+t9350/simple-iso-8859-7-commit-message.txt v2.56.1
 test-binary-1.png v2.56.1
 test-binary-2.png v2.56.1
