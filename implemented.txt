@@ -263,11 +263,13 @@ fetch @(-q|--quiet|-v|--verbose|-p|--prune|-n|--no-tags|-t|--tags|--dry-run|--pr
 fetch @(-q|--quiet|-v|--verbose|-p|--prune|-n|--no-tags|-t|--tags|--dry-run|--progress|--no-progress|-f|--force|-u|--update-head-ok)... @(--depth|--deepen|--shallow-since|--shallow-exclude) ...
 # rgit fetch, clone, push, ls-remote (rgit #164, #166, #165, #314, #328,
 # #334, #318). Without arguments fetch and push stay with the reference
-# git. fetch --recurse-submodules (rgit #121), --filter (rgit #24). Not yet:
-# clone --bundle-uri (rgit #172).
+# git. fetch --recurse-submodules (rgit #121), --filter (rgit #24), clone
+# --sparse (rgit #43) and --bundle-uri (rgit #172).
 ls-remote
 fetch !(--bundle-uri|--bundle-uri=*)...
-clone !(--recurse-submodules|--recurse-submodules=*|--recursive|--recursive=*|--bundle-uri|--bundle-uri=*|--shallow-submodules|--also-filter-submodules)...
+clone !(--recurse-submodules|--recurse-submodules=*|--recursive|--recursive=*|--shallow-submodules|--also-filter-submodules)...
+# rgit bundle create|verify|list-heads|unbundle (rgit #172): every call.
+bundle
 # rgit write-tree and commit-tree (rgit #123, #319): every call.
 write-tree
 commit-tree
