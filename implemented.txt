@@ -35,6 +35,7 @@ mktree
 # rgit #141: fast-import and fast-export (every call).
 fast-export
 fast-import
+multi-pack-index
 # rgit-repo init (rgit #27): every call.
 init
 # rgit-revwalk (rgit #78, #46): rev-list and log with the walk, ordering,

@@ -686,6 +686,7 @@ t5100/rfc2047-info-0011 v2.56.1
 t5100/rfc2047-samples.mbox v2.56.1
 t5100/sample.mbox v2.56.1
 t5100/sample.mboxrd v2.56.1
+t5319/no-objects.midx v2.56.1
 t5515/fetch.br-branches-default v2.56.1
 t5515/fetch.br-branches-default-merge v2.56.1
 t5515/fetch.br-branches-default-merge_branches-default v2.56.1
