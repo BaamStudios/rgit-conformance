@@ -470,3 +470,5 @@ history
 send-email
 request-pull
 imap-send
+# rgit #716: subtree (add, merge, pull, push, split): every call.
+subtree
