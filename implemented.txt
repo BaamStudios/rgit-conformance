@@ -409,3 +409,6 @@ archive
 upload-archive
 upload-archive--writer
 get-tar-commit-id
+# rgit #97: maintenance (all subcommands and schedulers) and for-each-repo.
+maintenance
+for-each-repo
