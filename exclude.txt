@@ -9,7 +9,9 @@ t3504-cherry-pick-rerere.sh 4 5 6 7 8  # rerere and --rerere-autoupdate (rgit #1
 t4150-am.sh 70  # "am -3 works with rerere": rgit has no rerere yet (rgit #136)
 t4150-am.sh 76  # "apply binary blob in partial clone": rgit apply does not fetch missing blobs from the promisor remote (rgit #24)
 t3500-cherry.sh 5  # "cherry in partial clone does bulk prefetch" needs a partial clone (rgit #24) and trace2 events (rgit #180)
-t5351-unpack-large-objects.sh 3 6  # 3 needs GIT_ALLOC_LIMIT and streaming of large objects (rgit #89); 6 counts fsync events in GIT_TRACE2_EVENT (rgit #180)
+t5351-unpack-large-objects.sh 6  # counts fsync events in GIT_TRACE2_EVENT (rgit #180)
+t1050-large.sh 23  # "index-pack" clones over file://, which needs rgit upload-pack (rgit #442, #174)
+t1050-large.sh 26 27 28  # git archive is not implemented yet (rgit #139)
 t7506-status-submodule.sh 32  # "diff --submodule with merge conflict in .gitmodules" needs the combined diff of the conflicted .gitmodules (rgit #148)
 t5702-protocol-v2.sh 37  # dynamic fetch of a missing object needs partial clone (rgit #24); without it the script stops with an error
 t5702-protocol-v2.sh 77 79 80 81 82 83 84 85 86  # packfile URIs in protocol v2 fetch responses (rgit #538)
