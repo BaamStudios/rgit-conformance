@@ -70,7 +70,10 @@ fn basic() {
 
 #[test]
 fn mixed() {
-    test_prio_queue(&[6, 2, 4, GET, 5, 3, GET, GET, 1, DUMP], &[2, 3, 4, 1, 5, 6]);
+    test_prio_queue(
+        &[6, 2, 4, GET, 5, 3, GET, GET, 1, DUMP],
+        &[2, 3, 4, 1, 5, 6],
+    );
 }
 
 #[test]
@@ -96,7 +99,10 @@ fn stack() {
 
 #[test]
 fn reverse_stack() {
-    test_prio_queue(&[STACK, 1, 2, 3, 4, 5, 6, REVERSE, DUMP], &[1, 2, 3, 4, 5, 6]);
+    test_prio_queue(
+        &[STACK, 1, 2, 3, 4, 5, 6, REVERSE, DUMP],
+        &[1, 2, 3, 4, 5, 6],
+    );
 }
 
 #[test]
