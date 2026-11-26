@@ -583,6 +583,13 @@ t4256/1/mailinfo.c v2.56.1
 t4256/1/mailinfo.c.orig v2.56.1
 t4256/1/patch v2.56.1
 t4258/mbox v2.56.1
+t5000/huge-and-future.tar v2.56.1
+t5000/huge-object v2.56.1
+t5000/pax.tar v2.56.1
+t5003/infozip-symlinks.zip v2.56.1
+t5004/big-pack.zip v2.56.1
+t5004/empty-with-pax-header.tar v2.56.1
+t5004/empty.zip v2.56.1
 t5100/0001mboxrd v2.56.1
 t5100/0002mboxrd v2.56.1
 t5100/comment.expect v2.56.1
