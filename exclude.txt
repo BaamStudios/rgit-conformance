@@ -27,7 +27,6 @@ t5551-http-fetch-smart.sh 13  # "credential.interactive=false skips askpass" che
 t5551-http-fetch-smart.sh 26  # "dumb clone via http-backend respects namespace": rgit has no dumb HTTP (rgit #186)
 t5559-http-fetch-smart-http2.sh 13  # trace2 region "credential interactive" (rgit #180)
 t5559-http-fetch-smart-http2.sh 26  # dumb HTTP (rgit #186)
-t5563-simple-http-auth.sh 18  # "http.emptyAuth=auto attempts Negotiate": rgit has no GSS-Negotiate (docs/http-config.md)
 t5504-fetch-receive-strict.sh 6 7 8 9  # rgit refuses to send corrupt objects; the server reports an unpacker error instead of missing objects (intentional, rgit #528)
 t5300-pack-object.sh 2 3  # read the write_pack_file/wrote_bytes value from GIT_TRACE2_EVENT, which rgit does not write (rgit #180)
 t5510-fetch.sh 41  # fetch --atomic: git also prepares a create-only transaction for refs/remotes/origin/HEAD that the hook sees in its "preparing" state; rgit skips it when the symref exists (rgit #164)
