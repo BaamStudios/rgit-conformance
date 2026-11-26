@@ -211,6 +211,9 @@ diff-tree @(-p|-u|-r|--no-commit-id|--raw|--stat|--|!(-*))... @(--submodule|--su
 # fetch) a refspec; other calls stay with the reference git until
 # fetch/clone cover git's options (rgit #334, #94).
 ls-remote !(--sort|--sort=*|http://*|https://*)...
+# rgit #171: the built-in remote helpers of ext:: and fd:: URLs.
+remote-ext
+remote-fd
 clone @(git|file|ssh)://*
 clone @(git|file|ssh)://* @(-v|--verbose|-q|--quiet|-n|--no-checkout|--bare|--mirror|--no-local|-l|--local|--single-branch|--no-single-branch|--no-tags|--tags|--progress|--no-progress|-o?*|--origin=*|-b?*|--branch=*|-u?*|--upload-pack=*|-c?*|--config=*|-4|-6|--ipv4|--ipv6|!(-*))...
 clone @(-v|--verbose|-q|--quiet|-n|--no-checkout|--bare|--mirror|--no-local|-l|--local|--single-branch|--no-single-branch|--no-tags|--tags|--progress|--no-progress|-o?*|--origin=*|-b?*|--branch=*|-u?*|--upload-pack=*|-c?*|--config=*|-4|-6|--ipv4|--ipv6)... @(git|file|ssh)://*
