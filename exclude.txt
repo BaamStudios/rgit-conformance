@@ -2,7 +2,6 @@
 t0001-init.sh 52 53 54 56 57 60  # creates SHA-256 repositories; rgit init refuses them until rgit #12
 t1500-rev-parse.sh 72  # creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
 t5300-pack-object.sh 50 60 61  # create SHA-256 repositories with git init; rgit init refuses them until rgit #12
-t6101-rev-parse-parents.sh 17  # "large graft octopus" needs info/grafts (rgit #105)
 t5551-http-fetch-smart.sh 47 48 49  # 47 creates a SHA-256 repository with git init (rgit #12); 48 and 49 clone it
 t5601-clone.sh 104  # "clone with GIT_DEFAULT_HASH" creates a SHA-256 repository with git init; rgit init refuses it until rgit #12
 t5601-clone.sh 108  # "batch missing blob request during checkout": checkout (routed to rgit) in a partial clone must fetch the missing blobs from the promisor remote (rgit #24)
