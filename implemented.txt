@@ -466,3 +466,7 @@ shell
 upload-pack .
 # rgit #142: git history (reword, split, fixup, drop).
 history
+# rgit #715: the mail workflow (send-email, request-pull, imap-send).
+send-email
+request-pull
+imap-send
