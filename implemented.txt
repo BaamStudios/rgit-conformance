@@ -432,3 +432,9 @@ merge-recursive
 # rgit #184: bugreport and diagnose.
 bugreport
 diagnose
+# rgit #143: newer inspection plumbing.
+url-parse
+repo
+last-modified
+diff-pairs
+format-rev
