@@ -398,3 +398,8 @@ diff !(-c|--cc|--binary|--base|--ours|--theirs|-0|-1|-2|-3)...
 whatchanged
 commit-graph
 replace
+# rgit #139: archive, upload-archive and get-tar-commit-id.
+archive
+upload-archive
+upload-archive--writer
+get-tar-commit-id
