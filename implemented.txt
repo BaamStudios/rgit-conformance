@@ -466,3 +466,6 @@ shell
 upload-pack .
 # rgit #142: git history (reword, split, fixup, drop).
 history
+# rgit #752: show-branch (every form) and the deprecated pack-redundant.
+show-branch
+pack-redundant
