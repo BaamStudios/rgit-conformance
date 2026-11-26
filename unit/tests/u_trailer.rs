@@ -57,7 +57,10 @@ fn no_newline_start() {
 
 #[test]
 fn newline_start() {
-    t_trailer_iterator("\nFixes: x\nAcked-by: x\nReviewed-by: x\n", FIXES_ACKED_REVIEWED);
+    t_trailer_iterator(
+        "\nFixes: x\nAcked-by: x\nReviewed-by: x\n",
+        FIXES_ACKED_REVIEWED,
+    );
 }
 
 #[test]
