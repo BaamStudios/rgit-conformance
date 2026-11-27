@@ -599,6 +599,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t3105-ls-tree-output.sh | M1 #88 | - |
 | t3200-branch.sh | M2 #48 | - |
 | t3201-branch-contains.sh | imported | - |
+| t3202-show-branch.sh | imported | - |
 | t3203-branch-output.sh | imported | - |
 | t3204-branch-name-interpretation.sh | M2 #48 | - |
 | t3205-branch-color.sh | imported | - |
@@ -872,6 +873,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5319-multi-pack-index.sh | imported | `bitmap list-commits` 3, `chmtime` 7, `genrandom` 8, `path-utils file-size` 4, `read-midx` 17 |
 | t5321-pack-large-objects.sh | imported | - |
 | t5322-pack-objects-sparse.sh | imported | - |
+| t5323-pack-redundant.sh | imported | - |
 | t5324-split-commit-graph.sh | imported | `chmtime` 2, `read-graph` 5 |
 | t5325-reverse-index.sh | imported | - |
 | t5326-multi-pack-bitmaps.sh | imported | `bitmap dump-hashes` 2, `bitmap list-commits` 7 |
