@@ -62,10 +62,15 @@ only runs the build; nobody needs to read git's sources.
 Per script and pass, `run`
 
 - runs the script from `t/` with `GIT_BUILD_DIR` pointing at the reference build
-  (so `test-tool`, templates and `GIT-BUILD-OPTIONS` come from there);
+  (so `test-tool`, templates and `GIT-BUILD-OPTIONS` come from there); in the
+  rgit passes `GIT_BUILD_DIR` is `results/<variant>/build-overlay/`, symbolic
+  links to the reference build whose `t/helper/test-tool` is the dispatcher
+  (`REF_TEST_TOOL` names the real one), because `t0210`-`t0213` put
+  `$GIT_BUILD_DIR/t/helper` in front of `PATH` themselves (rgit #706);
 - for the rgit passes sets `GIT_TEST_INSTALLED` to a generated directory under
   `results/<variant>/install-<mode>/` that contains `git`, the dashed programs
-  `git-upload-pack`, `git-receive-pack`, `git-upload-archive` and `test-tool`
+  `git-upload-pack`, `git-receive-pack`, `git-upload-archive`,
+  `git-http-backend` and `test-tool`
   (the dispatcher `test-tool/test-tool`, see [TEST-TOOL.md](TEST-TOOL.md); it
   uses `rgit-test-tool` when one is found next to the rgit binary);
 - parses the TAP output into `results/<variant>/<pass>/<script>.tsv`
@@ -133,14 +138,19 @@ Transport scripts need servers (rgit #87). They come from upstream unchanged:
 
 | Fixture | Server | Needs |
 |---|---|---|
-| `t/lib-httpd.sh`, `t/lib-httpd/` | Apache httpd with the reference `git http-backend` as CGI | Apache 2.4 with its modules (`apache2` on Debian/Ubuntu, `apache` on Arch), not running as root |
+| `t/lib-httpd.sh`, `t/lib-httpd/` | Apache httpd with `git-http-backend` of the git under test as CGI (rgit #692) | Apache 2.4 with its modules (`apache2` on Debian/Ubuntu, `apache` on Arch), not running as root |
 | `t/lib-git-daemon.sh` | `git daemon` of the git under test on a local port: rgit's daemon in the rgit passes (rgit #176; `daemon` is in `implemented.txt`), which serves with rgit's `upload-pack` | FIFOs |
 | fake ssh | `t/helper/test-fake-ssh` of the reference build, copied by the scripts (e.g. `t5601-clone.sh`) | nothing |
 | `t/lib-credential.sh` | credential helper checks (e.g. `t0302-credential-store.sh`) | nothing |
 
-Over HTTP the server side is always the reference git (until rgit #70); those
-scripts test the git under test as a client against real git. In the rgit passes
-the reference `--exec-path` (fallback) provides `git-http-backend` to Apache.
+`lib-httpd.sh`'s `apache.conf` runs `${GIT_EXEC_PATH}/git-http-backend`. In the
+rgit passes `run` sets `LIB_HTTPD_PATH` to a generated
+`results/<variant>/httpd-<mode>` that starts the web server `lib-httpd.sh` would
+find (or `$LIB_HTTPD_PATH`) with `GIT_EXEC_PATH` set to the install directory
+(rgit #692). The CGI is then `rgit http-backend` in strict mode and the fallback
+wrapper in fallback mode (`http-backend` is in `implemented.txt`); the scripts
+themselves keep their `GIT_EXEC_PATH` (the reference build in fallback mode,
+which the forwarded calls need).
 
 Without a web server `lib-httpd.sh` skips the script (or, in `t5601` and
 `t5510`, which source it halfway, the rest of it). `run` records the reason
