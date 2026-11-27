@@ -45,6 +45,7 @@ synthesize	B		writes a synthetic >4GB pack (fixture) that rgit must index and cl
 pkt-line pack	B		encodes request input; the git under test decodes it
 pkt-line pack-raw-stdin	B		encodes request input; the git under test decodes it
 pkt-line unpack	B		decodes the output of the git under test
+fsmonitor-client	B		queries the fsmonitor daemon of the git under test over its IPC socket (t7527)
 # Class C: exercise code under test
 date	C	#74	date parsing/formatting (t0006)
 parse-options	C	#73	option parser (t0040)
