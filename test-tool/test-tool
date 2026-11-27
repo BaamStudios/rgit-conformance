@@ -42,6 +42,8 @@ then
 		cr=$(cd "$d" && pwd -P)/test-tool
 		test "$cr" = "$self" && continue
 		test "$(cd "$d" && pwd -P)" = "$here" && continue
+		# Another link to this dispatcher (the build overlay's t/helper).
+		test "$(readlink -f "$c")" = "$(readlink -f "$self")" && continue
 		REF_TEST_TOOL=$c
 		break
 	done
