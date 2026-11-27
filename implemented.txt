@@ -472,3 +472,5 @@ imap-send
 subtree
 # rgit #640: git backfill (blobless partial clones), every call.
 backfill
+# rgit fsmonitor--daemon (rgit #118): the built-in file system monitor.
+fsmonitor--daemon
