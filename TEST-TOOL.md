@@ -218,16 +218,19 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | Subcommand | Calls | Scripts | Also in | Milestones | Class | Owner | Note |
 |---|---:|---:|---|---|---|---|---|
 | `advise` | 3 | 1 | - | M2 | C | #178 | advice output (t0018) |
-| `bitmap list-commits` | 18 | 4 | - | - | B |  | reads bitmaps |
+| `bitmap list-commits` | 20 | 5 | - | - | B |  | reads bitmaps |
+| `bitmap write` | 8 | 2 | - | - | B |  | reads bitmaps |
+| `bitmap dump-pseudo-merge-commits` | 3 | 1 | - | - | B |  | reads bitmaps |
+| `bitmap dump-pseudo-merges` | 3 | 1 | - | - | B |  | reads bitmaps |
 | `bitmap dump-hashes` | 2 | 1 | - | - | B |  | reads bitmaps |
-| `bitmap write` | 2 | 1 | - | - | B |  | reads bitmaps |
+| `bitmap dump-pseudo-merge-objects` | 1 | 1 | - | - | B |  | reads bitmaps |
 | `bitmap list-commits-with-offset` | 1 | 1 | - | - | B |  | reads bitmaps |
 | `bloom` | 11 | 1 | - | - | C | #22 | changed-path Bloom filters (t0095) |
 | `bundle-uri parse-config` | 8 | 1 | - | - | C |  | bundle-uri parsing |
 | `bundle-uri parse-key-values` | 6 | 1 | - | - | C |  | bundle-uri parsing |
 | `bundle-uri ls-remote` | 0 | 0 | lib-bundle-uri-protocol.sh | - | C |  | bundle-uri parsing |
 | `cache-entry` | 2 | 1 | - | - | C |  | cache entry allocation limits of the index API (t1600) |
-| `chmtime` | 186 | 39 | - | M2 | A |  | file mtimes |
+| `chmtime` | 192 | 40 | - | M2 | A |  | file mtimes |
 | `config read_early_config` | 8 | 2 | - | M1 | C | #28 | config reader API (t1305, t1308, t1309) |
 | `config configset_get_value` | 6 | 1 | - | M1 | C | #28 | config reader API (t1305, t1308, t1309) |
 | `config get` | 5 | 1 | - | M1 | C | #28 | config reader API (t1305, t1308, t1309) |
@@ -246,15 +249,17 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | `date relative` | 1 | 1 | - | M1 | C | #74 | date parsing/formatting (t0006) |
 | `delta` | 9 | 1 | - | M1 | C | #17 | delta application (t5303) |
 | `dump-cache-tree` | 3 | 2 | - | M2 | B |  | reads the index cache-tree extension |
+| `dump-fsmonitor` | 5 | 1 | - | - | B |  | reads the fsmonitor extension |
 | `dump-reftable` | 8 | 1 | - | - | B |  | reads reftable files |
 | `dump-split-index` | 26 | 2 | - | M2 | B |  | reads split index |
-| `dump-untracked-cache` | 36 | 1 | - | M2 | B |  | reads the untracked-cache extension |
+| `dump-untracked-cache` | 38 | 2 | - | M2 | B |  | reads the untracked-cache extension |
 | `env-helper` | 14 | 2 | lib-git-daemon.sh, lib-httpd.sh | M1, M2 | A |  | reads an environment variable as bool/ulong |
 | `find-pack` | 27 | 1 | - | - | B |  | finds the pack that holds an object |
-| `genrandom` | 70 | 30 | - | M1, M2 | A |  | deterministic pseudo-random bytes |
+| `fsmonitor-client` | 9 | 1 | - | - | B |  | queries the fsmonitor daemon of the git under test over its IPC socket (t7527) |
+| `genrandom` | 71 | 31 | - | M1, M2 | A |  | deterministic pseudo-random bytes |
 | `genzeros` | 19 | 11 | - | M1, M2 | A |  | zero bytes |
 | `getcwd` | 1 | 1 | - | M1 | A |  | prints the working directory |
-| `hexdump` | 5 | 2 | - | - | A |  | hex dump of stdin |
+| `hexdump` | 5 | 2 | lib-unicode-nfc-nfd.sh | - | A |  | hex dump of stdin |
 | `mktemp` | 2 | 1 | - | - | C |  | git's mktemp wrapper and its error messages (t0070); library internals, likely excluded for rgit |
 | `name-hash` | 1 | 1 | - | - | C |  | pack name hashes, versions 1 and 2 (t5310) |
 | `online-cpus` | 3 | 1 | - | - | A |  | expected value: number of CPUs that hook.jobs=-1 resolves to (t1800) |
@@ -291,6 +296,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | `pkt-line receive-sideband` | 3 | 1 | - | - | C | #60 | sideband actions (send-split-sideband, receive-sideband, unpack-sideband) |
 | `progress` | 16 | 1 | - | - | C |  | progress display |
 | `reach` | 1 | 1 | - | M2 | C | #50 | reachability queries (t6600) |
+| `read-cache` | 1 | 1 | - | - | B |  | reads the index |
 | `read-graph` | 9 | 2 | lib-commit-graph.sh | - | B |  | reads commit-graph |
 | `read-midx` | 33 | 6 | lib-bitmap.sh, lib-midx.sh | - | B |  | reads multi-pack-index |
 | `ref-store delete-refs` | 33 | 6 | - | M1, M2 | C | #29 | ref backend API (t1405, t1430, t0600, t1400, t3800); reflog actions #30 |
@@ -871,6 +877,7 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5317-pack-objects-filter-objects.sh | imported | - |
 | t5318-commit-graph.sh | imported | `genzeros` 1, `repository` 4 |
 | t5319-multi-pack-index.sh | imported | `bitmap list-commits` 3, `chmtime` 7, `genrandom` 8, `path-utils file-size` 4, `read-midx` 17 |
+| t5320-delta-islands.sh | imported | `genrandom` 1 |
 | t5321-pack-large-objects.sh | imported | - |
 | t5322-pack-objects-sparse.sh | imported | - |
 | t5323-pack-redundant.sh | imported | - |
@@ -881,6 +888,8 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t5328-commit-graph-64bit-time.sh | imported | - |
 | t5329-pack-objects-cruft.sh | imported | `chmtime` 23, `genrandom` 2, `pack-mtimes` 14 |
 | t5331-pack-objects-stdin.sh | imported | - |
+| t5332-multi-pack-reuse.sh | imported | - |
+| t5333-pseudo-merge-bitmaps.sh | imported | `bitmap dump-pseudo-merge-commits` 3, `bitmap dump-pseudo-merge-objects` 1, `bitmap dump-pseudo-merges` 3, `bitmap list-commits` 2, `bitmap write` 6 |
 | t5334-incremental-multi-pack-index.sh | imported | `read-midx` 1 |
 | t5335-compact-multi-pack-index.sh | imported | `read-midx` 7 |
 | t5351-unpack-large-objects.sh | imported | `genrandom` 2 |
@@ -1164,11 +1173,13 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 | t7516-commit-races.sh | M2 #45 | - |
 | t7517-per-repo-email.sh | M2 #122 | - |
 | t7518-ident-corner-cases.sh | M2 #122 | - |
+| t7519-status-fsmonitor.sh | imported | `chmtime` 6, `dump-fsmonitor` 5, `dump-untracked-cache` 2, `read-cache` 1 |
 | t7520-ignored-hook-warning.sh | imported | - |
 | t7521-ignored-mode.sh | M2 #40 | - |
 | t7524-commit-summary.sh | M2 #45 | - |
 | t7525-status-rename.sh | imported | - |
 | t7526-commit-pathspec-file.sh | imported | - |
+| t7527-builtin-fsmonitor.sh | imported | `fsmonitor-client` 9 |
 | t7528-signed-commit-ssh.sh | imported | - |
 | t7600-merge.sh | imported | - |
 | t7601-merge-pull-config.sh | imported | - |
@@ -1238,14 +1249,15 @@ variables such as `RUN="test-tool ref-store main"`. Calls inside sourced
 
 | Library | Used by | Subcommands (calls) |
 |---|---:|---|
-| lib-bitmap.sh | 5 | `read-midx` 1 |
+| lib-bitmap.sh | 6 | `read-midx` 1 |
 | lib-bundle-uri-protocol.sh | 3 | `bundle-uri ls-remote` 4 |
 | lib-commit-graph.sh | 2 | `read-graph` 1 |
 | lib-git-daemon.sh | 8 | `env-helper` 1 |
 | lib-httpd.sh | 33 | `env-helper` 1 |
 | lib-loose.sh | 3 | `sha1/sha256 (via $algo)` 1, `zlib` 1 |
-| lib-midx.sh | 7 | `read-midx` 2 |
+| lib-midx.sh | 8 | `read-midx` 2 |
 | lib-pack.sh | 4 | `sha1/sha256 (via $algo)` 1 |
+| lib-unicode-nfc-nfd.sh | 1 | `hexdump` 4 |
 
 ### Framework
 
