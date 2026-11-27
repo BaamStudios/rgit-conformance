@@ -2,8 +2,6 @@
 t6120-describe.sh 95  # name-rev with a commit-graph and non-monotonic commit dates prints "undefined" instead of tags/D~2 (rgit #748)
 t3500-cherry.sh 5  # "cherry in partial clone does bulk prefetch": no child_start event for the prefetching fetch in GIT_TRACE2_EVENT (rgit #743)
 t5351-unpack-large-objects.sh 6  # counts the fsync counter events in GIT_TRACE2_EVENT, which rgit does not write (rgit #581)
-t1050-large.sh 23  # "index-pack": the clone over file:// fails because rgit pack-objects reads a large blob whole and hits GIT_ALLOC_LIMIT (rgit #654)
-t1050-large.sh 26 27 28  # git archive reads large blobs whole and hits GIT_ALLOC_LIMIT (rgit #654)
 t6500-gc.sh 10 35  # progress of gc: "Computing commit graph generation numbers" and "Collecting referenced commits" are missing (rgit #513)
 t6500-gc.sh 29  # gc --cruft --prune=now runs "repack -d -l -a" instead of "repack -d -l --cruft --cruft-expiration=now --expire-to=..." (rgit #513)
 t7700-repack.sh 6  # repack --local with alternates: the warning "disabling bitmap writing, as some objects are not being packed" is missing (rgit #676)
