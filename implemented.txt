@@ -480,3 +480,5 @@ backfill
 # rgit #752: show-branch (every form) and the deprecated pack-redundant.
 show-branch
 pack-redundant
+# rgit fsmonitor--daemon (rgit #118): the built-in file system monitor.
+fsmonitor--daemon
