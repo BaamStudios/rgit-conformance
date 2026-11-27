@@ -29,3 +29,4 @@ t7406-submodule-update.sh 55  # submodule update --depth=1 of a commit outside t
 t7810-grep.sh 39 97 217 220  # "... errors without PCRE": the reference git is built without PCRE, so -P fails there; rgit always supports -P (rgit #134)
 t7300-clean.sh 54  # "avoid traversing into ignored directories" counts the directories-visited data of the read_directory region in GIT_TRACE2_PERF output, which rgit does not log yet (rgit #581)
 t4013-diff-various.sh 139 140 141 142 143 144 145 146 147 148 149 150 151 152 154 155  # format-patch: the signature and the --attach/--inline boundary hold rgit's version string (by design; the cases pass with the version replaced)
+t5332-multi-pack-reuse.sh 11  # "omit delta from uninteresting base (cross pack)": rgit repack -d picks a different delta base for one tree (its base copy is in the MIDX preferred pack), so one object fewer is reusable (rgit #676)
